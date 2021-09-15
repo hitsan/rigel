@@ -12,11 +12,11 @@ public:
         std::cout << "TestToken SetUp" << std::endl;
         data.push_back(Token(TokenType::INT, "0"));
         data.push_back(Token(TokenType::PLUS, "+"));
-        data.push_back(Token(TokenType::AST, "*"));
+        data.push_back(Token(TokenType::MUL, "*"));
     }
 };
 
 TEST_F(TestToken, token){
     ASSERT_EQ(TokenType::INT, data[0].getTokenType());
-    ASSERT_EQ("0", data[0].getLiteral());
+    ASSERT_EQ("1", data[0].getLiteral());
 }

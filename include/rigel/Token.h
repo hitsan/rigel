@@ -19,11 +19,13 @@ private:
     TokenType type;
     llvm::StringRef literal;
 public:
-    Token* next;
-    Token(TokenType type, llvm::StringRef literal);
+    Token(TokenType type, llvm::StringRef literal)
+    {
+    this->type = type;
+    this->literal = literal;
+    };
     TokenType getTokenType() { return type; }
     llvm::StringRef getLiteral() { return literal; }
-    void getNext();
 };
 
 };
