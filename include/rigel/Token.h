@@ -13,6 +13,7 @@ enum TokenType
     MINUS,
     ASTERISK,
     SLASH,
+    BOOL,
     BANG
 };
 

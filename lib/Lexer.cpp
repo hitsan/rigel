@@ -1,7 +1,6 @@
+#include <iostream>
 #include "../include/rigel/Lexer.h"
 using namespace rigel;
-
-#include <iostream>
 
 Lexer::Lexer(llvm::StringRef code)
 {
@@ -30,6 +29,11 @@ void Lexer::makeIntToken()
 void Lexer::makeToken(TokenType type, std::string literal)
 {
         auto tok = Token(type, literal);
+}
+
+Token Lexer::nextToken()
+{
+    return Token(TokenType::INT, "1");
 }
 
 void Lexer::lex()

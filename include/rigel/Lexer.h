@@ -19,7 +19,7 @@ public:
     void peekChar();
     void makeIntToken();
     void makeToken(TokenType type, std::string literal);
-    void showToken();
+    Token nextToken();
     void lex();
 
 };
