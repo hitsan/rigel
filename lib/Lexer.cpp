@@ -7,8 +7,6 @@ Lexer::Lexer(llvm::StringRef code)
 {
     bufferStart = code.begin();
     bufferPtr = bufferStart;
-    auto tok = Token(TokenType::FIRST, "");
-    cur = &tok;
 }
 
 void Lexer::skipSpace()
@@ -46,7 +44,7 @@ void Lexer::lex()
             makeToken(TokenType::PLUS, "+");
             break;
         case '*':
-            makeToken(TokenType::MUL, "*");
+            makeToken(TokenType::ASTERISK, "*");
             break;            
         default:
             if(isdigit(*bufferPtr))

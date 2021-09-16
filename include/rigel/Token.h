@@ -8,9 +8,12 @@ namespace rigel {
 enum TokenType
 {
     INT,
+    STR,
     PLUS,
-    MUL,
-    FIRST
+    MINUS,
+    ASTERISK,
+    SLASH,
+    BANG
 };
 
 class Token
