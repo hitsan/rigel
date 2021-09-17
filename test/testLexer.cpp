@@ -11,12 +11,12 @@ public:
 
     virtual void SetUp()
     {
-        std::cout << "TestLexer SetUp" << std::endl;
         expr_out = new Lexer(expr);
     }
 };
 
-TEST_F(TestLexer, token){
+TEST_F(TestLexer, lex){
+    std::cout << "Test Lex() " << std::endl;
     Token test[] = {
         Token(TokenType::INT, "1"),
         Token(TokenType::PLUS, "+"),
@@ -36,4 +36,53 @@ TEST_F(TestLexer, token){
         ASSERT_EQ(test[i].getLiteral(), tok.getLiteral());
         ASSERT_EQ(test[i].getTokenType(), tok.getTokenType());
     }
+}
+
+TEST_F(TestLexer, makeToken){
+    std::cout << "Test makeToken() " << std::endl;
+    Lexer mt("");
+
+    auto tok = mt.makeToken(TokenType::PLUS, "+");
+    ASSERT_EQ(TokenType::PLUS, tok.getTokenType());
+    ASSERT_EQ("+", tok.getLiteral());
+    tok = mt.makeToken(TokenType::MINUS, "-");
+    ASSERT_EQ(TokenType::MINUS, tok.getTokenType());
+    ASSERT_EQ("-", tok.getLiteral());
+    tok = mt.makeToken(TokenType::ASTERISK, "*");
+    ASSERT_EQ(TokenType::ASTERISK, tok.getTokenType());
+    ASSERT_EQ("*", tok.getLiteral());
+    tok = mt.makeToken(TokenType::SLASH, "/");
+    ASSERT_EQ(TokenType::SLASH, tok.getTokenType());
+    ASSERT_EQ("/", tok.getLiteral());
+    tok = mt.makeToken(TokenType::BANG, "!");
+    ASSERT_EQ(TokenType::BANG, tok.getTokenType());
+    ASSERT_EQ("!", tok.getLiteral());
+}
+
+TEST_F(TestLexer, makeIntToken){
+    std::cout << "Test makeIntToken() " << std::endl;
+
+    Lexer mi("122");
+    auto tok = mi.makeIntToken();
+    ASSERT_EQ(TokenType::INT, tok.getTokenType());
+    ASSERT_EQ("122", tok.getLiteral());
+
+    Lexer mt("11");
+    tok = mt.makeIntToken();
+    ASSERT_EQ(TokenType::INT, tok.getTokenType());
+    ASSERT_EQ("11", tok.getLiteral());
+}
+
+TEST_F(TestLexer, makeStrToken){
+    std::cout << "Test makeStrToken() " << std::endl;
+
+    Lexer mi("PopVirus");
+    auto tok = mi.makeStrToken();
+    ASSERT_EQ(TokenType::STR, tok.getTokenType());
+    ASSERT_EQ("PopVirus", tok.getLiteral());
+
+    Lexer mt("Pops");
+    tok = mt.makeStrToken();
+    ASSERT_EQ(TokenType::STR, tok.getTokenType());
+    ASSERT_EQ("Pops", tok.getLiteral());
 }
