@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <memory>
 #include "../include/rigel/Lexer.h"
 #define LENGTH(array) (sizeof(array) / sizeof(array[0]))
 using namespace rigel;
@@ -7,16 +8,17 @@ class TestLexer : public ::testing::Test
 {
 public:
     std::string expr = "1 + 2 * 3 / 4 PopVirus !true";
-    Lexer* expr_out;
+    std::unique_ptr<Lexer> expr_out;
 
     virtual void SetUp()
     {
-        expr_out = new Lexer(expr);
+        expr_out.reset(new Lexer(expr));
     }
 };
 
-TEST_F(TestLexer, lex){
-    std::cout << "Test Lex() " << std::endl;
+TEST_F(TestLexer, nextToken)
+{
+    std::cout << "Test nextToken() " << std::endl;
     Token test[] = {
         Token(TokenType::INT, "1"),
         Token(TokenType::PLUS, "+"),
@@ -38,42 +40,51 @@ TEST_F(TestLexer, lex){
     }
 }
 
-TEST_F(TestLexer, makeToken){
+TEST_F(TestLexer, makeToken)
+{
     std::cout << "Test makeToken() " << std::endl;
     Lexer mt("");
+    std::unique_ptr<Token> tok;
 
-    auto tok = mt.makeToken(TokenType::PLUS, "+");
-    ASSERT_EQ(TokenType::PLUS, tok.getTokenType());
-    ASSERT_EQ("+", tok.getLiteral());
+    tok = mt.makeToken(TokenType::PLUS, "+");
+    ASSERT_EQ(TokenType::PLUS, tok->getTokenType());
+    ASSERT_EQ("+", tok->getLiteral());
+
     tok = mt.makeToken(TokenType::MINUS, "-");
-    ASSERT_EQ(TokenType::MINUS, tok.getTokenType());
-    ASSERT_EQ("-", tok.getLiteral());
+    ASSERT_EQ(TokenType::MINUS, tok->getTokenType());
+    ASSERT_EQ("-", tok->getLiteral());
+
     tok = mt.makeToken(TokenType::ASTERISK, "*");
-    ASSERT_EQ(TokenType::ASTERISK, tok.getTokenType());
-    ASSERT_EQ("*", tok.getLiteral());
+    ASSERT_EQ(TokenType::ASTERISK, tok->getTokenType());
+    ASSERT_EQ("*", tok->getLiteral());
+
     tok = mt.makeToken(TokenType::SLASH, "/");
-    ASSERT_EQ(TokenType::SLASH, tok.getTokenType());
-    ASSERT_EQ("/", tok.getLiteral());
+    ASSERT_EQ(TokenType::SLASH, tok->getTokenType());
+    ASSERT_EQ("/", tok->getLiteral());
+
     tok = mt.makeToken(TokenType::BANG, "!");
-    ASSERT_EQ(TokenType::BANG, tok.getTokenType());
-    ASSERT_EQ("!", tok.getLiteral());
+    ASSERT_EQ(TokenType::BANG, tok->getTokenType());
+    ASSERT_EQ("!", tok->getLiteral());
 }
 
-TEST_F(TestLexer, makeIntToken){
+TEST_F(TestLexer, makeIntToken)
+{
     std::cout << "Test makeIntToken() " << std::endl;
+    std::unique_ptr<Token> tok;
 
     Lexer mi("122");
-    auto tok = mi.makeIntToken();
-    ASSERT_EQ(TokenType::INT, tok.getTokenType());
-    ASSERT_EQ("122", tok.getLiteral());
+    tok = mi.makeIntToken();
+    ASSERT_EQ(TokenType::INT, tok->getTokenType());
+    ASSERT_EQ("122", tok->getLiteral());
 
     Lexer mt("11");
     tok = mt.makeIntToken();
-    ASSERT_EQ(TokenType::INT, tok.getTokenType());
-    ASSERT_EQ("11", tok.getLiteral());
+    ASSERT_EQ(TokenType::INT, tok->getTokenType());
+    ASSERT_EQ("11", tok->getLiteral());
 }
 
-TEST_F(TestLexer, makeStrToken){
+TEST_F(TestLexer, makeStrToken)
+{
     std::cout << "Test makeStrToken() " << std::endl;
 
     Lexer mi("PopVirus");
@@ -86,3 +97,27 @@ TEST_F(TestLexer, makeStrToken){
     ASSERT_EQ(TokenType::STR, tok.getTokenType());
     ASSERT_EQ("Pops", tok.getLiteral());
 }
+
+// TEST_F(TestLexer, lex)
+// {
+//     std::cout << "Test lex() " << std::endl;
+//     Lexer mp("+");
+//     auto tok = mp.lex();
+//     ASSERT_EQ(TokenType::PLUS, tok.getLiteral());
+//     ASSERT_EQ("+", tok.getTokenType());
+
+//     Lexer mn("  -");
+//     tok = mn.lex();
+//     ASSERT_EQ(TokenType::MINUS, tok.getLiteral());
+//     ASSERT_EQ("-", tok.getTokenType());
+
+//     Lexer mnum(" 123");
+//     tok = mnum.lex();
+//     ASSERT_EQ(TokenType::INT, tok.getLiteral());
+//     ASSERT_EQ("123", tok.getTokenType());
+
+//     Lexer mstr(" pop virius");
+//     tok = mstr.lex();
+//     ASSERT_EQ(TokenType::STR, tok.getLiteral());
+//     ASSERT_EQ("pop", tok.getTokenType());
+// }

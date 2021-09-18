@@ -12,16 +12,15 @@ private:
     const char *bufferPtr;
     Token* cur;
     Token* peekCur;
-
 public:
     Lexer(llvm::StringRef code);
     void skipSpace();
     void peekChar();
-    Token makeIntToken();
+    std::unique_ptr<Token> makeIntToken();
     Token makeStrToken();
-    Token makeToken(TokenType type, std::string literal);
+    std::unique_ptr<Token> makeToken(TokenType type, std::string literal);
     Token nextToken();
-    void lex();
+    Token lex();
 
 };
 };

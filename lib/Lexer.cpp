@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include "../include/rigel/Lexer.h"
 using namespace rigel;
 
@@ -30,16 +31,15 @@ void Lexer::skipSpace()
     }
 }
 
-Token Lexer::makeIntToken()
+TOKEN_PTR Lexer::makeIntToken()
 {
     const char *end = bufferPtr + 1;
     while(isdigit(*end))
     {
         end++;
-
     }
     auto literal = llvm::StringRef(bufferPtr, end - bufferPtr);
-    return Token(TokenType::INT, literal);
+    return TOKEN_PTR(new Token(TokenType::INT, literal));
 }
 
 Token Lexer::makeStrToken()
@@ -53,9 +53,9 @@ Token Lexer::makeStrToken()
     return Token(TokenType::STR, literal);
 }
 
-Token Lexer::makeToken(TokenType type, std::string literal)
+std::unique_ptr<Token> Lexer::makeToken(TokenType type, std::string literal)
 {
-    return  Token(type, literal);
+    return std::unique_ptr<Token>(new Token(type, literal));
 }
 
 Token Lexer::nextToken()
@@ -63,8 +63,10 @@ Token Lexer::nextToken()
     return tok[count++];
 }
 
-void Lexer::lex()
+Token Lexer::lex()
 {
+    // Token token;
+    // std::auto_ptr<Token> token;
     while(bufferPtr)
     {
         skipSpace();
@@ -98,4 +100,5 @@ void Lexer::lex()
             break;
         }
     }
+    return Token(TokenType::BOOL, "ture");
 }

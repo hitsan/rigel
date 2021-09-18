@@ -1,7 +1,10 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 #include <string>
+#include <memory>
 #include "llvm/ADT/StringRef.h"
+
+#define std::unique_ptr<Token> TOKEN_PTR
 
 namespace rigel {
 
