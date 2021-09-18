@@ -44,7 +44,7 @@ TEST_F(TestLexer, makeToken)
 {
     std::cout << "Test makeToken() " << std::endl;
     Lexer mt("");
-    std::unique_ptr<Token> tok;
+    TOKEN_PTR tok;
 
     tok = mt.makeToken(TokenType::PLUS, "+");
     ASSERT_EQ(TokenType::PLUS, tok->getTokenType());
@@ -70,7 +70,7 @@ TEST_F(TestLexer, makeToken)
 TEST_F(TestLexer, makeIntToken)
 {
     std::cout << "Test makeIntToken() " << std::endl;
-    std::unique_ptr<Token> tok;
+    TOKEN_PTR tok;
 
     Lexer mi("122");
     tok = mi.makeIntToken();
@@ -86,16 +86,17 @@ TEST_F(TestLexer, makeIntToken)
 TEST_F(TestLexer, makeStrToken)
 {
     std::cout << "Test makeStrToken() " << std::endl;
+    TOKEN_PTR tok;
 
     Lexer mi("PopVirus");
-    auto tok = mi.makeStrToken();
-    ASSERT_EQ(TokenType::STR, tok.getTokenType());
-    ASSERT_EQ("PopVirus", tok.getLiteral());
+    tok = mi.makeStrToken();
+    ASSERT_EQ(TokenType::STR, tok->getTokenType());
+    ASSERT_EQ("PopVirus", tok->getLiteral());
 
     Lexer mt("Pops");
     tok = mt.makeStrToken();
-    ASSERT_EQ(TokenType::STR, tok.getTokenType());
-    ASSERT_EQ("Pops", tok.getLiteral());
+    ASSERT_EQ(TokenType::STR, tok->getTokenType());
+    ASSERT_EQ("Pops", tok->getLiteral());
 }
 
 // TEST_F(TestLexer, lex)

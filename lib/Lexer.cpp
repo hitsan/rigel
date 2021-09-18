@@ -42,7 +42,7 @@ TOKEN_PTR Lexer::makeIntToken()
     return TOKEN_PTR(new Token(TokenType::INT, literal));
 }
 
-Token Lexer::makeStrToken()
+TOKEN_PTR Lexer::makeStrToken()
 {
     const char *end = bufferPtr + 1;
     while(isalpha(*end))
@@ -50,12 +50,12 @@ Token Lexer::makeStrToken()
         end++;
     }
     auto literal = llvm::StringRef(bufferPtr, end - bufferPtr);
-    return Token(TokenType::STR, literal);
+    return TOKEN_PTR(new Token(TokenType::STR, literal));
 }
 
-std::unique_ptr<Token> Lexer::makeToken(TokenType type, std::string literal)
+TOKEN_PTR Lexer::makeToken(TokenType type, std::string literal)
 {
-    return std::unique_ptr<Token>(new Token(type, literal));
+    return TOKEN_PTR(new Token(type, literal));
 }
 
 Token Lexer::nextToken()
