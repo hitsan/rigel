@@ -15,7 +15,7 @@ private:
 public:
     Lexer(const llvm::StringRef &code);
     void skipSpace();
-    void peekChar();
+    char peekChar();
     TOKEN_PTR makeIntToken();
     TOKEN_PTR makeStrToken();
     TOKEN_PTR makeToken(TokenType type, const llvm::StringRef &literal);

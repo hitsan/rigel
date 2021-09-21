@@ -127,3 +127,10 @@ TEST(testLexer, makeStrToken)
     ASSERT_EQ(TokenType::STR, tok->getTokenType());
     ASSERT_EQ("p", tok->getLiteral());
 }
+
+TEST(testLexer, peekChar)
+{
+    Lexer mi("PopVirus");
+    auto c = mi.peekChar();
+    ASSERT_EQ('o', c);
+}

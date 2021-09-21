@@ -31,6 +31,12 @@ void Lexer::skipSpace()
     }
 }
 
+char Lexer::peekChar()
+{
+    return *(bufferPtr+1);
+}
+
+
 TOKEN_PTR Lexer::makeIntToken()
 {
     const char *end = bufferPtr + 1;
