@@ -67,11 +67,6 @@ TOKEN_PTR Lexer::makeToken(TokenType type, const llvm::StringRef &literal)
     return TOKEN_PTR(new Token(type, literal));
 }
 
-Token Lexer::nextToken()
-{
-    return tok[count++];
-}
-
 TOKEN_PTR Lexer::lex()
 {
     TOKEN_PTR token;

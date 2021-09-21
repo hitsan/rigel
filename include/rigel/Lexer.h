@@ -10,8 +10,8 @@ class Lexer
 private:
     const char *bufferStart;
     const char *bufferPtr;
-    Token* cur;
-    Token* peekCur;
+    TOKEN_PTR cur;
+    TOKEN_PTR peekCur;
 public:
     Lexer(const llvm::StringRef &code);
     void skipSpace();
@@ -19,7 +19,6 @@ public:
     TOKEN_PTR makeIntToken();
     TOKEN_PTR makeStrToken();
     TOKEN_PTR makeToken(TokenType type, const llvm::StringRef &literal);
-    Token nextToken();
     TOKEN_PTR lex();
 
 };
