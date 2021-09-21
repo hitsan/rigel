@@ -2,25 +2,18 @@
 #include "../include/rigel/Token.h"
 using namespace rigel;
 
-class TestToken : public ::testing::Test
-{
-public:
+TEST(make_token, check_input_output){
     std::vector<Token> data;
+    // make Token
+    data.push_back(Token(TokenType::INT, "0"));
+    data.push_back(Token(TokenType::STR, "string"));
+    data.push_back(Token(TokenType::PLUS, "+"));
+    data.push_back(Token(TokenType::MINUS, "-"));
+    data.push_back(Token(TokenType::ASTERISK, "*"));
+    data.push_back(Token(TokenType::SLASH, "/"));
+    data.push_back(Token(TokenType::BANG, "!"));
 
-    virtual void SetUp()
-    {
-        std::cout << "TestToken SetUp" << std::endl;
-        data.push_back(Token(TokenType::INT, "0"));
-        data.push_back(Token(TokenType::STR, "string"));
-        data.push_back(Token(TokenType::PLUS, "+"));
-        data.push_back(Token(TokenType::MINUS, "-"));
-        data.push_back(Token(TokenType::ASTERISK, "*"));
-        data.push_back(Token(TokenType::SLASH, "/"));
-        data.push_back(Token(TokenType::BANG, "!"));
-    }
-};
-
-TEST_F(TestToken, token){
+    // Test
     ASSERT_EQ(TokenType::INT, data[0].getTokenType());
     ASSERT_EQ("0", data[0].getLiteral());
     ASSERT_EQ(TokenType::STR, data[1].getTokenType());

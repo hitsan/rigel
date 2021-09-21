@@ -9,7 +9,6 @@ class Lexer
 {
 private:
     const char *bufferStart;
-    const char *bufferEnd;
     const char *bufferPtr;
     Token* cur;
     Token* peekCur;

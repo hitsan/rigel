@@ -18,7 +18,6 @@ public:
 
 TEST_F(TestLexer, nextToken)
 {
-    std::cout << "Test nextToken() " << std::endl;
     Token test[] = {
         Token(TokenType::INT, "1"),
         Token(TokenType::PLUS, "+"),
@@ -40,9 +39,31 @@ TEST_F(TestLexer, nextToken)
     }
 }
 
-TEST_F(TestLexer, makeToken)
+TEST_F(TestLexer, lex)
 {
-    std::cout << "Test makeToken() " << std::endl;
+    Token test[] = {
+        Token(TokenType::INT, "1"),
+        Token(TokenType::PLUS, "+"),
+        Token(TokenType::INT, "2"),
+        Token(TokenType::ASTERISK, "*"),
+        Token(TokenType::INT, "3"),
+        Token(TokenType::SLASH, "/"),
+        Token(TokenType::INT, "4"),
+        Token(TokenType::STR, "PopVirus"),
+        Token(TokenType::BANG, "!"),
+    };
+
+    int testLength = LENGTH(test);
+    for(int i = 0; i < testLength; i++)
+    {
+        TOKEN_PTR tok = expr_out->lex();
+        ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
+        ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
+    }
+}
+
+TEST(testLexer, makeToken)
+{
     Lexer mt("");
     TOKEN_PTR tok;
 
@@ -67,9 +88,8 @@ TEST_F(TestLexer, makeToken)
     ASSERT_EQ("!", tok->getLiteral());
 }
 
-TEST_F(TestLexer, makeIntToken)
+TEST(testLexer, makeIntToken)
 {
-    std::cout << "Test makeIntToken() " << std::endl;
     TOKEN_PTR tok;
 
     Lexer mi("122");
@@ -88,9 +108,8 @@ TEST_F(TestLexer, makeIntToken)
     ASSERT_EQ("44", tok->getLiteral());
 }
 
-TEST_F(TestLexer, makeStrToken)
+TEST(testLexer, makeStrToken)
 {
-    std::cout << "Test makeStrToken() " << std::endl;
     TOKEN_PTR tok;
 
     Lexer mi("PopVirus");
@@ -107,32 +126,4 @@ TEST_F(TestLexer, makeStrToken)
     tok = ms.makeStrToken();
     ASSERT_EQ(TokenType::STR, tok->getTokenType());
     ASSERT_EQ("p", tok->getLiteral());
-}
-
-TEST_F(TestLexer, lex)
-{
-    std::cout << "Test lex() " << std::endl;
-    std::string expr = "1 + 2 * 3 / 4 PopVirus !";
-    Lexer expr_out(expr);
-    Token test[] = {
-        Token(TokenType::INT, "1"),
-        Token(TokenType::PLUS, "+"),
-        Token(TokenType::INT, "2"),
-        Token(TokenType::ASTERISK, "*"),
-        Token(TokenType::INT, "3"),
-        Token(TokenType::SLASH, "/"),
-        Token(TokenType::INT, "4"),
-        Token(TokenType::STR, "PopVirus"),
-        Token(TokenType::BANG, "!"),
-        // Token(TokenType::BOOL, "ture")
-    };
-
-    int testLength = LENGTH(test);
-    for(int i = 0; i < testLength; i++)
-    {
-        TOKEN_PTR tok = expr_out.lex();
-        ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
-        ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
-        // ASSERT_EQ(test[i].getTokenType(), tok.getTokenType());
-    }
 }
