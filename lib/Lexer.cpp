@@ -3,21 +3,6 @@
 #include "../include/rigel/Lexer.h"
 using namespace rigel;
 
-#include <vector>
-Token tok[] = {
-    Token(TokenType::INT, "1"),
-    Token(TokenType::PLUS, "+"),
-    Token(TokenType::INT, "2"),
-    Token(TokenType::ASTERISK, "*"),
-    Token(TokenType::INT, "3"),
-    Token(TokenType::SLASH, "/"),
-    Token(TokenType::INT, "4"),
-    Token(TokenType::STR, "PopVirus"),
-    Token(TokenType::BANG, "!"),
-    Token(TokenType::BOOL, "ture")
-};
-int count = 0;
-
 Lexer::Lexer(const llvm::StringRef &code)
 {
     bufferStart = code.begin();
