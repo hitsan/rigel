@@ -81,6 +81,11 @@ TEST_F(TestLexer, makeIntToken)
     tok = mt.makeIntToken();
     ASSERT_EQ(TokenType::INT, tok->getTokenType());
     ASSERT_EQ("11", tok->getLiteral());
+
+    Lexer mk("44 22");
+    tok = mk.makeIntToken();
+    ASSERT_EQ(TokenType::INT, tok->getTokenType());
+    ASSERT_EQ("44", tok->getLiteral());
 }
 
 TEST_F(TestLexer, makeStrToken)
@@ -97,28 +102,37 @@ TEST_F(TestLexer, makeStrToken)
     tok = mt.makeStrToken();
     ASSERT_EQ(TokenType::STR, tok->getTokenType());
     ASSERT_EQ("Pops", tok->getLiteral());
+
+    Lexer ms("p ops");
+    tok = ms.makeStrToken();
+    ASSERT_EQ(TokenType::STR, tok->getTokenType());
+    ASSERT_EQ("p", tok->getLiteral());
 }
 
-// TEST_F(TestLexer, lex)
-// {
-//     std::cout << "Test lex() " << std::endl;
-//     Lexer mp("+");
-//     auto tok = mp.lex();
-//     ASSERT_EQ(TokenType::PLUS, tok.getLiteral());
-//     ASSERT_EQ("+", tok.getTokenType());
+TEST_F(TestLexer, lex)
+{
+    std::cout << "Test lex() " << std::endl;
+    std::string expr = "1 + 2 * 3 / 4 PopVirus !";
+    Lexer expr_out(expr);
+    Token test[] = {
+        Token(TokenType::INT, "1"),
+        Token(TokenType::PLUS, "+"),
+        Token(TokenType::INT, "2"),
+        Token(TokenType::ASTERISK, "*"),
+        Token(TokenType::INT, "3"),
+        Token(TokenType::SLASH, "/"),
+        Token(TokenType::INT, "4"),
+        Token(TokenType::STR, "PopVirus"),
+        Token(TokenType::BANG, "!"),
+        // Token(TokenType::BOOL, "ture")
+    };
 
-//     Lexer mn("  -");
-//     tok = mn.lex();
-//     ASSERT_EQ(TokenType::MINUS, tok.getLiteral());
-//     ASSERT_EQ("-", tok.getTokenType());
-
-//     Lexer mnum(" 123");
-//     tok = mnum.lex();
-//     ASSERT_EQ(TokenType::INT, tok.getLiteral());
-//     ASSERT_EQ("123", tok.getTokenType());
-
-//     Lexer mstr(" pop virius");
-//     tok = mstr.lex();
-//     ASSERT_EQ(TokenType::STR, tok.getLiteral());
-//     ASSERT_EQ("pop", tok.getTokenType());
-// }
+    int testLength = LENGTH(test);
+    for(int i = 0; i < testLength; i++)
+    {
+        TOKEN_PTR tok = expr_out.lex();
+        ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
+        ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
+        // ASSERT_EQ(test[i].getTokenType(), tok.getTokenType());
+    }
+}

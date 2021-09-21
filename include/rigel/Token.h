@@ -10,6 +10,7 @@ namespace rigel {
 
 enum TokenType
 {
+    ILLEGAL,
     INT,
     STR,
     PLUS,

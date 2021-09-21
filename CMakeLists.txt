@@ -4,6 +4,12 @@ project(rigel
     DESCRIPTION "programming language"
     LANGUAGES CXX
 )
+# set(CMAKE_CXX_COMPILER "/usr/local/bin/clang-12" CACHE STRING "clang++ compiler" FORCE)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "-O1 -Wall")
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+
 find_package(LLVM REQUIRED CONFIG)
 add_definitions(${LLVM_DEFINITIONS})
 

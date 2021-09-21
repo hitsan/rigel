@@ -18,7 +18,7 @@ Token tok[] = {
 };
 int count = 0;
 
-Lexer::Lexer(llvm::StringRef code)
+Lexer::Lexer(const llvm::StringRef &code)
 {
     bufferStart = code.begin();
     bufferPtr = bufferStart;
@@ -39,6 +39,7 @@ TOKEN_PTR Lexer::makeIntToken()
         end++;
     }
     auto literal = llvm::StringRef(bufferPtr, end - bufferPtr);
+    bufferPtr = end;
     return TOKEN_PTR(new Token(TokenType::INT, literal));
 }
 
@@ -50,11 +51,13 @@ TOKEN_PTR Lexer::makeStrToken()
         end++;
     }
     auto literal = llvm::StringRef(bufferPtr, end - bufferPtr);
+    bufferPtr = end;
     return TOKEN_PTR(new Token(TokenType::STR, literal));
 }
 
-TOKEN_PTR Lexer::makeToken(TokenType type, std::string literal)
+TOKEN_PTR Lexer::makeToken(TokenType type, const llvm::StringRef &literal)
 {
+    bufferPtr++;
     return TOKEN_PTR(new Token(type, literal));
 }
 
@@ -63,42 +66,39 @@ Token Lexer::nextToken()
     return tok[count++];
 }
 
-Token Lexer::lex()
+TOKEN_PTR Lexer::lex()
 {
-    // Token token;
-    // std::auto_ptr<Token> token;
-    while(bufferPtr)
-    {
-        skipSpace();
+    TOKEN_PTR token;
 
-        switch (*bufferPtr)
+    skipSpace();
+
+    switch (*bufferPtr)
+    {
+    case '+':
+        token = makeToken(TokenType::PLUS, "+");
+        break;
+    case '-':
+        token = makeToken(TokenType::MINUS, "-");
+        break;
+    case '*':
+        token = makeToken(TokenType::ASTERISK, "*");
+        break;
+    case '/':
+        token = makeToken(TokenType::SLASH, "/");
+        break;
+    case '!':
+        token = makeToken(TokenType::BANG, "!");
+        break;
+    default:
+        if(isdigit(*bufferPtr))
         {
-        case '+':
-            makeToken(TokenType::PLUS, "+");
-            break;
-        case '-':
-            makeToken(TokenType::MINUS, "-");
-            break;
-        case '*':
-            makeToken(TokenType::ASTERISK, "*");
-            break;
-        case '/':
-            makeToken(TokenType::SLASH, "/");
-            break;
-        case '!':
-            makeToken(TokenType::BANG, "!");
-            break;
-        default:
-            if(isdigit(*bufferPtr))
-            {
-                makeIntToken();
-            }
-            else if(isalpha(*bufferPtr))
-            {
-                makeStrToken();
-            }
-            break;
+            token = makeIntToken();
         }
+        else if(isalpha(*bufferPtr))
+        {
+            token = makeStrToken();
+        }
+        break;
     }
-    return Token(TokenType::BOOL, "ture");
+    return token;
 }
