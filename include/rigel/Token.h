@@ -3,7 +3,6 @@
 #include <string>
 #include <memory>
 #include "llvm/ADT/StringRef.h"
-
 #define TOKEN_PTR std::unique_ptr<Token>
 
 namespace rigel {

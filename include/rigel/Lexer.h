@@ -2,6 +2,7 @@
 #define LEXER_H
 #include "llvm/ADT/StringRef.h"
 #include "./Token.h"
+#define LEXER_PTR std::unique_ptr<Lexer>
 
 namespace rigel {
 
