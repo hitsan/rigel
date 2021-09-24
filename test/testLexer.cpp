@@ -7,7 +7,7 @@ using namespace rigel;
 class TestLexer : public ::testing::Test
 {
 public:
-    std::string expr = "1 + 2 * 3 / 4 PopVirus !";
+    llvm::StringRef expr = "1 + 2 * 3 / 4 PopVirus !";
     std::unique_ptr<Lexer> expr_out;
 
     virtual void SetUp()
