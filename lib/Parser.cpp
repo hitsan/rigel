@@ -3,15 +3,14 @@
 using namespace rigel;
 
 #include "llvm/Support/raw_ostream.h"
-Parser::Parser(LEXER_PTR lex)
+Parser::Parser(Lexer &lex) : lexer(lex)
 {
-    this->lexer = std::move(lex);
-    this->curToken = lexer->lex();
-    this->peekToken = lexer->lex();
+    this->curToken = lexer.lex();
+    this->peekToken = lexer.lex();
 }
 
 void Parser::nextToken()
 {
     curToken = std::move(peekToken);
-    peekToken = lexer->lex();
+    peekToken = lexer.lex();
 }

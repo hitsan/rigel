@@ -10,12 +10,12 @@ class TestGetToken : public ::testing::Test
 {
 protected:
     llvm::StringRef st = "1 + 2 * 3 / 4 PopVirus !";
-    LEXER_PTR lx = LEXER_PTR(new Lexer(st));
+    Lexer lx = Lexer(st);
     Parser* ps;
 
     virtual void SetUp()
     {
-        ps = new Parser(std::move(lx));
+        ps = new Parser(lx);
     }
 
     virtual void TearDown()

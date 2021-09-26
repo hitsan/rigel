@@ -12,6 +12,7 @@ TEST(make_token, check_input_output){
     data.push_back(Token(TokenType::ASTERISK, "*"));
     data.push_back(Token(TokenType::SLASH, "/"));
     data.push_back(Token(TokenType::BANG, "!"));
+    // data.push_back(Token(TokenType::EOI, ""));
 
     // Test
     ASSERT_EQ(TokenType::INT, data[0].getTokenType());
@@ -28,4 +29,5 @@ TEST(make_token, check_input_output){
     ASSERT_EQ("/", data[5].getLiteral());
     ASSERT_EQ(TokenType::BANG, data[6].getTokenType());
     ASSERT_EQ("!", data[6].getLiteral());
+    // ASSERT_EQ(TokenType::EOI, data[7].getTokenType());
 }

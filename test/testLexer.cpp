@@ -28,14 +28,15 @@ TEST_F(TestLexer, lex)
         Token(TokenType::INT, "4"),
         Token(TokenType::STR, "PopVirus"),
         Token(TokenType::BANG, "!"),
+        // Token(TokenType::EOI, ""),
     };
 
     int testLength = LENGTH(test);
     for(int i = 0; i < testLength; i++)
     {
         TOKEN_PTR tok = expr_out->lex();
-        ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
         ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
+        ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
     }
 }
 
