@@ -1,5 +1,5 @@
-#include <iostream>
 #include <memory>
+#include "llvm/Support/raw_ostream.h"
 #include "../include/rigel/Lexer.h"
 using namespace rigel;
 
@@ -54,8 +54,12 @@ TOKEN_PTR Lexer::makeToken(TokenType type, const llvm::StringRef &literal)
 
 TOKEN_PTR Lexer::lex()
 {
-    TOKEN_PTR token;
+    if(!(*bufferPtr))
+    {
+        return makeToken(TokenType::EOI, "");
+    }
 
+    TOKEN_PTR token;
     skipSpace();
 
     switch (*bufferPtr)

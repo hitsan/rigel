@@ -29,8 +29,8 @@ private:
 public:
     Token(TokenType type, llvm::StringRef literal)
     {
-    this->type = type;
-    this->literal = literal;
+        this->type = type;
+        this->literal = literal;
     };
     TokenType getTokenType() { return type; }
     llvm::StringRef getLiteral() { return literal; }

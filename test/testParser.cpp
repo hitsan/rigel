@@ -4,8 +4,6 @@
 #define LENGTH(array) (sizeof(array) / sizeof(array[0]))
 using namespace rigel;
 
-#include <iostream>
-
 class TestGetToken : public ::testing::Test
 {
 protected:
@@ -61,11 +59,12 @@ TEST_F(TestGetToken, getPeekToken)
     Token(TokenType::INT, "4"),
     Token(TokenType::STR, "PopVirus"),
     Token(TokenType::BANG, "!"),
+    Token(TokenType::EOI, ""),
     };
 
     int testLength = LENGTH(test);
     TOKEN_PTR tok;
-    for(int i = 0; i < (testLength-1); i++)
+    for(int i = 0; i < testLength; i++)
     {
         tok = ps->getPeekToken();
         ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());

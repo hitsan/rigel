@@ -28,7 +28,7 @@ TEST_F(TestLexer, lex)
         Token(TokenType::INT, "4"),
         Token(TokenType::STR, "PopVirus"),
         Token(TokenType::BANG, "!"),
-        // Token(TokenType::EOI, ""),
+        Token(TokenType::EOI, ""),
     };
 
     int testLength = LENGTH(test);
