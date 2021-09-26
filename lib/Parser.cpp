@@ -2,13 +2,16 @@
 #include "../include/rigel/Lexer.h"
 using namespace rigel;
 
-Parser::Parser(Lexer& lexer)
+#include "llvm/Support/raw_ostream.h"
+Parser::Parser(LEXER_PTR lex)
 {
-    this->curToken = lexer.lex();
-    this->peekToken = lexer.lex();
+    this->lexer = std::move(lex);
+    this->curToken = lexer->lex();
+    this->peekToken = lexer->lex();
 }
 
-TOKEN_PTR Parser::nextToken()
+void Parser::nextToken()
 {
-    return TOKEN_PTR(new Token(TokenType::INT, "literal"));
+    curToken = std::move(peekToken);
+    peekToken = lexer->lex();
 }

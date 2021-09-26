@@ -1,13 +1,75 @@
 #include <gtest/gtest.h>
 #include "../include/rigel/Lexer.h"
 #include "../include/rigel/Parser.h"
+#define LENGTH(array) (sizeof(array) / sizeof(array[0]))
 using namespace rigel;
 
-TEST(expression, nextToken)
+#include <iostream>
+
+class TestGetToken : public ::testing::Test
 {
-    Lexer lx("PopVirus");
-    Parser ps(lx);
-    auto tok = ps.nextToken();
-    ASSERT_EQ(TokenType::STR, tok->getTokenType());
-    ASSERT_EQ("PopVirus", tok->getLiteral());
+protected:
+    llvm::StringRef st = "1 + 2 * 3 / 4 PopVirus !";
+    LEXER_PTR lx = LEXER_PTR(new Lexer(st));
+    Parser* ps;
+
+    virtual void SetUp()
+    {
+        ps = new Parser(std::move(lx));
+    }
+
+    virtual void TearDown()
+    {
+        delete ps;
+    }
+};
+
+TEST_F(TestGetToken, getCurToken)
+{
+    Token test[] = {
+    Token(TokenType::INT, "1"),
+    Token(TokenType::PLUS, "+"),
+    Token(TokenType::INT, "2"),
+    Token(TokenType::ASTERISK, "*"),
+    Token(TokenType::INT, "3"),
+    Token(TokenType::SLASH, "/"),
+    Token(TokenType::INT, "4"),
+    Token(TokenType::STR, "PopVirus"),
+    Token(TokenType::BANG, "!")
+    };
+
+    int testLength = LENGTH(test);
+    TOKEN_PTR tok;
+    for(int i = 0; i < testLength; i++)
+    {
+        tok = ps->getCurToken();
+        ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
+        ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
+        ps->nextToken();
+    }
+}
+
+TEST_F(TestGetToken, getPeekToken)
+{
+    Token test[] = {
+    // Token(TokenType::INT, "1"),
+    Token(TokenType::PLUS, "+"),
+    Token(TokenType::INT, "2"),
+    Token(TokenType::ASTERISK, "*"),
+    Token(TokenType::INT, "3"),
+    Token(TokenType::SLASH, "/"),
+    Token(TokenType::INT, "4"),
+    Token(TokenType::STR, "PopVirus"),
+    Token(TokenType::BANG, "!"),
+    };
+
+    int testLength = LENGTH(test);
+    TOKEN_PTR tok;
+    for(int i = 0; i < (testLength-1); i++)
+    {
+        tok = ps->getPeekToken();
+        ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
+        ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
+        ps->nextToken();
+    }
 }

@@ -2,7 +2,7 @@
 #define LEXER_H
 #include "llvm/ADT/StringRef.h"
 #include "./Token.h"
-#define LEXER_PTR std::unique_ptr<Lexer>
+#include "llvm/Support/raw_ostream.h"
 
 namespace rigel {
 
@@ -21,7 +21,7 @@ public:
     TOKEN_PTR makeStrToken();
     TOKEN_PTR makeToken(TokenType type, const llvm::StringRef &literal);
     TOKEN_PTR lex();
-
+    void showBuffer() { llvm::outs() << Lexer::bufferStart << "\n"; }
 };
 };
 
