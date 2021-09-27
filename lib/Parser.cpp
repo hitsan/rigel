@@ -14,3 +14,8 @@ void Parser::nextToken()
     curToken = std::move(peekToken);
     peekToken = lexer.lex();
 }
+
+IntegerLiteral Parser::parse()
+{
+    return IntegerLiteral("1");
+}

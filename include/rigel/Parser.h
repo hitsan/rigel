@@ -2,6 +2,7 @@
 #define PARSER_H
 #include "Token.h"
 #include "Lexer.h"
+#include "Ast.h"
 namespace rigel {
 
 class Parser
@@ -15,6 +16,7 @@ public:
     void nextToken();
     TOKEN_PTR getCurToken() { return std::move(curToken); }
     TOKEN_PTR getPeekToken() { return std::move(peekToken); }
+    IntegerLiteral parse();
 };
 };
 #endif
