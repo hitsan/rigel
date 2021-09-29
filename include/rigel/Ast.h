@@ -2,6 +2,7 @@
 #define AST_H
 #include <string>
 #include "Token.h"
+#include "llvm/ADT/StringRef.h"
 namespace rigel {
 
 // template<typename T>
@@ -20,7 +21,7 @@ class IntegerLiteral
 protected:
     int value;
 public:
-    IntegerLiteral(std::string value) { this->value = std::stoi(value); };
+    IntegerLiteral(llvm::StringRef value) { this->value = std::stoi(value.str()); };
     int getLiteral() { return value; };
 };
 

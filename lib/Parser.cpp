@@ -17,5 +17,6 @@ void Parser::nextToken()
 
 IntegerLiteral Parser::parse()
 {
-    return IntegerLiteral("1");
+    auto token = getCurToken();
+    return IntegerLiteral(token->getLiteral());
 }
