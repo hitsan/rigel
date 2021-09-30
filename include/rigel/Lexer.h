@@ -1,7 +1,7 @@
 #ifndef LEXER_H
 #define LEXER_H
 #include "llvm/ADT/StringRef.h"
-#include "./Token.h"
+#include "Token/Token.h"
 #include "llvm/Support/raw_ostream.h"
 
 namespace rigel {

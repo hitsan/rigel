@@ -1,6 +1,6 @@
 #ifndef TOKEN_H
-#define TOKEN_H
-#include <unordered_map>  
+#define TOKEN_H 
+#include <string>
 #include "llvm/ADT/StringRef.h"
 #define TOKEN_PTR std::unique_ptr<Token>
 
@@ -22,8 +22,6 @@ enum TokenType
     ASSIGN,
     LET
 };
-
-// std::unordered_map<llvm::StringRef, TokenType> declaratorMap;
 
 class Token
 {

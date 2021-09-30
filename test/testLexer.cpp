@@ -7,7 +7,7 @@ using namespace rigel;
 class TestLexer : public ::testing::Test
 {
 public:
-    llvm::StringRef expr = "1 + 2 * 3 / 4 PopVirus !";
+    llvm::StringRef expr = "let test = 1 + 2 * 3 / 4 PopVirus !";
     std::unique_ptr<Lexer> expr_out;
 
     virtual void SetUp()
@@ -19,6 +19,9 @@ public:
 TEST_F(TestLexer, lex)
 {
     Token test[] = {
+        Token(TokenType::LET, "let"),
+        Token(TokenType::IDENT, "test"),
+        Token(TokenType::ASSIGN, "="),
         Token(TokenType::INT, "1"),
         Token(TokenType::PLUS, "+"),
         Token(TokenType::INT, "2"),

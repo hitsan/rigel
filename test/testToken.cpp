@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../include/rigel/Token.h"
+#include "../include/rigel/Token/Token.h"
 using namespace rigel;
 
 TEST(make_token, check_input_output){

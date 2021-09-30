@@ -79,6 +79,9 @@ TOKEN_PTR Lexer::lex()
     case '!':
         token = makeToken(TokenType::BANG, "!");
         break;
+    case '=':
+        token = makeToken(TokenType::ASSIGN, "=");
+        break;
     default:
         if(isdigit(*bufferPtr))
         {

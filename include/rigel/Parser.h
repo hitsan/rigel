@@ -1,6 +1,6 @@
 #ifndef PARSER_H
 #define PARSER_H
-#include "Token.h"
+#include "Token/Token.h"
 #include "Lexer.h"
 #include "Ast.h"
 namespace rigel {
