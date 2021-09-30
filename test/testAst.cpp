@@ -4,10 +4,10 @@
 #define LENGTH(array) (sizeof(array) / sizeof(array[0]))
 using namespace rigel;
 
-TEST(makeAST, integerLiteral)
-{
-    llvm::StringRef st = "1";
-    IntegerLiteral il(st.str());
+// TEST(makeAST, integerLiteral)
+// {
+//     llvm::StringRef st = "1";
+//     IntegerLiteral il(st.str());
 
-    ASSERT_EQ(1, il.getLiteral());
-}
+//     ASSERT_EQ(1, il.getLiteral());
+// }

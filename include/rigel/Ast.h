@@ -5,24 +5,41 @@
 #include "llvm/ADT/StringRef.h"
 namespace rigel {
 
-// template<typename T>
-// class Ast
-// {
-// protected:
-//     Token token;
-//     T value;
-// public:
-//     Ast(const std::string value) = 0;
-//     Ast<int>(std::string value) = 0;
-// };
+class Ast
+{
+protected:
+    TOKEN_PTR token;
+    Ast* lHand;
+    Ast* rHand;
+public:
+    TokenType getType() { return token->getTokenType(); };
+    llvm::StringRef getLiteral() { return token->getLiteral(); };
+    virtual void setLHand(Ast* lHand) = 0;
+    virtual void setRHand(Ast* rHand) = 0;
+    virtual Ast* getLHand(void) = 0;
+    virtual Ast* getRHand(void) = 0;
+};
 
-class IntegerLiteral
+class IntegerLiteral : public Ast
 {
 protected:
     int value;
 public:
     IntegerLiteral(llvm::StringRef value) { this->value = std::stoi(value.str()); };
-    int getLiteral() { return value; };
+};
+
+class InfixExpression : public Ast
+{
+protected:
+    TokenType oprator;
+    // Ast* lHand;
+    // Ast* rHand;
+public:
+    InfixExpression(TokenType oprator) { this->oprator = oprator; };
+    void setLHand(Ast* lHand) override { this->lHand = lHand; };
+    void setRHand(Ast* rHand) override { this->rHand = rHand; };
+    Ast* getLHand(void) override { return lHand; };
+    Ast* getRHand(void) override { return rHand; };
 };
 
 };

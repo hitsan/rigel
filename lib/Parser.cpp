@@ -15,8 +15,8 @@ void Parser::nextToken()
     peekToken = lexer.lex();
 }
 
-IntegerLiteral Parser::parse()
-{
-    auto token = getCurToken();
-    return IntegerLiteral(token->getLiteral());
-}
+// Ast* Parser::parse()
+// {
+//     auto token = getCurToken();
+//     return new IntegerLiteral(token->getLiteral());
+// }
