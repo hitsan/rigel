@@ -15,6 +15,8 @@ TEST(make_token, check_input_output){
     data.push_back(Token(TokenType::EOI, ""));
     data.push_back(Token(TokenType::LET, "let"));
     data.push_back(Token(TokenType::ASSIGN, "="));
+    data.push_back(Token(TokenType::IDENT, "x"));
+    data.push_back(Token(TokenType::IDENT, "value"));
 
     // Test
     ASSERT_EQ(TokenType::INT, data[0].getTokenType());
@@ -36,4 +38,8 @@ TEST(make_token, check_input_output){
     ASSERT_EQ("let", data[8].getLiteral());
     ASSERT_EQ(TokenType::ASSIGN, data[9].getTokenType());
     ASSERT_EQ("=", data[9].getLiteral());
+    ASSERT_EQ(TokenType::IDENT, data[10].getTokenType());
+    ASSERT_EQ("x", data[10].getLiteral());
+    ASSERT_EQ(TokenType::IDENT, data[11].getTokenType());
+    ASSERT_EQ("value", data[11].getLiteral());
 }

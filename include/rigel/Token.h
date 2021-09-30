@@ -10,6 +10,7 @@ enum TokenType
 {
     EOI,
     ILLEGAL,
+    IDENT,
     INT,
     STR,
     PLUS,
