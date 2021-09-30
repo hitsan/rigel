@@ -18,7 +18,8 @@ enum TokenType
     ASTERISK,
     SLASH,
     BOOL,
-    BANG
+    BANG,
+    LET
 };
 
 class Token
