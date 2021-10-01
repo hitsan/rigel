@@ -26,10 +26,7 @@ char Lexer::peekChar()
 TOKEN_PTR Lexer::makeIntToken()
 {
     const char *end = bufferPtr + 1;
-    while(isdigit(*end))
-    {
-        end++;
-    }
+    while(isdigit(*end)) { end++; }
     auto literal = llvm::StringRef(bufferPtr, end - bufferPtr);
     bufferPtr = end;
     return TOKEN_PTR(new Token(TokenType::INT, literal));
@@ -38,11 +35,7 @@ TOKEN_PTR Lexer::makeIntToken()
 TOKEN_PTR Lexer::makeStrToken()
 {
     const char *end = bufferPtr + 1;
-    while((*end) != '"')
-    {
-        end++;
-
-    }
+    while((*end) != '"') { end++; }
     auto literal = llvm::StringRef(bufferPtr + 1, end - bufferPtr - 1);
     bufferPtr = end + 1;
     return TOKEN_PTR(new Token(TokenType::STR, literal));
