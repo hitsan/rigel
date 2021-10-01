@@ -19,6 +19,7 @@ public:
     char peekChar();
     TOKEN_PTR makeIntToken();
     TOKEN_PTR makeStrToken();
+    TOKEN_PTR makeKeyToken();
     TOKEN_PTR makeToken(TokenType type, const llvm::StringRef &literal);
     TOKEN_PTR lex();
     void showBuffer() { llvm::outs() << Lexer::bufferStart << "\n"; }

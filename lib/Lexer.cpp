@@ -1,6 +1,7 @@
 #include <memory>
 #include "llvm/Support/raw_ostream.h"
 #include "../include/rigel/Lexer.h"
+#include "../include/rigel/Token/Declarator.h"
 using namespace rigel;
 
 Lexer::Lexer(const llvm::StringRef &code)
@@ -37,13 +38,27 @@ TOKEN_PTR Lexer::makeIntToken()
 TOKEN_PTR Lexer::makeStrToken()
 {
     const char *end = bufferPtr + 1;
+    while((*end) != '"')
+    {
+        end++;
+
+    }
+    auto literal = llvm::StringRef(bufferPtr + 1, end - bufferPtr - 1);
+    bufferPtr = end + 1;
+    return TOKEN_PTR(new Token(TokenType::STR, literal));
+}
+
+TOKEN_PTR Lexer::makeKeyToken()
+{
+    const char *end = bufferPtr + 1;
     while(isalpha(*end))
     {
         end++;
     }
     auto literal = llvm::StringRef(bufferPtr, end - bufferPtr);
+    auto type = findTokenType(literal);
     bufferPtr = end;
-    return TOKEN_PTR(new Token(TokenType::STR, literal));
+    return TOKEN_PTR(new Token(type, literal));
 }
 
 TOKEN_PTR Lexer::makeToken(TokenType type, const llvm::StringRef &literal)
@@ -82,6 +97,9 @@ TOKEN_PTR Lexer::lex()
     case '=':
         token = makeToken(TokenType::ASSIGN, "=");
         break;
+    case '\"':
+        token = makeStrToken();
+        break;
     default:
         if(isdigit(*bufferPtr))
         {
@@ -89,7 +107,7 @@ TOKEN_PTR Lexer::lex()
         }
         else if(isalpha(*bufferPtr))
         {
-            token = makeStrToken();
+            token = makeKeyToken();
         }
         break;
     }

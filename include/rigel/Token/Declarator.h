@@ -2,21 +2,21 @@
 #define DECLARATOR_H
 #include <map> 
 #include "llvm/ADT/StringRef.h"
-#include "Token/Token.h"
+#include "./Token.h"
 
 namespace rigel {
 
-class Declarator
+static std::map<llvm::StringRef, TokenType> declaratorMap
 {
-private:
-    std::map<llvm::StringRef, TokenType> declaratorMap;
-public:
-    Declarator();
+    { "let", TokenType::LET }
 };
 
-Declarator::Declarator()
+static TokenType findTokenType(llvm::StringRef key)
 {
-    declaratorMap["let"] = TokenType::LET;
+    if(declaratorMap.find(key) == declaratorMap.end()) {
+        return TokenType::IDENT;
+    }
+    return declaratorMap[key];
 }
 
 };

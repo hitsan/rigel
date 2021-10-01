@@ -6,7 +6,7 @@ TEST(make_token, check_input_output){
     std::vector<Token> data;
     // make Token
     data.push_back(Token(TokenType::INT, "0"));
-    data.push_back(Token(TokenType::STR, "string"));
+    data.push_back(Token(TokenType::STR, "\"string\""));
     data.push_back(Token(TokenType::PLUS, "+"));
     data.push_back(Token(TokenType::MINUS, "-"));
     data.push_back(Token(TokenType::ASTERISK, "*"));
@@ -22,7 +22,7 @@ TEST(make_token, check_input_output){
     ASSERT_EQ(TokenType::INT, data[0].getTokenType());
     ASSERT_EQ("0", data[0].getLiteral());
     ASSERT_EQ(TokenType::STR, data[1].getTokenType());
-    ASSERT_EQ("string", data[1].getLiteral());
+    ASSERT_EQ("\"string\"", data[1].getLiteral());
     ASSERT_EQ(TokenType::PLUS, data[2].getTokenType());
     ASSERT_EQ("+", data[2].getLiteral());
     ASSERT_EQ(TokenType::MINUS, data[3].getTokenType());
