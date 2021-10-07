@@ -77,67 +77,6 @@ TEST_F(TestStringLexer, lex)
     }
 }
 
-TEST(testLexer, makeToken)
-{
-    Lexer mt("");
-    TOKEN_PTR tok;
-
-    tok = mt.makeToken(TokenType::PLUS, "+");
-    ASSERT_EQ(TokenType::PLUS, tok->getTokenType());
-    ASSERT_EQ("+", tok->getLiteral());
-
-    tok = mt.makeToken(TokenType::MINUS, "-");
-    ASSERT_EQ(TokenType::MINUS, tok->getTokenType());
-    ASSERT_EQ("-", tok->getLiteral());
-
-    tok = mt.makeToken(TokenType::ASTERISK, "*");
-    ASSERT_EQ(TokenType::ASTERISK, tok->getTokenType());
-    ASSERT_EQ("*", tok->getLiteral());
-
-    tok = mt.makeToken(TokenType::SLASH, "/");
-    ASSERT_EQ(TokenType::SLASH, tok->getTokenType());
-    ASSERT_EQ("/", tok->getLiteral());
-
-    tok = mt.makeToken(TokenType::BANG, "!");
-    ASSERT_EQ(TokenType::BANG, tok->getTokenType());
-    ASSERT_EQ("!", tok->getLiteral());
-}
-
-TEST(testLexer, makeIntToken)
-{
-    TOKEN_PTR tok;
-
-    Lexer mi("122");
-    tok = mi.makeIntToken();
-    ASSERT_EQ(TokenType::INT, tok->getTokenType());
-    ASSERT_EQ("122", tok->getLiteral());
-
-    Lexer mt("11");
-    tok = mt.makeIntToken();
-    ASSERT_EQ(TokenType::INT, tok->getTokenType());
-    ASSERT_EQ("11", tok->getLiteral());
-
-    Lexer mk("44 22");
-    tok = mk.makeIntToken();
-    ASSERT_EQ(TokenType::INT, tok->getTokenType());
-    ASSERT_EQ("44", tok->getLiteral());
-}
-
-TEST(testLexer, makeStrToken)
-{
-    TOKEN_PTR tok;
-
-    Lexer mi(R"("PopVirus")");
-    tok = mi.makeStrToken();
-    ASSERT_EQ(TokenType::STR, tok->getTokenType());
-    ASSERT_EQ("PopVirus", tok->getLiteral());
-
-    Lexer ms("\"p\" \"ops\"");
-    tok = ms.makeStrToken();
-    ASSERT_EQ(TokenType::STR, tok->getTokenType());
-    ASSERT_EQ("p", tok->getLiteral());
-}
-
 TEST(testLexer, peekChar)
 {
     Lexer mi("PopVirus");

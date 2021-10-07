@@ -14,9 +14,3 @@ void Parser::nextToken()
     curToken = std::move(peekToken);
     peekToken = lexer.lex();
 }
-
-// Ast* Parser::parse()
-// {
-//     auto token = getCurToken();
-//     return new IntegerLiteral(token->getLiteral());
-// }
