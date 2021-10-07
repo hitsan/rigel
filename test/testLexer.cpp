@@ -4,20 +4,11 @@
 #define LENGTH(array) (sizeof(array) / sizeof(array[0]))
 using namespace rigel;
 
-class TestIntLexer : public ::testing::Test
+TEST(TestIntLexer, lex)
 {
-public:
+    // preparation data
     llvm::StringRef expr = "let test = 1 + 2 * 3 / 4";
-    std::unique_ptr<Lexer> expr_out;
-
-    virtual void SetUp()
-    {
-        expr_out.reset(new Lexer(expr));
-    }
-};
-
-TEST_F(TestIntLexer, lex)
-{
+    Lexer lx = Lexer(expr);
     Token test[] = {
         Token(TokenType::LET, "let"),
         Token(TokenType::IDENT, "test"),
@@ -35,26 +26,16 @@ TEST_F(TestIntLexer, lex)
     int testLength = LENGTH(test);
     for(int i = 0; i < testLength; i++)
     {
-        TOKEN_PTR tok = expr_out->lex();
+        TOKEN_PTR tok = lx.lex();
         ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
         ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
     }
 }
 
-class TestStringLexer : public ::testing::Test
+TEST(TestStringLexer, lex)
 {
-public:
     llvm::StringRef expr = R"(let test = "1 " + "" + "Pop"  +  "Virus")";
-    std::unique_ptr<Lexer> expr_out;
-
-    virtual void SetUp()
-    {
-        expr_out.reset(new Lexer(expr));
-    }
-};
-
-TEST_F(TestStringLexer, lex)
-{
+    Lexer lx = Lexer(expr);
     Token test[] = {
         Token(TokenType::LET, "let"),
         Token(TokenType::IDENT, "test"),
@@ -71,7 +52,7 @@ TEST_F(TestStringLexer, lex)
     int testLength = LENGTH(test);
     for(int i = 0; i < testLength; i++)
     {
-        TOKEN_PTR tok = expr_out->lex();
+        TOKEN_PTR tok = lx.lex();
         ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
         ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
     }
