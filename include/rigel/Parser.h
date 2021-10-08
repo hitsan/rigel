@@ -17,6 +17,7 @@ public:
     TOKEN_PTR getCurToken() { return std::move(curToken); }
     TOKEN_PTR getPeekToken() { return std::move(peekToken); }
     IntLiteral parse();
+    StrLiteral strParse();
 };
 };
 #endif

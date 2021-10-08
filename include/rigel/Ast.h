@@ -15,6 +15,15 @@ public:
     int getLiteral() { return this->literal; };
 };
 
+class StrLiteral
+{
+private:
+    std::string literal;
+public:
+    StrLiteral(std::string literal) { this->literal = literal; };
+    std::string getLiteral() { return this->literal; };
+};
+
 };
 
 #endif

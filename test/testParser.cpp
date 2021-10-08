@@ -124,7 +124,19 @@ TEST(TestParseToken, singleIntNum)
     Parser ps = Parser(lx);
 
     IntLiteral test = IntLiteral(1);
-    
+
     auto exp = ps.parse();
+    ASSERT_EQ(test.getLiteral(), exp.getLiteral());
+}
+
+TEST(TestParseToken, singleString)
+{
+    llvm::StringRef st = R"("str")";
+    Lexer lx = Lexer(st);
+    Parser ps = Parser(lx);
+
+    StrLiteral test = StrLiteral("str");
+
+    auto exp = ps.strParse();
     ASSERT_EQ(test.getLiteral(), exp.getLiteral());
 }

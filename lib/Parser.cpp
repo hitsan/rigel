@@ -22,3 +22,10 @@ IntLiteral Parser::parse()
     int num = stoi(strNum);
     return IntLiteral(num);
 }
+
+StrLiteral Parser::strParse()
+{
+    TOKEN_PTR tok = getCurToken();
+    std::string str = tok->getLiteral();
+    return StrLiteral(str);
+}
