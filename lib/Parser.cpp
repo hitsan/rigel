@@ -14,3 +14,11 @@ void Parser::nextToken()
     curToken = std::move(peekToken);
     peekToken = lexer.lex();
 }
+
+IntLiteral Parser::parse()
+{
+    TOKEN_PTR tok = getCurToken();
+    std::string strNum = tok->getLiteral();
+    int num = stoi(strNum);
+    return IntLiteral(num);
+}

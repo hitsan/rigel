@@ -116,3 +116,15 @@ TEST_F(TestGetStrToken, getPeekToken)
         ps->nextToken();
     }
 }
+
+TEST(TestParseToken, singleIntNum)
+{
+    llvm::StringRef st = R"(1)";
+    Lexer lx = Lexer(st);
+    Parser ps = Parser(lx);
+
+    IntLiteral test = IntLiteral(1);
+    
+    auto exp = ps.parse();
+    ASSERT_EQ(test.getLiteral(), exp.getLiteral());
+}

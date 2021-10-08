@@ -36,7 +36,7 @@ TOKEN_PTR Lexer::makeStrToken()
 {
     const char *end = bufferPtr + 1;
     while((*end) != '"') {
-        if(peekChar() == '\0'){
+        if(peekChar() == '\0') {
             return TOKEN_PTR(new Token(TokenType::ILLEGAL, ""));
         }
         end++;

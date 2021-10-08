@@ -35,7 +35,7 @@ public:
         this->literal = literal;
     };
     TokenType getTokenType() { return type; }
-    llvm::StringRef getLiteral() { return literal; }
+    std::string getLiteral() { return literal.str(); }
 };
 
 };

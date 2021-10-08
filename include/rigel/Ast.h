@@ -6,6 +6,14 @@
 #define AST_PTR std::unique_ptr<Ast>
 namespace rigel {
 
+class IntLiteral
+{
+private:
+    int literal;
+public:
+    IntLiteral(int literal) { this->literal = literal; };
+    int getLiteral() { return this->literal; };
+};
 
 };
 
