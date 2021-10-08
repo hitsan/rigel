@@ -64,3 +64,25 @@ TEST(testLexer, peekChar)
     auto c = mi.peekChar();
     ASSERT_EQ('o', c);
 }
+
+TEST(Illigal_String,lex)
+{
+    llvm::StringRef expr = R"(let test = "1  +  "Virus")";
+    Lexer lx = Lexer(expr);
+    Token test[] = {
+        Token(TokenType::LET, "let"),
+        Token(TokenType::IDENT, "test"),
+        Token(TokenType::ASSIGN, "="),
+        Token(TokenType::STR, "1  +  "),
+        Token(TokenType::IDENT, "Virus"),
+        Token(TokenType::ILLEGAL,""),
+    };
+
+    int testLength = LENGTH(test);
+    for(int i = 0; i < testLength; i++)
+    {
+        TOKEN_PTR tok = lx.lex();
+        ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
+        ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
+    }
+}

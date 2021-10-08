@@ -35,7 +35,12 @@ TOKEN_PTR Lexer::makeIntToken()
 TOKEN_PTR Lexer::makeStrToken()
 {
     const char *end = bufferPtr + 1;
-    while((*end) != '"') { end++; }
+    while((*end) != '"') {
+        if(peekChar() == '\0'){
+            return TOKEN_PTR(new Token(TokenType::ILLEGAL, ""));
+        }
+        end++;
+    }
     auto literal = llvm::StringRef(bufferPtr + 1, end - bufferPtr - 1);
     bufferPtr = end + 1;
     return TOKEN_PTR(new Token(TokenType::STR, literal));
