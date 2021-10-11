@@ -32,7 +32,12 @@ StrLiteral Parser::strParse()
 
 LetStatement Parser::letParse()
 {
-    return LetStatement();
+    nextToken();
+    Identifier ident = identParse();
+    nextToken();
+    nextToken();
+    IntLiteral integer = parse();
+    return LetStatement(ident, integer);
 }
 
 Identifier Parser::identParse()

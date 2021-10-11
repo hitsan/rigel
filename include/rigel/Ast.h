@@ -24,12 +24,6 @@ public:
     std::string getLiteral() { return this->literal; };
 };
 
-class LetStatement
-{
-public:
-    LetStatement() {};
-};
-
 class Identifier
 {
 private:
@@ -37,6 +31,17 @@ private:
 public:
     Identifier(std::string name) { this->name = name; };
     std::string getName() { return this->name; };
+};
+
+class LetStatement
+{
+private:
+    Identifier ident;
+    IntLiteral integer;
+public:
+    LetStatement(Identifier ident, IntLiteral integer) : ident(ident), integer(integer) {};
+    std::string getName() { return ident.getName(); };
+    int getValue() { return integer.getLiteral(); }
 };
 
 };
