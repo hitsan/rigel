@@ -11,7 +11,7 @@ class IntLiteral
 private:
     int literal;
 public:
-    IntLiteral(int literal) { this->literal = literal; };
+    IntLiteral(int literal) : literal(literal) {};
     int getLiteral() { return this->literal; };
 };
 
@@ -20,7 +20,7 @@ class StrLiteral
 private:
     std::string literal;
 public:
-    StrLiteral(std::string literal) { this->literal = literal; };
+    StrLiteral(std::string literal) : literal(literal) {};
     std::string getLiteral() { return this->literal; };
 };
 
@@ -29,7 +29,7 @@ class Identifier
 private:
     std::string name;
 public:
-    Identifier(std::string name) { this->name = name; };
+    Identifier(std::string name) : name(name) {};
     std::string getName() { return this->name; };
 };
 
