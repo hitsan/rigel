@@ -34,3 +34,10 @@ LetStatement Parser::letParse()
 {
     return LetStatement();
 }
+
+Identifier Parser::identParse()
+{
+    TOKEN_PTR tok = getCurToken();
+    std::string str = tok->getLiteral();
+    return Identifier(str);
+}

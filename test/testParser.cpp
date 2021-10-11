@@ -142,7 +142,7 @@ TEST(TestParseToken, singleString)
     ASSERT_EQ(test.getLiteral(), exp.getLiteral());
 }
 
-TEST(TestParseToken, letState a)
+TEST(TestParseToken, letState)
 {
     llvm::StringRef st = "let";
     Lexer lx = Lexer(st);
@@ -153,3 +153,27 @@ TEST(TestParseToken, letState a)
     auto exp = ps.letParse();
     ASSERT_EQ(typeid(test), typeid(exp));
 }
+
+TEST(TestParseToken, identifier)
+{
+    llvm::StringRef st = "foo";
+    Lexer lx = Lexer(st);
+    Parser ps = Parser(lx);
+
+    Identifier test = Identifier("foo");
+
+    auto exp = ps.identParse();
+    ASSERT_EQ(test.getName(), exp.getName());
+}
+
+// TEST(TestParseToken, letState)
+// {
+//     llvm::StringRef st = "let foo = 1";
+//     Lexer lx = Lexer(st);
+//     Parser ps = Parser(lx);
+
+//     LetStatement test = LetStatement();
+
+//     auto exp = ps.letParse();
+//     ASSERT_EQ(typeid(test), typeid(exp));
+// }

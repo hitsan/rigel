@@ -30,6 +30,15 @@ public:
     LetStatement() {};
 };
 
+class Identifier
+{
+private:
+    std::string name;
+public:
+    Identifier(std::string name) { this->name = name; };
+    std::string getName() { return this->name; };
+};
+
 };
 
 #endif

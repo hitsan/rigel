@@ -19,6 +19,7 @@ public:
     IntLiteral parse();
     StrLiteral strParse();
     LetStatement letParse();
+    Identifier identParse();
 };
 };
 #endif
