@@ -29,3 +29,8 @@ StrLiteral Parser::strParse()
     std::string str = tok->getLiteral();
     return StrLiteral(str);
 }
+
+LetStatement Parser::letParse()
+{
+    return LetStatement();
+}

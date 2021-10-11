@@ -18,6 +18,7 @@ public:
     TOKEN_PTR getPeekToken() { return std::move(peekToken); }
     IntLiteral parse();
     StrLiteral strParse();
+    LetStatement letParse();
 };
 };
 #endif

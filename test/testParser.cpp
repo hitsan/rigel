@@ -1,3 +1,4 @@
+#include <typeinfo>
 #include <gtest/gtest.h>
 #include "../include/rigel/Lexer.h"
 #include "../include/rigel/Parser.h"
@@ -139,4 +140,16 @@ TEST(TestParseToken, singleString)
 
     auto exp = ps.strParse();
     ASSERT_EQ(test.getLiteral(), exp.getLiteral());
+}
+
+TEST(TestParseToken, letState a)
+{
+    llvm::StringRef st = "let";
+    Lexer lx = Lexer(st);
+    Parser ps = Parser(lx);
+
+    LetStatement test = LetStatement();
+
+    auto exp = ps.letParse();
+    ASSERT_EQ(typeid(test), typeid(exp));
 }

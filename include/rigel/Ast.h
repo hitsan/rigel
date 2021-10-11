@@ -24,6 +24,12 @@ public:
     std::string getLiteral() { return this->literal; };
 };
 
+class LetStatement
+{
+public:
+    LetStatement() {};
+};
+
 };
 
 #endif
