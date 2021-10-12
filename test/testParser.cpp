@@ -169,3 +169,26 @@ TEST(TestParseToken, parse_letState)
     ASSERT_EQ(test.getName(), exp.getName());
     ASSERT_EQ(test.getValue(), exp.getValue());
 }
+
+TEST(TestParseToken, peek_type)
+{
+    llvm::StringRef st = "let foo = 1";
+    Lexer lx = Lexer(st);
+    Parser ps = Parser(lx);
+
+    EXPECT_EQ(TokenType::IDENT, ps.getPeekType());
+    ps.nextToken();
+    EXPECT_EQ(TokenType::ASSIGN, ps.getPeekType());
+    ps.nextToken();
+    EXPECT_EQ(TokenType::INT, ps.getPeekType());
+}
+
+// TEST(TestParseToken, no_equal_letState)
+// {
+//     llvm::StringRef st = "let = 1";
+//     Lexer lx = Lexer(st);
+//     Parser ps = Parser(lx);
+
+//     auto exp = ps.letParse();
+//     EXPECT_EQ(NULL, exp.getName());
+// }
