@@ -37,6 +37,10 @@ LetStatement Parser::letParse()
         return LetStatement(ident, 0);
     }
     nextToken();
+    if(getPeekType() != TokenType::ASSIGN) {
+        Identifier ident("");
+        return LetStatement(ident, 0);
+    }
     Identifier ident = identParse();
     nextToken();
     nextToken();

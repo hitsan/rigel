@@ -192,3 +192,14 @@ TEST(TestParseToken, no_equal_letState)
     auto exp = ps.letParse();
     EXPECT_EQ("", exp.getName());
 }
+
+
+TEST(TestParseToken, no_assign_letState)
+{
+    llvm::StringRef st = "let foo  1";
+    Lexer lx = Lexer(st);
+    Parser ps = Parser(lx);
+
+    auto exp = ps.letParse();
+    EXPECT_EQ("", exp.getName());
+}
