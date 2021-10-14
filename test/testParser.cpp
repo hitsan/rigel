@@ -127,7 +127,7 @@ TEST(TestParseToken, singleIntNum)
     IntLiteral test = IntLiteral(1);
 
     auto exp = ps.parse();
-    ASSERT_EQ(test.getLiteral(), exp.getLiteral());
+    ASSERT_EQ(test.getValue(), exp.getValue());
 }
 
 TEST(TestParseToken, singleString)
@@ -139,7 +139,7 @@ TEST(TestParseToken, singleString)
     StrLiteral test = StrLiteral("str");
 
     auto exp = ps.strParse();
-    ASSERT_EQ(test.getLiteral(), exp.getLiteral());
+    ASSERT_EQ(test.getValue(), exp.getValue());
 }
 
 TEST(TestParseToken, identifier)
@@ -203,3 +203,23 @@ TEST(TestParseToken, no_assign_letState)
     auto exp = ps.letParse();
     EXPECT_EQ("", exp.getName());
 }
+
+// TEST(TestParseExpression, binary_expression)
+// {
+//     llvm::StringRef st = "1 + 2";
+//     Lexer lx = Lexer(st);
+//     Parser ps = Parser(lx);
+
+//     IntLiteral one = IntLiteral(1);
+//     IntLiteral twice = IntLiteral(2);
+//     PlusExpression plus = PlusExpression(NodeType::PLUS, one, two);
+
+//     auto exp = ps.plusParse();
+//     EXPECT_EQ(plus.getType(), exp.getType());
+//     auto plusLHand = plus.getLHand();
+//     auto expLHand = exp.getLHand();
+//     EXPECT_EQ(plusLHand.getLiteral(), expLHand.getLiteral());
+//     auto plusRHand = plus.getRHand();
+//     auto expRHand = exp.getRHand();
+//     EXPECT_EQ(plusRHand.getLiteral(), expRHand.getLiteral());
+// }

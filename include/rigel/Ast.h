@@ -9,19 +9,19 @@ namespace rigel {
 class IntLiteral
 {
 private:
-    int literal;
+    int value;
 public:
-    IntLiteral(int literal) : literal(literal) {};
-    int getLiteral() { return this->literal; };
+    IntLiteral(int value) : value(value) {};
+    int getValue() { return this->value; };
 };
 
 class StrLiteral
 {
 private:
-    std::string literal;
+    std::string value;
 public:
-    StrLiteral(std::string literal) : literal(literal) {};
-    std::string getLiteral() { return this->literal; };
+    StrLiteral(std::string value) : value(value) {};
+    std::string getValue() { return this->value; };
 };
 
 class Identifier
@@ -41,7 +41,7 @@ private:
 public:
     LetStatement(Identifier ident, IntLiteral integer) : ident(ident), integer(integer) {};
     std::string getName() { return ident.getName(); };
-    int getValue() { return integer.getLiteral(); }
+    int getValue() { return integer.getValue(); }
 };
 
 };
