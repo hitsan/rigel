@@ -32,6 +32,10 @@ StrLiteral Parser::strParse()
 
 LetStatement Parser::letParse()
 {
+    if(getPeekType() != TokenType::IDENT) {
+        Identifier ident("");
+        return LetStatement(ident, 0);
+    }
     nextToken();
     Identifier ident = identParse();
     nextToken();

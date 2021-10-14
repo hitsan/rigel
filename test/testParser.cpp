@@ -183,12 +183,12 @@ TEST(TestParseToken, peek_type)
     EXPECT_EQ(TokenType::INT, ps.getPeekType());
 }
 
-// TEST(TestParseToken, no_equal_letState)
-// {
-//     llvm::StringRef st = "let = 1";
-//     Lexer lx = Lexer(st);
-//     Parser ps = Parser(lx);
+TEST(TestParseToken, no_equal_letState)
+{
+    llvm::StringRef st = "let = 1";
+    Lexer lx = Lexer(st);
+    Parser ps = Parser(lx);
 
-//     auto exp = ps.letParse();
-//     EXPECT_EQ(NULL, exp.getName());
-// }
+    auto exp = ps.letParse();
+    EXPECT_EQ("", exp.getName());
+}
