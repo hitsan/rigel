@@ -204,22 +204,20 @@ TEST(TestParseToken, no_assign_letState)
     EXPECT_EQ("", exp.getName());
 }
 
-// TEST(TestParseExpression, binary_expression)
-// {
-//     llvm::StringRef st = "1 + 2";
-//     Lexer lx = Lexer(st);
-//     Parser ps = Parser(lx);
+TEST(TestBinary_expression, SUM_expression)
+{
+    llvm::StringRef st = "1 + 2";
+    Lexer lx = Lexer(st);
+    Parser ps = Parser(lx);
 
-//     IntLiteral one = IntLiteral(1);
-//     IntLiteral twice = IntLiteral(2);
-//     PlusExpression plus = PlusExpression(NodeType::PLUS, one, two);
+    IntLiteral one = IntLiteral(1);
+    IntLiteral two = IntLiteral(2);
+    PlusExpression plus = PlusExpression(NodeType::SUM, one, two);
 
-//     auto exp = ps.plusParse();
-//     EXPECT_EQ(plus.getType(), exp.getType());
-//     auto plusLHand = plus.getLHand();
-//     auto expLHand = exp.getLHand();
-//     EXPECT_EQ(plusLHand.getLiteral(), expLHand.getLiteral());
-//     auto plusRHand = plus.getRHand();
-//     auto expRHand = exp.getRHand();
-//     EXPECT_EQ(plusRHand.getLiteral(), expRHand.getLiteral());
-// }
+    auto exp = ps.plusParse();
+    EXPECT_EQ(plus.getType(), exp.getType());
+    auto expLHand = exp.getLHand();
+    EXPECT_EQ(one.getValue(), expLHand.getValue());
+    auto expRHand = exp.getRHand();
+    EXPECT_EQ(two.getValue(), expRHand.getValue());
+}

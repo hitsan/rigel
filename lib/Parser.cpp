@@ -54,3 +54,10 @@ Identifier Parser::identParse()
     std::string str = tok->getLiteral();
     return Identifier(str);
 }
+
+PlusExpression Parser::plusParse()
+{
+    IntLiteral one = IntLiteral(0);
+    IntLiteral two = IntLiteral(0);
+    return PlusExpression(NodeType::SUM, one, two);
+}

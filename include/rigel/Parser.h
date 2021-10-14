@@ -21,6 +21,7 @@ public:
     StrLiteral strParse();
     LetStatement letParse();
     Identifier identParse();
+    PlusExpression plusParse();
 };
 };
 #endif
