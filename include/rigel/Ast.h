@@ -51,11 +51,15 @@ public:
 
 class PlusExpression
 {
+private:
+    NodeType type;
+    IntLiteral lHand;
+    IntLiteral rHand;
 public:
-    PlusExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) {};
+    PlusExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : type(type), lHand(lHand), rHand(rHand) {};
     NodeType getType() { return NodeType::SUM; }; 
-    IntLiteral getLHand() { return IntLiteral(0); };
-    IntLiteral getRHand() { return IntLiteral(0); };
+    IntLiteral getLHand() { return lHand; };
+    IntLiteral getRHand() { return rHand; };
 };
 
 };

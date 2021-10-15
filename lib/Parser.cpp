@@ -57,7 +57,9 @@ Identifier Parser::identParse()
 
 PlusExpression Parser::plusParse()
 {
-    IntLiteral one = IntLiteral(0);
-    IntLiteral two = IntLiteral(0);
-    return PlusExpression(NodeType::SUM, one, two);
+    IntLiteral lHand = parse();
+    nextToken();
+    nextToken();
+    IntLiteral rHand = parse();
+    return PlusExpression(NodeType::SUM, lHand, rHand);
 }
