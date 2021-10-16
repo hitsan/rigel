@@ -61,5 +61,5 @@ PlusExpression Parser::plusParse()
     nextToken();
     nextToken();
     IntLiteral rHand = parse();
-    return PlusExpression(NodeType::SUM, lHand, rHand);
+    return PlusExpression(NodeType::NT_PLUS, lHand, rHand);
 }

@@ -204,7 +204,7 @@ TEST(TestParseToken, no_assign_letState)
     EXPECT_EQ("", exp.getName());
 }
 
-TEST(TestBinary_expression, SUM_expression)
+TEST(TestBinary_expression, PLUS_expression)
 {
     llvm::StringRef st = "1 + 2";
     Lexer lx = Lexer(st);
@@ -212,7 +212,7 @@ TEST(TestBinary_expression, SUM_expression)
 
     IntLiteral one = IntLiteral(1);
     IntLiteral two = IntLiteral(2);
-    PlusExpression plus = PlusExpression(NodeType::SUM, one, two);
+    PlusExpression plus = PlusExpression(NodeType::NT_PLUS, one, two);
 
     auto exp = ps.plusParse();
     EXPECT_EQ(plus.getType(), exp.getType());
@@ -221,3 +221,21 @@ TEST(TestBinary_expression, SUM_expression)
     auto expRHand = exp.getRHand();
     EXPECT_EQ(two.getValue(), expRHand.getValue());
 }
+
+// TEST(TestBinary_expression, PRODUCT_expression)
+// {
+//     llvm::StringRef st = "1 + 2";
+//     Lexer lx = Lexer(st);
+//     Parser ps = Parser(lx);
+
+//     IntLiteral one = IntLiteral(1);
+//     IntLiteral two = IntLiteral(2);
+//     PlusExpression plus = PlusExpression(NodeType::SUM, one, two);
+
+//     auto exp = ps.plusParse();
+//     EXPECT_EQ(plus.getType(), exp.getType());
+//     auto expLHand = exp.getLHand();
+//     EXPECT_EQ(one.getValue(), expLHand.getValue());
+//     auto expRHand = exp.getRHand();
+//     EXPECT_EQ(two.getValue(), expRHand.getValue());
+// }

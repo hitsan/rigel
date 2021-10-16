@@ -8,7 +8,7 @@ namespace rigel {
 
 enum NodeType
 {
-    SUM
+    NT_PLUS
 };
 
 class IntLiteral
@@ -57,7 +57,7 @@ private:
     IntLiteral rHand;
 public:
     PlusExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : type(type), lHand(lHand), rHand(rHand) {};
-    NodeType getType() { return NodeType::SUM; }; 
+    NodeType getType() { return NodeType::NT_PLUS; }; 
     IntLiteral getLHand() { return lHand; };
     IntLiteral getRHand() { return rHand; };
 };
