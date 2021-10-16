@@ -8,7 +8,8 @@ namespace rigel {
 
 enum NodeType
 {
-    NT_PLUS
+    NT_PLUS,
+    NT_MUL
 };
 
 class IntLiteral
@@ -58,6 +59,19 @@ private:
 public:
     PlusExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : type(type), lHand(lHand), rHand(rHand) {};
     NodeType getType() { return NodeType::NT_PLUS; }; 
+    IntLiteral getLHand() { return lHand; };
+    IntLiteral getRHand() { return rHand; };
+};
+
+class MulExpression
+{
+private:
+    NodeType type;
+    IntLiteral lHand;
+    IntLiteral rHand;
+public:
+    MulExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : type(type), lHand(lHand), rHand(rHand) {};
+    NodeType getType() { return NodeType::NT_MUL; }; 
     IntLiteral getLHand() { return lHand; };
     IntLiteral getRHand() { return rHand; };
 };

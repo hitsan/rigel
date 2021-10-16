@@ -63,3 +63,12 @@ PlusExpression Parser::plusParse()
     IntLiteral rHand = parse();
     return PlusExpression(NodeType::NT_PLUS, lHand, rHand);
 }
+
+MulExpression Parser::mulParse()
+{
+    IntLiteral lHand = parse();
+    nextToken();
+    nextToken();
+    IntLiteral rHand = parse();
+    return MulExpression(NodeType::NT_MUL, lHand, rHand);
+}

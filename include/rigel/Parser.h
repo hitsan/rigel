@@ -22,6 +22,7 @@ public:
     LetStatement letParse();
     Identifier identParse();
     PlusExpression plusParse();
+    MulExpression mulParse();
 };
 };
 #endif
