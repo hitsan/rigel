@@ -52,30 +52,29 @@ public:
     int getValue() { return integer.getValue(); }
 };
 
-class PlusExpression
+class BinarlyExpression
 {
-private:
+protected:
     NodeType type;
     IntLiteral lHand;
     IntLiteral rHand;
 public:
-    PlusExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : type(type), lHand(lHand), rHand(rHand) {};
-    NodeType getType() { return NodeType::NT_PLUS; }; 
+    BinarlyExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : type(type), lHand(lHand), rHand(rHand) {};
+    NodeType getType() { return type; }; 
     IntLiteral getLHand() { return lHand; };
     IntLiteral getRHand() { return rHand; };
 };
 
-class MulExpression
+class PlusExpression : public BinarlyExpression
 {
-private:
-    NodeType type;
-    IntLiteral lHand;
-    IntLiteral rHand;
 public:
-    MulExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : type(type), lHand(lHand), rHand(rHand) {};
-    NodeType getType() { return NodeType::NT_MUL; }; 
-    IntLiteral getLHand() { return lHand; };
-    IntLiteral getRHand() { return rHand; };
+    PlusExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : BinarlyExpression(type, lHand, rHand) {};
+};
+
+class MulExpression : public BinarlyExpression
+{
+public:
+    MulExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : BinarlyExpression(type, lHand, rHand) {};
 };
 
 };
