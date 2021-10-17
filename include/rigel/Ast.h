@@ -12,7 +12,9 @@ enum NodeType
     NT_MUL
 };
 
-class IntLiteral
+class Literal{};
+
+class IntLiteral : Literal
 {
 private:
     int value;
@@ -21,7 +23,7 @@ public:
     int getValue() { return this->value; };
 };
 
-class StrLiteral
+class StrLiteral : Literal
 {
 private:
     std::string value;
