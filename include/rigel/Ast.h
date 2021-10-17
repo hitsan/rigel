@@ -65,17 +65,17 @@ public:
     IntLiteral getRHand() { return rHand; };
 };
 
-class PlusExpression : public BinarlyExpression
-{
-public:
-    PlusExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : BinarlyExpression(type, lHand, rHand) {};
-};
+// class PlusExpression : public BinarlyExpression
+// {
+// public:
+//     PlusExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : BinarlyExpression(type, lHand, rHand) {};
+// };
 
-class MulExpression : public BinarlyExpression
-{
-public:
-    MulExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : BinarlyExpression(type, lHand, rHand) {};
-};
+// class MulExpression : public BinarlyExpression
+// {
+// public:
+//     MulExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : BinarlyExpression(type, lHand, rHand) {};
+// };
 
 };
 

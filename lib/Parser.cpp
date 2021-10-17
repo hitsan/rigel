@@ -55,20 +55,20 @@ Identifier Parser::identParse()
     return Identifier(str);
 }
 
-PlusExpression Parser::plusParse()
+BinarlyExpression Parser::plusParse()
 {
     IntLiteral lHand = parse();
     nextToken();
     nextToken();
     IntLiteral rHand = parse();
-    return PlusExpression(NodeType::NT_PLUS, lHand, rHand);
+    return BinarlyExpression(NodeType::NT_PLUS, lHand, rHand);
 }
 
-MulExpression Parser::mulParse()
+BinarlyExpression Parser::mulParse()
 {
     IntLiteral lHand = parse();
     nextToken();
     nextToken();
     IntLiteral rHand = parse();
-    return MulExpression(NodeType::NT_MUL, lHand, rHand);
+    return BinarlyExpression(NodeType::NT_MUL, lHand, rHand);
 }
