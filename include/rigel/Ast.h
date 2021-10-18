@@ -14,7 +14,7 @@ enum NodeType
 
 class Expression{};
 
-class IntLiteral : Expression
+class IntLiteral : public Expression
 {
 private:
     int value;
@@ -23,7 +23,7 @@ public:
     int getValue() { return this->value; };
 };
 
-class StrLiteral : Expression
+class StrLiteral : public Expression
 {
 private:
     std::string value;
@@ -52,17 +52,17 @@ public:
     int getValue() { return integer->getValue(); }
 };
 
-class BinarlyExpression
+class BinarlyExpression : public Expression
 {
 protected:
     NodeType type;
-    IntLiteral* lHand;
-    IntLiteral* rHand;
+    Expression* lHand;
+    Expression* rHand;
 public:
-    BinarlyExpression(NodeType type, IntLiteral* lHand, IntLiteral* rHand) : type(type), lHand(lHand), rHand(rHand) {};
+    BinarlyExpression(NodeType type, Expression* lHand, Expression* rHand) : type(type), lHand(lHand), rHand(rHand) {};
     NodeType getType() { return type; }; 
-    IntLiteral* getLHand() { return lHand; };
-    IntLiteral* getRHand() { return rHand; };
+    Expression* getLHand() { return lHand; };
+    Expression* getRHand() { return rHand; };
 };
 
 // class PlusExpression : public BinarlyExpression

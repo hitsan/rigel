@@ -216,10 +216,12 @@ TEST(TestBinary_expression, PLUS_expression)
 
     auto exp = ps.plusParse();
     EXPECT_EQ(plus.getType(), exp->getType());
-    auto expLHand = exp->getLHand();
-    EXPECT_EQ(one->getValue(), expLHand->getValue());
-    auto expRHand = exp->getRHand();
-    EXPECT_EQ(two->getValue(), expRHand->getValue());
+    Expression* expLHand = exp->getLHand();
+    IntLiteral* lHand = static_cast<IntLiteral*>(expLHand);
+    EXPECT_EQ(one->getValue(), lHand->getValue());
+    Expression* expRHand = exp->getRHand();
+    IntLiteral* rHand = static_cast<IntLiteral*>(expRHand);
+    EXPECT_EQ(two->getValue(), rHand->getValue());
 }
 
 TEST(TestBinary_expression, PRODUCT_expression)
@@ -234,8 +236,10 @@ TEST(TestBinary_expression, PRODUCT_expression)
 
     auto exp = ps.mulParse();
     EXPECT_EQ(mul.getType(), exp->getType());
-    auto expLHand = exp->getLHand();
-    EXPECT_EQ(one->getValue(), expLHand->getValue());
-    auto expRHand = exp->getRHand();
-    EXPECT_EQ(two->getValue(), expRHand->getValue());
+    Expression* expLHand = exp->getLHand();
+    IntLiteral* lHand = static_cast<IntLiteral*>(expLHand);
+    EXPECT_EQ(one->getValue(), lHand->getValue());
+    Expression* expRHand = exp->getRHand();
+    IntLiteral* rHand = static_cast<IntLiteral*>(expRHand);
+    EXPECT_EQ(two->getValue(), rHand->getValue());
 }
