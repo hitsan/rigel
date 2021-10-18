@@ -45,11 +45,11 @@ class LetStatement
 {
 private:
     Identifier ident;
-    IntLiteral integer;
+    IntLiteral* integer;
 public:
-    LetStatement(Identifier ident, IntLiteral integer) : ident(ident), integer(integer) {};
+    LetStatement(Identifier ident, IntLiteral* integer) : ident(ident), integer(integer) {};
     std::string getName() { return ident.getName(); };
-    int getValue() { return integer.getValue(); }
+    int getValue() { return integer->getValue(); }
 };
 
 class BinarlyExpression

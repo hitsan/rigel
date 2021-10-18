@@ -17,7 +17,7 @@ public:
     TOKEN_PTR getCurToken() { return std::move(curToken); }
     TOKEN_PTR getPeekToken() { return std::move(peekToken); }
     TokenType getPeekType() { return peekToken->getTokenType(); };
-    IntLiteral parse();
+    IntLiteral* parse();
     StrLiteral strParse();
     LetStatement letParse();
     Identifier identParse();

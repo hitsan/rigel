@@ -127,7 +127,7 @@ TEST(TestParseToken, singleIntNum)
     IntLiteral test = IntLiteral(1);
 
     auto exp = ps.parse();
-    ASSERT_EQ(test.getValue(), exp.getValue());
+    ASSERT_EQ(test.getValue(), exp->getValue());
 }
 
 TEST(TestParseToken, singleString)
@@ -161,7 +161,7 @@ TEST(TestParseToken, parse_letState)
     Parser ps = Parser(lx);
 
     Identifier ident = Identifier("foo");
-    IntLiteral integer = IntLiteral(1);
+    IntLiteral* integer = new IntLiteral(1);
     LetStatement test = LetStatement(ident, integer);
 
     auto exp = ps.letParse();

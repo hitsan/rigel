@@ -15,12 +15,12 @@ void Parser::nextToken()
     peekToken = lexer.lex();
 }
 
-IntLiteral Parser::parse()
+IntLiteral* Parser::parse()
 {
     TOKEN_PTR tok = getCurToken();
     std::string strNum = tok->getLiteral();
     int num = stoi(strNum);
-    return IntLiteral(num);
+    return new IntLiteral(num);
 }
 
 StrLiteral Parser::strParse()
@@ -44,7 +44,7 @@ LetStatement Parser::letParse()
     Identifier ident = identParse();
     nextToken();
     nextToken();
-    IntLiteral integer = parse();
+    IntLiteral* integer = parse();
     return LetStatement(ident, integer);
 }
 
@@ -57,18 +57,30 @@ Identifier Parser::identParse()
 
 BinarlyExpression Parser::plusParse()
 {
-    IntLiteral lHand = parse();
+    TOKEN_PTR rtok = getCurToken();
+    std::string lNum = rtok->getLiteral();
+    int lHand = stoi(lNum);
+
     nextToken();
     nextToken();
-    IntLiteral rHand = parse();
+
+    TOKEN_PTR ltok = getCurToken();
+    std::string rNum = ltok->getLiteral();
+    int rHand = stoi(rNum);
     return BinarlyExpression(NodeType::NT_PLUS, lHand, rHand);
 }
 
 BinarlyExpression Parser::mulParse()
 {
-    IntLiteral lHand = parse();
+    TOKEN_PTR rtok = getCurToken();
+    std::string lNum = rtok->getLiteral();
+    int lHand = stoi(lNum);
+
     nextToken();
     nextToken();
-    IntLiteral rHand = parse();
+
+    TOKEN_PTR ltok = getCurToken();
+    std::string rNum = ltok->getLiteral();
+    int rHand = stoi(rNum);
     return BinarlyExpression(NodeType::NT_MUL, lHand, rHand);
 }
