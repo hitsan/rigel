@@ -12,9 +12,9 @@ enum NodeType
     NT_MUL
 };
 
-class Literal{};
+class Expression{};
 
-class IntLiteral : Literal
+class IntLiteral : Expression
 {
 private:
     int value;
@@ -23,7 +23,7 @@ public:
     int getValue() { return this->value; };
 };
 
-class StrLiteral : Literal
+class StrLiteral : Expression
 {
 private:
     std::string value;
