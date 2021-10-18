@@ -52,14 +52,14 @@ public:
     int getValue() { return integer->getValue(); }
 };
 
-class BinarlyExpression : public Expression
+class BinaryExpression : public Expression
 {
 protected:
     NodeType type;
     Expression* lHand;
     Expression* rHand;
 public:
-    BinarlyExpression(NodeType type, Expression* lHand, Expression* rHand) : type(type), lHand(lHand), rHand(rHand) {};
+    BinaryExpression(NodeType type, Expression* lHand, Expression* rHand) : type(type), lHand(lHand), rHand(rHand) {};
     NodeType getType() { return type; }; 
     Expression* getLHand() { return lHand; };
     Expression* getRHand() { return rHand; };

@@ -212,7 +212,7 @@ TEST(TestBinary_expression, PLUS_expression)
 
     IntLiteral* one = new IntLiteral(1);
     IntLiteral* two = new IntLiteral(2);
-    BinarlyExpression plus = BinarlyExpression(NodeType::NT_PLUS, one, two);
+    BinaryExpression plus = BinaryExpression(NodeType::NT_PLUS, one, two);
 
     auto exp = ps.plusParse();
     EXPECT_EQ(plus.getType(), exp->getType());
@@ -232,7 +232,7 @@ TEST(TestBinary_expression, PRODUCT_expression)
 
     IntLiteral* one = new IntLiteral(1);
     IntLiteral* two = new IntLiteral(2);
-    BinarlyExpression mul = BinarlyExpression(NodeType::NT_MUL, one, two);
+    BinaryExpression mul = BinaryExpression(NodeType::NT_MUL, one, two);
 
     auto exp = ps.mulParse();
     EXPECT_EQ(mul.getType(), exp->getType());

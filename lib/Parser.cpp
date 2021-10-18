@@ -55,7 +55,7 @@ Identifier Parser::identParse()
     return Identifier(str);
 }
 
-BinarlyExpression* Parser::plusParse()
+BinaryExpression* Parser::plusParse()
 {
     TOKEN_PTR rtok = getCurToken();
     std::string lNum = rtok->getLiteral();
@@ -69,10 +69,10 @@ BinarlyExpression* Parser::plusParse()
     std::string rNum = ltok->getLiteral();
     int rhand = stoi(rNum);
     IntLiteral* rHand = new IntLiteral(rhand);
-    return new BinarlyExpression(NodeType::NT_PLUS, lHand, rHand);
+    return new BinaryExpression(NodeType::NT_PLUS, lHand, rHand);
 }
 
-BinarlyExpression* Parser::mulParse()
+BinaryExpression* Parser::mulParse()
 {
     TOKEN_PTR rtok = getCurToken();
     std::string lNum = rtok->getLiteral();
@@ -86,5 +86,5 @@ BinarlyExpression* Parser::mulParse()
     std::string rNum = ltok->getLiteral();
     int rhand = stoi(rNum);
     IntLiteral* rHand = new IntLiteral(rhand);
-    return new BinarlyExpression(NodeType::NT_MUL, lHand, rHand);
+    return new BinaryExpression(NodeType::NT_MUL, lHand, rHand);
 }
