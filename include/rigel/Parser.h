@@ -21,8 +21,8 @@ public:
     StrLiteral strParse();
     LetStatement letParse();
     Identifier identParse();
-    BinarlyExpression plusParse();
-    BinarlyExpression mulParse();
+    BinarlyExpression* plusParse();
+    BinarlyExpression* mulParse();
 };
 };
 #endif

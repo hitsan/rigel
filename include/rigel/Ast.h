@@ -56,13 +56,13 @@ class BinarlyExpression
 {
 protected:
     NodeType type;
-    IntLiteral lHand;
-    IntLiteral rHand;
+    IntLiteral* lHand;
+    IntLiteral* rHand;
 public:
-    BinarlyExpression(NodeType type, IntLiteral lHand, IntLiteral rHand) : type(type), lHand(lHand), rHand(rHand) {};
+    BinarlyExpression(NodeType type, IntLiteral* lHand, IntLiteral* rHand) : type(type), lHand(lHand), rHand(rHand) {};
     NodeType getType() { return type; }; 
-    IntLiteral getLHand() { return lHand; };
-    IntLiteral getRHand() { return rHand; };
+    IntLiteral* getLHand() { return lHand; };
+    IntLiteral* getRHand() { return rHand; };
 };
 
 // class PlusExpression : public BinarlyExpression

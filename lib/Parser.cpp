@@ -55,32 +55,36 @@ Identifier Parser::identParse()
     return Identifier(str);
 }
 
-BinarlyExpression Parser::plusParse()
+BinarlyExpression* Parser::plusParse()
 {
     TOKEN_PTR rtok = getCurToken();
     std::string lNum = rtok->getLiteral();
-    int lHand = stoi(lNum);
+    int lhand = stoi(lNum);
+    IntLiteral* lHand = new IntLiteral(lhand);
 
     nextToken();
     nextToken();
 
     TOKEN_PTR ltok = getCurToken();
     std::string rNum = ltok->getLiteral();
-    int rHand = stoi(rNum);
-    return BinarlyExpression(NodeType::NT_PLUS, lHand, rHand);
+    int rhand = stoi(rNum);
+    IntLiteral* rHand = new IntLiteral(rhand);
+    return new BinarlyExpression(NodeType::NT_PLUS, lHand, rHand);
 }
 
-BinarlyExpression Parser::mulParse()
+BinarlyExpression* Parser::mulParse()
 {
     TOKEN_PTR rtok = getCurToken();
     std::string lNum = rtok->getLiteral();
-    int lHand = stoi(lNum);
+    int lhand = stoi(lNum);
+    IntLiteral* lHand = new IntLiteral(lhand);
 
     nextToken();
     nextToken();
 
     TOKEN_PTR ltok = getCurToken();
     std::string rNum = ltok->getLiteral();
-    int rHand = stoi(rNum);
-    return BinarlyExpression(NodeType::NT_MUL, lHand, rHand);
+    int rhand = stoi(rNum);
+    IntLiteral* rHand = new IntLiteral(rhand);
+    return new BinarlyExpression(NodeType::NT_MUL, lHand, rHand);
 }
