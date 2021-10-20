@@ -91,6 +91,36 @@ BinaryExpression* Parser::mulParse()
 
 Expression* Parser::expressionParse()
 {
+    // if(getPeekType() == TokenType::EOI){
+    //     llvm::outs() << getPeekType() << "\n";
+    //     TOKEN_PTR token = getCurToken();
+    //     std::string stringNum = token->getLiteral();
+    //     return new IntLiteral(stoi(stringNum));
+    // }
+    // TOKEN_PTR tok = getCurToken();
+    // std::string strNum = tok->getLiteral();
+    // Expression* lHand = new IntLiteral(stoi(strNum));
+
+    // while(getPeekType() != TokenType::EOI) {
+    //     if(getPeekType() == TokenType::PLUS) {
+    //         llvm::outs() << getPeekType() << "\n";
+    //         nextToken();
+    //         nextToken();
+    //         Expression* rHand = expressionParse();
+    //         Expression* lHand = new BinaryExpression(NodeType::NT_PLUS, lHand, rHand);
+    //     } else if(getPeekType() == TokenType::ASTERISK) {
+    //         llvm::outs() << getPeekType() << "\n";
+    //         nextToken();
+    //         nextToken();
+    //         TOKEN_PTR token = getCurToken();
+    //         std::string stringNum = token->getLiteral();
+    //         Expression* rHand = new IntLiteral(stoi(stringNum));
+    //         Expression* lHand = new BinaryExpression(NodeType::NT_MUL, lHand, rHand);
+    //     } 
+    // }
+
+    // return lHand;
+
     IntLiteral* one = new IntLiteral(1);
     IntLiteral* two = new IntLiteral(2);
     IntLiteral* three = new IntLiteral(3);

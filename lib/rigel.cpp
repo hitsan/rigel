@@ -1,5 +1,5 @@
 #include <iostream>
-#include "include/rigel/Lexer.h"
+#include "../include/rigel/Lexer.h"
 
 int main()
 {
