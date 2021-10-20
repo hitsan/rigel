@@ -124,10 +124,8 @@ TEST(TestParseToken, singleIntNum)
     Lexer lx = Lexer(st);
     Parser ps = Parser(lx);
 
-    IntLiteral test = IntLiteral(1);
-
     auto exp = ps.parse();
-    ASSERT_EQ(test.getValue(), exp->getValue());
+    ASSERT_EQ(1, exp->getValue());
 }
 
 TEST(TestParseToken, singleString)
@@ -136,10 +134,8 @@ TEST(TestParseToken, singleString)
     Lexer lx = Lexer(st);
     Parser ps = Parser(lx);
 
-    StrLiteral test = StrLiteral("str");
-
     auto exp = ps.strParse();
-    ASSERT_EQ(test.getValue(), exp.getValue());
+    ASSERT_EQ("str", exp.getValue());
 }
 
 TEST(TestParseToken, identifier)
@@ -148,10 +144,8 @@ TEST(TestParseToken, identifier)
     Lexer lx = Lexer(st);
     Parser ps = Parser(lx);
 
-    Identifier test = Identifier("foo");
-
     auto exp = ps.identParse();
-    ASSERT_EQ(test.getName(), exp.getName());
+    ASSERT_EQ("foo", exp.getName());
 }
 
 TEST(TestParseToken, parse_letState)
@@ -166,8 +160,8 @@ TEST(TestParseToken, parse_letState)
 
     auto exp = ps.letParse();
     ASSERT_EQ(typeid(test), typeid(exp));
-    ASSERT_EQ(test.getName(), exp.getName());
-    ASSERT_EQ(test.getValue(), exp.getValue());
+    ASSERT_EQ("foo", exp.getName());
+    ASSERT_EQ(1, exp.getValue());
 }
 
 TEST(TestParseToken, peek_type)
@@ -210,18 +204,14 @@ TEST(TestBinary_expression, PLUS_expression)
     Lexer lx = Lexer(st);
     Parser ps = Parser(lx);
 
-    IntLiteral* one = new IntLiteral(1);
-    IntLiteral* two = new IntLiteral(2);
-    BinaryExpression plus = BinaryExpression(NodeType::NT_PLUS, one, two);
-
     auto exp = ps.plusParse();
-    EXPECT_EQ(plus.getType(), exp->getType());
+    EXPECT_EQ(NodeType::NT_PLUS, exp->getType());
     Expression* expLHand = exp->getLHand();
     IntLiteral* lHand = static_cast<IntLiteral*>(expLHand);
-    EXPECT_EQ(one->getValue(), lHand->getValue());
+    EXPECT_EQ(1, lHand->getValue());
     Expression* expRHand = exp->getRHand();
     IntLiteral* rHand = static_cast<IntLiteral*>(expRHand);
-    EXPECT_EQ(two->getValue(), rHand->getValue());
+    EXPECT_EQ(2, rHand->getValue());
 }
 
 TEST(TestBinary_expression, PRODUCT_expression)
@@ -230,18 +220,14 @@ TEST(TestBinary_expression, PRODUCT_expression)
     Lexer lx = Lexer(st);
     Parser ps = Parser(lx);
 
-    IntLiteral* one = new IntLiteral(1);
-    IntLiteral* two = new IntLiteral(2);
-    BinaryExpression mul = BinaryExpression(NodeType::NT_MUL, one, two);
-
     auto exp = ps.mulParse();
-    EXPECT_EQ(mul.getType(), exp->getType());
+    EXPECT_EQ(NodeType::NT_MUL, exp->getType());
     Expression* expLHand = exp->getLHand();
     IntLiteral* lHand = static_cast<IntLiteral*>(expLHand);
-    EXPECT_EQ(one->getValue(), lHand->getValue());
+    EXPECT_EQ(1, lHand->getValue());
     Expression* expRHand = exp->getRHand();
     IntLiteral* rHand = static_cast<IntLiteral*>(expRHand);
-    EXPECT_EQ(two->getValue(), rHand->getValue());
+    EXPECT_EQ(2, rHand->getValue());
 }
 
 TEST(TestBinary_expression, Polynomial)
