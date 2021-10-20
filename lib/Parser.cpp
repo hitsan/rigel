@@ -88,3 +88,13 @@ BinaryExpression* Parser::mulParse()
     IntLiteral* rHand = new IntLiteral(rhand);
     return new BinaryExpression(NodeType::NT_MUL, lHand, rHand);
 }
+
+Expression* Parser::expressionParse()
+{
+    IntLiteral* one = new IntLiteral(1);
+    IntLiteral* two = new IntLiteral(2);
+    IntLiteral* three = new IntLiteral(3);
+    BinaryExpression* mul = new BinaryExpression(NodeType::NT_MUL, two, three);
+    Expression* plus = new BinaryExpression(NodeType::NT_PLUS, one, mul);
+    return plus;
+}

@@ -243,3 +243,35 @@ TEST(TestBinary_expression, PRODUCT_expression)
     IntLiteral* rHand = static_cast<IntLiteral*>(expRHand);
     EXPECT_EQ(two->getValue(), rHand->getValue());
 }
+
+TEST(TestBinary_expression, Polynomial)
+{
+    llvm::StringRef st = "1 + 2 * 3";
+    Lexer lx = Lexer(st);
+    Parser ps = Parser(lx);
+
+    IntLiteral* one = new IntLiteral(1);
+    IntLiteral* two = new IntLiteral(2);
+    IntLiteral* three = new IntLiteral(3);
+    BinaryExpression* mul = new BinaryExpression(NodeType::NT_MUL, two, three);
+    BinaryExpression* plus = new BinaryExpression(NodeType::NT_PLUS, one, mul);
+
+    Expression* expr = ps.expressionParse();
+    BinaryExpression* exp = static_cast<BinaryExpression*>(expr);
+    EXPECT_EQ(plus->getType(), exp->getType());
+
+    Expression* expLHand = exp->getLHand();
+    IntLiteral* lHand = static_cast<IntLiteral*>(expLHand);
+    EXPECT_EQ(one->getValue(), lHand->getValue());
+
+    Expression* expR = exp->getRHand();
+    BinaryExpression* expRHand = static_cast<BinaryExpression*>(expR);
+
+    Expression* expRLHand = expRHand->getLHand();
+    IntLiteral* RLHand = static_cast<IntLiteral*>(expRLHand);
+    EXPECT_EQ(two->getValue(), RLHand->getValue());
+
+    Expression* expRRHand = expRHand->getRHand();
+    IntLiteral* RRHand = static_cast<IntLiteral*>(expRRHand);
+    EXPECT_EQ(three->getValue(), RRHand->getValue());
+}

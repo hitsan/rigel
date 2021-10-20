@@ -23,6 +23,7 @@ public:
     Identifier identParse();
     BinaryExpression* plusParse();
     BinaryExpression* mulParse();
+    Expression* expressionParse();
 };
 };
 #endif
