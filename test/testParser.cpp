@@ -232,7 +232,7 @@ TEST(TestBinary_expression, PRODUCT_expression)
 
 TEST(TestBinary_expression, Polynomial)
 {
-    llvm::StringRef st = "1 + 2";
+    llvm::StringRef st = "11 + 22 * 33";
     Lexer lx = Lexer(st);
     Parser ps = Parser(lx);
 
@@ -242,7 +242,7 @@ TEST(TestBinary_expression, Polynomial)
 
     Expression* expLHand = exp->getLHand();
     IntLiteral* lHand = static_cast<IntLiteral*>(expLHand);
-    EXPECT_EQ(1, lHand->getValue());
+    EXPECT_EQ(11, lHand->getValue());
 
     Expression* expR = exp->getRHand();
     BinaryExpression* expRHand = static_cast<BinaryExpression*>(expR);
@@ -250,9 +250,9 @@ TEST(TestBinary_expression, Polynomial)
 
     Expression* expRLHand = expRHand->getLHand();
     IntLiteral* RLHand = static_cast<IntLiteral*>(expRLHand);
-    EXPECT_EQ(2, RLHand->getValue());
+    EXPECT_EQ(22, RLHand->getValue());
 
     Expression* expRRHand = expRHand->getRHand();
     IntLiteral* RRHand = static_cast<IntLiteral*>(expRRHand);
-    EXPECT_EQ(3, RRHand->getValue());
+    EXPECT_EQ(33, RRHand->getValue());
 }

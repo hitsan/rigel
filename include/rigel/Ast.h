@@ -9,7 +9,7 @@ namespace rigel {
 enum NodeType
 {
     NT_PLUS,
-    NT_MUL
+    NT_MUL,
 };
 
 class Expression{};
