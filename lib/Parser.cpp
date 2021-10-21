@@ -55,40 +55,6 @@ Identifier Parser::identParse()
     return Identifier(str);
 }
 
-BinaryExpression* Parser::plusParse()
-{
-    TOKEN_PTR rtok = getCurToken();
-    std::string lNum = rtok->getLiteral();
-    int lhand = stoi(lNum);
-    IntLiteral* lHand = new IntLiteral(lhand);
-
-    nextToken();
-    nextToken();
-
-    TOKEN_PTR ltok = getCurToken();
-    std::string rNum = ltok->getLiteral();
-    int rhand = stoi(rNum);
-    IntLiteral* rHand = new IntLiteral(rhand);
-    return new BinaryExpression(NodeType::NT_PLUS, lHand, rHand);
-}
-
-BinaryExpression* Parser::mulParse()
-{
-    TOKEN_PTR rtok = getCurToken();
-    std::string lNum = rtok->getLiteral();
-    int lhand = stoi(lNum);
-    IntLiteral* lHand = new IntLiteral(lhand);
-
-    nextToken();
-    nextToken();
-
-    TOKEN_PTR ltok = getCurToken();
-    std::string rNum = ltok->getLiteral();
-    int rhand = stoi(rNum);
-    IntLiteral* rHand = new IntLiteral(rhand);
-    return new BinaryExpression(NodeType::NT_MUL, lHand, rHand);
-}
-
 Expression* Parser::expressionParse()
 {
     if(getPeekType() == TokenType::EOI){
