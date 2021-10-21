@@ -98,6 +98,9 @@ TOKEN_PTR Lexer::lex()
     case '\"':
         token = makeStrToken();
         break;
+    case '\n':
+        token = makeToken(TokenType::NEWLINE, "");
+        break;
     default:
         if(isdigit(*bufferPtr))
         {

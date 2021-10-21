@@ -11,6 +11,7 @@ enum TokenType
     EOI,
     ILLEGAL,
     IDENT,
+    NEWLINE,
     INT,
     STR,
     PLUS,
@@ -20,7 +21,8 @@ enum TokenType
     BOOL,
     BANG,
     ASSIGN,
-    LET
+    LET,
+    RETURN
 };
 
 class Token

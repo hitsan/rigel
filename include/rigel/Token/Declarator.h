@@ -8,7 +8,8 @@ namespace rigel {
 
 static std::map<llvm::StringRef, TokenType> declaratorMap
 {
-    { "let", TokenType::LET }
+    { "let", TokenType::LET },
+    { "return", TokenType::RETURN }
 };
 
 static TokenType findTokenType(llvm::StringRef key)

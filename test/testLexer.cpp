@@ -7,7 +7,7 @@ using namespace rigel;
 TEST(TestIntLexer, lex)
 {
     // preparation data
-    llvm::StringRef expr = "let test = 1 + 2 * 3 / 4";
+    llvm::StringRef expr = "let test = 1 + 2 * 3 / 4 \n return 0";
     Lexer lx = Lexer(expr);
     Token test[] = {
         Token(TokenType::LET, "let"),
@@ -20,6 +20,9 @@ TEST(TestIntLexer, lex)
         Token(TokenType::INT, "3"),
         Token(TokenType::SLASH, "/"),
         Token(TokenType::INT, "4"),
+        Token(TokenType::NEWLINE, ""),
+        Token(TokenType::RETURN, "return"),
+        Token(TokenType::INT, "0"),
         Token(TokenType::EOI, ""),
     };
 
