@@ -90,5 +90,7 @@ Expression* Parser::expressionParse()
 
 ReturnStatement* Parser::returnParse()
 {
-    return new ReturnStatement(new IntLiteral(1));
+    nextToken();
+    Expression* expression = expressionParse();
+    return new ReturnStatement(expression);
 }
