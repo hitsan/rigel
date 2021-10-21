@@ -30,22 +30,25 @@ StrLiteral Parser::strParse()
     return StrLiteral(str);
 }
 
-LetStatement Parser::letParse()
+LetStatement* Parser::letParse()
 {
     if(getPeekType() != TokenType::IDENT) {
         Identifier ident("");
-        return LetStatement(ident, 0);
+        Expression* exp = new StrLiteral("");
+        return new LetStatement(ident, 0, exp);
     }
     nextToken();
     if(getPeekType() != TokenType::ASSIGN) {
         Identifier ident("");
-        return LetStatement(ident, 0);
+        Expression* exp = new StrLiteral("");
+        return new LetStatement(ident, 0, exp);
     }
     Identifier ident = identParse();
     nextToken();
     nextToken();
-    IntLiteral* integer = parse();
-    return LetStatement(ident, integer);
+    IntLiteral* integer = new IntLiteral(1);
+    Expression* expression = expressionParse();
+    return new LetStatement(ident, integer, expression);
 }
 
 Identifier Parser::identParse()

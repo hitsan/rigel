@@ -19,10 +19,8 @@ public:
     TokenType getPeekType() { return peekToken->getTokenType(); };
     IntLiteral* parse();
     StrLiteral strParse();
-    LetStatement letParse();
+    LetStatement* letParse();
     Identifier identParse();
-    BinaryExpression* plusParse();
-    BinaryExpression* mulParse();
     Expression* expressionParse();
 };
 };

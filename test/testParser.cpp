@@ -156,12 +156,17 @@ TEST(TestParseToken, parse_letState)
 
     Identifier ident = Identifier("foo");
     IntLiteral* integer = new IntLiteral(1);
-    LetStatement test = LetStatement(ident, integer);
+    Expression* expression = new IntLiteral(1);
+    LetStatement* test = new LetStatement(ident, integer, expression);
 
-    auto exp = ps.letParse();
-    ASSERT_EQ(typeid(test), typeid(exp));
-    ASSERT_EQ("foo", exp.getName());
-    ASSERT_EQ(1, exp.getValue());
+    LetStatement* letState = ps.letParse();
+
+    ASSERT_EQ(typeid(test), typeid(letState));
+    ASSERT_EQ("foo", letState->getName());
+
+    Expression* ast = letState->getAst();
+    IntLiteral* literal = static_cast<IntLiteral*>(ast);
+    ASSERT_EQ(1, literal->getValue());
 }
 
 TEST(TestParseToken, peek_type)
@@ -184,7 +189,7 @@ TEST(TestParseToken, no_equal_letState)
     Parser ps = Parser(lx);
 
     auto exp = ps.letParse();
-    EXPECT_EQ("", exp.getName());
+    EXPECT_EQ("", exp->getName());
 }
 
 
@@ -195,7 +200,7 @@ TEST(TestParseToken, no_assign_letState)
     Parser ps = Parser(lx);
 
     auto exp = ps.letParse();
-    EXPECT_EQ("", exp.getName());
+    EXPECT_EQ("", exp->getName());
 }
 
 TEST(TestBinary_expression, PLUS_expression)
@@ -211,7 +216,7 @@ TEST(TestBinary_expression, PLUS_expression)
     Expression* expLHand = exp->getLHand();
     IntLiteral* lHand = static_cast<IntLiteral*>(expLHand);
     EXPECT_EQ(1, lHand->getValue());
-    
+
     Expression* expRHand = exp->getRHand();
     IntLiteral* rHand = static_cast<IntLiteral*>(expRHand);
     EXPECT_EQ(2, rHand->getValue());
