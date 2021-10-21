@@ -45,12 +45,10 @@ class LetStatement
 {
 private:
     Identifier ident;
-    IntLiteral* integer;
     Expression* expression;
 public:
-    LetStatement(Identifier ident, IntLiteral* integer, Expression* expression) : ident(ident), integer(integer), expression(expression) {};
+    LetStatement(Identifier ident, Expression* expression) : ident(ident), expression(expression) {};
     std::string getName() { return ident.getName(); };
-    int getValue() { return integer->getValue(); };
     Expression* getAst() { return expression; };
 };
 

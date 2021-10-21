@@ -155,9 +155,8 @@ TEST(TestParseToken, parse_letState)
     Parser ps = Parser(lx);
 
     Identifier ident = Identifier("foo");
-    IntLiteral* integer = new IntLiteral(1);
     Expression* expression = new IntLiteral(1);
-    LetStatement* test = new LetStatement(ident, integer, expression);
+    LetStatement* test = new LetStatement(ident, expression);
 
     LetStatement* letState = ps.letParse();
 

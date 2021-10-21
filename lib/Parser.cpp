@@ -2,7 +2,7 @@
 #include "../include/rigel/Lexer.h"
 using namespace rigel;
 
-#include "llvm/Support/raw_ostream.h"
+// #include "llvm/Support/raw_ostream.h"
 Parser::Parser(Lexer &lex) : lexer(lex)
 {
     this->curToken = lexer.lex();
@@ -35,20 +35,19 @@ LetStatement* Parser::letParse()
     if(getPeekType() != TokenType::IDENT) {
         Identifier ident("");
         Expression* exp = new StrLiteral("");
-        return new LetStatement(ident, 0, exp);
+        return new LetStatement(ident, exp);
     }
     nextToken();
     if(getPeekType() != TokenType::ASSIGN) {
         Identifier ident("");
         Expression* exp = new StrLiteral("");
-        return new LetStatement(ident, 0, exp);
+        return new LetStatement(ident, exp);
     }
     Identifier ident = identParse();
     nextToken();
     nextToken();
-    IntLiteral* integer = new IntLiteral(1);
     Expression* expression = expressionParse();
-    return new LetStatement(ident, integer, expression);
+    return new LetStatement(ident, expression);
 }
 
 Identifier Parser::identParse()
