@@ -87,3 +87,8 @@ Expression* Parser::expressionParse()
 
     return lHand;
 }
+
+ReturnStatement* Parser::returnParse()
+{
+    return new ReturnStatement(new IntLiteral(1));
+}

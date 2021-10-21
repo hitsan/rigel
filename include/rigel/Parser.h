@@ -20,6 +20,7 @@ public:
     IntLiteral* parse();
     StrLiteral strParse();
     LetStatement* letParse();
+    ReturnStatement* returnParse();
     Identifier identParse();
     Expression* expressionParse();
 };

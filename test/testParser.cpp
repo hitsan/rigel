@@ -163,7 +163,7 @@ TEST(TestParseToken, parse_letState)
     ASSERT_EQ(typeid(test), typeid(letState));
     ASSERT_EQ("foo", letState->getName());
 
-    Expression* ast = letState->getAst();
+    Expression* ast = letState->getExpression();
     IntLiteral* literal = static_cast<IntLiteral*>(ast);
     ASSERT_EQ(1, literal->getValue());
 }
@@ -265,4 +265,18 @@ TEST(TestBinary_expression, Polynomial)
     Expression* expRRHand = expRHand->getRHand();
     IntLiteral* RRHand = static_cast<IntLiteral*>(expRRHand);
     EXPECT_EQ(33, RRHand->getValue());
+}
+
+TEST(TestParseToken, parse_returnState)
+{
+    llvm::StringRef st = "return 1";
+    Lexer lx = Lexer(st);
+    Parser ps = Parser(lx);
+
+    ReturnStatement* returnState = ps.returnParse();
+
+    Expression* expr = returnState->getExpression();
+    IntLiteral* exp = static_cast<IntLiteral*>(expr);
+
+    ASSERT_EQ(1, exp->getValue());
 }

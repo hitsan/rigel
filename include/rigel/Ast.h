@@ -49,7 +49,7 @@ private:
 public:
     LetStatement(Identifier ident, Expression* expression) : ident(ident), expression(expression) {};
     std::string getName() { return ident.getName(); };
-    Expression* getAst() { return expression; };
+    Expression* getExpression() { return expression; };
 };
 
 class BinaryExpression : public Expression
@@ -63,6 +63,15 @@ public:
     NodeType getType() { return type; }; 
     Expression* getLHand() { return lHand; };
     Expression* getRHand() { return rHand; };
+};
+
+class ReturnStatement : public Expression
+{
+protected:
+    Expression* expression;
+public:
+    ReturnStatement(Expression* expression) : expression(expression) {};
+    Expression* getExpression() { return expression; };
 };
 
 };
