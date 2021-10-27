@@ -165,7 +165,7 @@ TEST(TestParseToken, parse_letState)
     ASSERT_EQ("foo", letState->getName());
 
     Expression* ast = letState->getExpression();
-    IntLiteral* literal = static_cast<IntLiteral*>(ast);
+    IntLiteral* literal = llvm::dyn_cast<IntLiteral>(ast);
     ASSERT_EQ(1, literal->getValue());
 }
 
@@ -210,15 +210,15 @@ TEST(TestBinary_expression, PLUS_expression)
     Parser ps = Parser(lx);
 
     Expression* expr = ps.expressionParse();
-    BinaryExpression* exp = static_cast<BinaryExpression*>(expr);
+    BinaryExpression* exp = llvm::dyn_cast<BinaryExpression>(expr);
     EXPECT_EQ(NodeType::NT_PLUS, exp->getType());
 
     Expression* expLHand = exp->getLHand();
-    IntLiteral* lHand = static_cast<IntLiteral*>(expLHand);
+    IntLiteral* lHand = llvm::dyn_cast<IntLiteral>(expLHand);
     EXPECT_EQ(1, lHand->getValue());
 
     Expression* expRHand = exp->getRHand();
-    IntLiteral* rHand = static_cast<IntLiteral*>(expRHand);
+    IntLiteral* rHand = llvm::dyn_cast<IntLiteral>(expRHand);
     EXPECT_EQ(2, rHand->getValue());
 }
 
@@ -229,15 +229,15 @@ TEST(TestBinary_expression, PRODUCT_expression)
     Parser ps = Parser(lx);
 
     Expression* expr = ps.expressionParse();
-    BinaryExpression* exp = static_cast<BinaryExpression*>(expr);
+    BinaryExpression* exp = llvm::dyn_cast<BinaryExpression>(expr);
     EXPECT_EQ(NodeType::NT_MUL, exp->getType());
 
     Expression* expLHand = exp->getLHand();
-    IntLiteral* lHand = static_cast<IntLiteral*>(expLHand);
+    IntLiteral* lHand = llvm::dyn_cast<IntLiteral>(expLHand);
     EXPECT_EQ(1, lHand->getValue());
 
     Expression* expRHand = exp->getRHand();
-    IntLiteral* rHand = static_cast<IntLiteral*>(expRHand);
+    IntLiteral* rHand = llvm::dyn_cast<IntLiteral>(expRHand);
     EXPECT_EQ(2, rHand->getValue());
 }
 
@@ -248,23 +248,23 @@ TEST(TestBinary_expression, Polynomial)
     Parser ps = Parser(lx);
 
     Expression* expr = ps.expressionParse();
-    BinaryExpression* exp = static_cast<BinaryExpression*>(expr);
+    BinaryExpression* exp = llvm::dyn_cast<BinaryExpression>(expr);
     EXPECT_EQ(NodeType::NT_PLUS, exp->getType());
 
     Expression* expLHand = exp->getLHand();
-    IntLiteral* lHand = static_cast<IntLiteral*>(expLHand);
+    IntLiteral* lHand = llvm::dyn_cast<IntLiteral>(expLHand);
     EXPECT_EQ(11, lHand->getValue());
 
     Expression* expR = exp->getRHand();
-    BinaryExpression* expRHand = static_cast<BinaryExpression*>(expR);
+    BinaryExpression* expRHand = llvm::dyn_cast<BinaryExpression>(expR);
     EXPECT_EQ(NodeType::NT_MUL, expRHand->getType());
 
     Expression* expRLHand = expRHand->getLHand();
-    IntLiteral* RLHand = static_cast<IntLiteral*>(expRLHand);
+    IntLiteral* RLHand = llvm::dyn_cast<IntLiteral>(expRLHand);
     EXPECT_EQ(22, RLHand->getValue());
 
     Expression* expRRHand = expRHand->getRHand();
-    IntLiteral* RRHand = static_cast<IntLiteral*>(expRRHand);
+    IntLiteral* RRHand = llvm::dyn_cast<IntLiteral>(expRRHand);
     EXPECT_EQ(33, RRHand->getValue());
 }
 
