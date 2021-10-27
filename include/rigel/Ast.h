@@ -21,6 +21,9 @@ private:
 public:
     IntLiteral(int value) : value(value) {};
     int getValue() { return this->value; };
+    static bool classof(const Expression *expr) {
+        return true;
+    }
 };
 
 class StrLiteral : public Expression

@@ -1,5 +1,6 @@
 #include <typeinfo>
 #include <gtest/gtest.h>
+#include "llvm/Support/Casting.h"
 #include "../include/rigel/Lexer.h"
 #include "../include/rigel/Parser.h"
 #include "../include/rigel/Ast.h"
@@ -276,7 +277,7 @@ TEST(TestParseToken, parse_returnState)
     ReturnStatement* returnState = ps.returnParse();
 
     Expression* expr = returnState->getExpression();
-    IntLiteral* exp = static_cast<IntLiteral*>(expr);
+    IntLiteral* exp = llvm::dyn_cast<IntLiteral>(expr);
 
     ASSERT_EQ(1, exp->getValue());
 }
