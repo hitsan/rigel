@@ -74,14 +74,14 @@ Expression* Parser::expressionParse()
             nextToken();
             nextToken();
             rHand = expressionParse();
-            lHand = new BinaryExpression(NodeType::NT_PLUS, lHand, rHand);
+            lHand = new BinaryExpression(OpType::OP_PLUS, lHand, rHand);
         } else if(getPeekType() == TokenType::ASTERISK) {
             nextToken();
             nextToken();
             TOKEN_PTR token = getCurToken();
             std::string stringNum = token->getLiteral();
             rHand = new IntLiteral(stoi(stringNum));
-            lHand = new BinaryExpression(NodeType::NT_MUL, lHand, rHand);
+            lHand = new BinaryExpression(OpType::OP_MUL, lHand, rHand);
         }
     }
 

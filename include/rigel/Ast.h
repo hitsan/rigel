@@ -3,16 +3,21 @@
 #include <string>
 #include "Token/Token.h"
 #include "llvm/ADT/StringRef.h"
-#define AST_PTR std::unique_ptr<Ast>
+#define EXPR_PTR std::unique_ptr<Expression>
 namespace rigel {
 
 enum NodeType
 {
-    NT_PLUS,
-    NT_MUL,
+    NT_BIN,
     NT_INT,
     NT_STR,
     NT_RET,
+};
+
+enum OpType
+{
+    OP_PLUS,
+    OP_MUL,
 };
 
 class Expression
@@ -71,15 +76,16 @@ public:
 class BinaryExpression : public Expression
 {
 protected:
+    OpType opType;
     Expression* lHand;
     Expression* rHand;
 public:
-    BinaryExpression(NodeType type, Expression* lHand, Expression* rHand) : Expression(type), lHand(lHand), rHand(rHand) {};
+    BinaryExpression(OpType opType, Expression* lHand, Expression* rHand) : Expression(NT_BIN), opType(opType), lHand(lHand), rHand(rHand) {};
     Expression* getLHand() { return lHand; };
     Expression* getRHand() { return rHand; };
+    OpType getOpType() { return opType; };
     static bool classof(const Expression *expr) {
-        auto type = expr->getType();
-        return (type >= NT_PLUS) | (type >= NT_MUL);
+        return expr->getType() == NT_BIN;
     }
 };
 

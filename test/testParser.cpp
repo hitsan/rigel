@@ -211,7 +211,7 @@ TEST(TestBinary_expression, PLUS_expression)
 
     Expression* expr = ps.expressionParse();
     BinaryExpression* exp = llvm::dyn_cast<BinaryExpression>(expr);
-    EXPECT_EQ(NodeType::NT_PLUS, exp->getType());
+    EXPECT_EQ(OpType::OP_PLUS, exp->getOpType());
 
     Expression* expLHand = exp->getLHand();
     IntLiteral* lHand = llvm::dyn_cast<IntLiteral>(expLHand);
@@ -230,7 +230,7 @@ TEST(TestBinary_expression, PRODUCT_expression)
 
     Expression* expr = ps.expressionParse();
     BinaryExpression* exp = llvm::dyn_cast<BinaryExpression>(expr);
-    EXPECT_EQ(NodeType::NT_MUL, exp->getType());
+    EXPECT_EQ(OpType::OP_MUL, exp->getOpType());
 
     Expression* expLHand = exp->getLHand();
     IntLiteral* lHand = llvm::dyn_cast<IntLiteral>(expLHand);
@@ -249,7 +249,7 @@ TEST(TestBinary_expression, Polynomial)
 
     Expression* expr = ps.expressionParse();
     BinaryExpression* exp = llvm::dyn_cast<BinaryExpression>(expr);
-    EXPECT_EQ(NodeType::NT_PLUS, exp->getType());
+    EXPECT_EQ(OpType::OP_PLUS, exp->getOpType());
 
     Expression* expLHand = exp->getLHand();
     IntLiteral* lHand = llvm::dyn_cast<IntLiteral>(expLHand);
@@ -257,7 +257,7 @@ TEST(TestBinary_expression, Polynomial)
 
     Expression* expR = exp->getRHand();
     BinaryExpression* expRHand = llvm::dyn_cast<BinaryExpression>(expR);
-    EXPECT_EQ(NodeType::NT_MUL, expRHand->getType());
+    EXPECT_EQ(OpType::OP_MUL, expRHand->getOpType());
 
     Expression* expRLHand = expRHand->getLHand();
     IntLiteral* RLHand = llvm::dyn_cast<IntLiteral>(expRLHand);
