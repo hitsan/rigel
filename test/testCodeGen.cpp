@@ -7,12 +7,13 @@ using namespace rigel;
 
 TEST(TestCodeGen, IntGen)
 {
-    llvm::StringRef st = R"(1)";
+    llvm::StringRef st = "let a = 1";
     Lexer lx = Lexer(st);
     Parser ps = Parser(lx);
 
     auto exp = ps.parse();
     exp->codegen();
-    Expression* expression = new IntLiteral(1);
-    expression->codeGen();
+
+    std::string expection = R"(%1 = alloca i32, align 4
+                               store i32 1, i32* %1, align 4)";
 }
