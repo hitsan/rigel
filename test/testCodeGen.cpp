@@ -13,7 +13,7 @@ TEST(TestCodeGen, IntGen)
     auto let = new LetStatement(ident, integer);
  
     auto ret = codegen(let);
-    auto block = ret.getBlock();
+    auto inst = ret.getInstructions();
 
     std::string expection = R"(ret i32 1)";
 }
