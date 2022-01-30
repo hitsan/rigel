@@ -1,16 +1,15 @@
 # rigel
 
 ## How to build
-1. make build directry
-2. Excute cmake
-3. run build
-
-command
-
+### Build enviroment
+The follwowing commands make build container.
 ```
-cd /path to work directry
-mkdir build
-cd build
-cmake ..
-make
+cd script
+sh build_env.sh
+```
+### Build rigel
+The follwowing commands build rigel.
+```
+cd script
+sh build.sh
 ```
