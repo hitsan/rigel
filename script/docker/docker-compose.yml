@@ -1,7 +1,0 @@
-version: '3'
-services:
-  build:
-    image: make_rigel
-    volumes:
-    - ../../:/rigel
-    working_dir: /rigel/build
