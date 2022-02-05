@@ -50,6 +50,7 @@ RUN apt-get -y update \
  && apt-get -y  --no-install-recommends install \
     cmake \
     gcc \
+    git \
     g++ \
     make \
     zlib1g-dev \
