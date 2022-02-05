@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include <memory>
 #include "../include/rigel/Lexer.h"
-#define LENGTH(array) (sizeof(array) / sizeof(array[0]))
 using namespace rigel;
 
 TEST(TestIntLexer, lex)
@@ -9,7 +8,7 @@ TEST(TestIntLexer, lex)
     // preparation data
     llvm::StringRef expr = "let test = 1 + 2 * 3 / 4 \n return 0";
     Lexer lx = Lexer(expr);
-    Token test[] = {
+    Token tests[] = {
         Token(TokenType::LET, "let"),
         Token(TokenType::IDENT, "test"),
         Token(TokenType::ASSIGN, "="),
@@ -26,12 +25,10 @@ TEST(TestIntLexer, lex)
         Token(TokenType::EOI, ""),
     };
 
-    int testLength = LENGTH(test);
-    for(int i = 0; i < testLength; i++)
-    {
+    for(Token& test : tests) {
         TOKEN_PTR tok = lx.lex();
-        ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
-        ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
+        ASSERT_EQ(test.getLiteral(), tok->getLiteral());
+        ASSERT_EQ(test.getTokenType(), tok->getTokenType());
     }
 }
 
@@ -39,7 +36,7 @@ TEST(TestStringLexer, lex)
 {
     llvm::StringRef expr = R"(let test = "1 " + "" + "Pop"  +  "Virus")";
     Lexer lx = Lexer(expr);
-    Token test[] = {
+    Token tests[] = {
         Token(TokenType::LET, "let"),
         Token(TokenType::IDENT, "test"),
         Token(TokenType::ASSIGN, "="),
@@ -52,12 +49,10 @@ TEST(TestStringLexer, lex)
         Token(TokenType::STR, "Virus"),
     };
 
-    int testLength = LENGTH(test);
-    for(int i = 0; i < testLength; i++)
-    {
+    for(Token& test : tests) {
         TOKEN_PTR tok = lx.lex();
-        ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
-        ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
+        ASSERT_EQ(test.getLiteral(), tok->getLiteral());
+        ASSERT_EQ(test.getTokenType(), tok->getTokenType());
     }
 }
 
@@ -72,7 +67,7 @@ TEST(Illigal_String,lex)
 {
     llvm::StringRef expr = R"(let test = "1  +  "Virus")";
     Lexer lx = Lexer(expr);
-    Token test[] = {
+    Token tests[] = {
         Token(TokenType::LET, "let"),
         Token(TokenType::IDENT, "test"),
         Token(TokenType::ASSIGN, "="),
@@ -81,11 +76,9 @@ TEST(Illigal_String,lex)
         Token(TokenType::ILLEGAL,""),
     };
 
-    int testLength = LENGTH(test);
-    for(int i = 0; i < testLength; i++)
-    {
+    for(Token& test : tests) {
         TOKEN_PTR tok = lx.lex();
-        ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
-        ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
+        ASSERT_EQ(test.getLiteral(), tok->getLiteral());
+        ASSERT_EQ(test.getTokenType(), tok->getTokenType());
     }
 }
