@@ -46,6 +46,8 @@ RUN make -j 8 && make install
 
 # Build enviroment
 FROM ubuntu:20.04
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=Asia/Tokyo
 RUN apt-get -y update \
  && apt-get -y  --no-install-recommends install \
     cmake \
