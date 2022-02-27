@@ -22,7 +22,7 @@ using namespace rigel;
 TEST(returnInt, input_custom_value)
 {
     // ast
-    Expression* expr = new IntLiteral(1);
+    Expression* expr = new IntLiteral(2);
     ReturnStatement* retState = new ReturnStatement(expr);
 
     CodeGenerator* generator = new CodeGenerator();
@@ -31,4 +31,9 @@ TEST(returnInt, input_custom_value)
     struct stat buffer;
     int exist = stat("./test_bin/test.bc", &buffer);
     ASSERT_EQ(0, exist);
+
+    // 
+    int result = std::system("lli test_bin/test.bc");
+    result /= 256;
+    ASSERT_EQ(2, result);
 }

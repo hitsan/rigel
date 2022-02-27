@@ -25,7 +25,12 @@ void CodeGenerator::codeGen(ReturnStatement* retState)
                                                     llvmModule);
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", function);
     builder.SetInsertPoint(block);
-    llvm::Value* ret = builder.getInt32(0);
+
+    Expression* expr = retState->getExpression();
+    IntLiteral* getValue = (IntLiteral*)expr;
+    int val = getValue->getValue();
+    
+    llvm::Value* ret = builder.getInt32(val);
     builder.CreateRet(ret);
 
     std::error_code error_info;
