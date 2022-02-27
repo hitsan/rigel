@@ -1,27 +1,34 @@
 #include <stdlib.h>
 #include <gtest/gtest.h>
+#include <sys/stat.h>
 #include "../include/rigel/CodeGen.h"
 #include "../include/rigel/Ast.h"
 #include "../include/rigel/Lexer.h"
 #include "../include/rigel/Parser.h"
 using namespace rigel;
 
-// TEST(TestCodeGen, IntGen)
+// TEST(outputBitcode, outputBitcode)
 // {
-//     // test return 1
-//     Identifier ident("a");
-//     Expression* integer = new IntLiteral(1);
-//     auto let = new LetStatement(ident, integer);
- 
-//     auto ret = codegen(let);
-//     auto inst = ret.getInstructions();
+//     CodeGenerator* generator = new CodeGenerator();
+//     generator->codeGen();
 
-//     std::string expection = R"(ret i32 1)";
+//     struct stat buffer;
+//     int exist = stat("./test_bin/test.bc", &buffer);
+//     ASSERT_EQ(0, exist);
+
+//     // int result = system("lli test_bin/test.bc");
 // }
 
-TEST(TestCodeGen, NomalExitStatus)
+TEST(returnInt, input_custom_value)
 {
-    const char bin[] = "/rigel/test/bin/a.out";
-    int status = system(bin);
-    ASSERT_EQ(status, 0);
+    // ast
+    Expression* expr = new IntLiteral(1);
+    ReturnStatement* retState = new ReturnStatement(expr);
+
+    CodeGenerator* generator = new CodeGenerator();
+    generator->codeGen(retState);
+
+    struct stat buffer;
+    int exist = stat("./test_bin/test.bc", &buffer);
+    ASSERT_EQ(0, exist);
 }
