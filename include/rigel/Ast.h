@@ -2,6 +2,7 @@
 #define AST_H
 #include <string>
 #include "Token/Token.h"
+#include "llvm/IR/IRBuilder.h"
 #include "llvm/ADT/StringRef.h"
 #define EXPR_PTR std::unique_ptr<Expression>
 namespace rigel {
@@ -91,14 +92,15 @@ public:
 
 class ReturnStatement : public Expression
 {
+private:
+    llvm::IRBuilder<>* builder;
 protected:
     Expression* expression;
 public:
     ReturnStatement(Expression* expression) : Expression(NT_RET), expression(expression) {};
-    Expression* getExpression() { return expression; };
-    static bool classof(const Expression *expr) {
-        return expr->getType() == NT_RET;
-    }
+    Expression* getExpression();
+    bool classof(const Expression *expr);
+    void codeGen(llvm::IRBuilder<> *builder);
 };
 
 };

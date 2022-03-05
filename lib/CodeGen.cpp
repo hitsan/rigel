@@ -26,14 +26,9 @@ void CodeGenerator::codeGen(ReturnStatement* retState)
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", function);
     builder.SetInsertPoint(block);
 
-    Expression* expr = retState->getExpression();
-    IntLiteral* getValue = (IntLiteral*)expr;
-    int val = getValue->getValue();
-    
-    llvm::Value* ret = builder.getInt32(val);
-    builder.CreateRet(ret);
+    retState->codeGen(&builder);
 
-    std::error_code error_info;
-    llvm::raw_fd_ostream os("./test_bin/test.bc", error_info);
+    std::error_code errorInfo;
+    llvm::raw_fd_ostream os("./test_bin/test.bc", errorInfo);
     llvm::WriteBitcodeToFile(llvmModule, os);
 }
