@@ -10,7 +10,7 @@ CodeGenerator::CodeGenerator()
 
 }
 
-void CodeGenerator::codeGen(ReturnStatement* retState)
+void CodeGenerator::codeGen(Expression* expr)
 {
     llvm::LLVMContext context;
     llvm::IRBuilder<> builder(context);
@@ -26,7 +26,8 @@ void CodeGenerator::codeGen(ReturnStatement* retState)
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", function);
     builder.SetInsertPoint(block);
 
-    retState->codeGen(&builder);
+    ((ReturnStatement*)expr)->codeGen(&builder);
+    // ((BinaryExpression*)expr)->codeGen(&builder);
 
     std::error_code errorInfo;
     llvm::raw_fd_ostream os("./test_bin/test.bc", errorInfo);
