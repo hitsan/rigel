@@ -22,14 +22,13 @@ using namespace rigel;
 TEST(returnInt, input_custom_value)
 {
     // ast
-    Expression* expr = new IntLiteral(2);
-    ReturnStatement* retState = new ReturnStatement(expr);
-
+    Expression* twoLiteral = new IntLiteral(2);
+    ReturnStatement* returnState = new ReturnStatement(twoLiteral);
     CodeGenerator* generator = new CodeGenerator();
 
     // TODO
     // It is wrong to pass the expression to the generator.
-    generator->codeGen(retState);
+    generator->codeGen(returnState);
 
     struct stat buffer;
     int exist = stat("./test_bin/test.bc", &buffer);
@@ -46,10 +45,10 @@ TEST(binaryExpression, plus_int_value)
     // ast
     Expression* one = new IntLiteral(1);
     Expression* two = new IntLiteral(2);
-    BinaryExpression* binExpr = new BinaryExpression(OP_PLUS, one, two);
+    BinaryExpression* binaryExpression = new BinaryExpression(OP_PLUS, one, two);
 
     CodeGenerator* generator = new CodeGenerator();
-    generator->codeGen(binExpr);
+    generator->codeGen(binaryExpression);
 
     struct stat buffer;
     int exist = stat("./test_bin/test.bc", &buffer);

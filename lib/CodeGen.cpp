@@ -2,6 +2,7 @@
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/Bitcode/BitcodeWriter.h"
+#include "llvm/Support/Casting.h"
 #include "../include/rigel/CodeGen.h"
 using namespace rigel;
 
@@ -10,7 +11,7 @@ CodeGenerator::CodeGenerator()
 
 }
 
-void CodeGenerator::codeGen(Expression* expr)
+void CodeGenerator::codeGen(Expression* expression)
 {
     llvm::LLVMContext context;
     llvm::IRBuilder<> builder(context);
@@ -26,8 +27,23 @@ void CodeGenerator::codeGen(Expression* expr)
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", function);
     builder.SetInsertPoint(block);
 
-    ((ReturnStatement*)expr)->codeGen(&builder);
-    // ((BinaryExpression*)expr)->codeGen(&builder);
+    auto type = expression->getType();
+    switch (type) {
+        case NT_BIN:
+            {
+                BinaryExpression* binariyExpression = llvm::dyn_cast<BinaryExpression>(expression);
+                binariyExpression->codeGen(&builder);
+            }
+            break;
+        case NT_RET:
+            {
+                ReturnStatement* returnExpression = llvm::dyn_cast<ReturnStatement>(expression);
+                returnExpression->codeGen(&builder);
+            }
+            break;
+        default:
+            break;
+    }
 
     std::error_code errorInfo;
     llvm::raw_fd_ostream os("./test_bin/test.bc", errorInfo);

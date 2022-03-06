@@ -37,8 +37,8 @@ private:
 public:
     IntLiteral(int value) : Expression(NT_INT), value(value) {};
     int getValue() { return this->value; };
-    static bool classof(const Expression *expr) {
-        return expr->getType() == NT_INT;
+    static bool classof(const Expression *expression) {
+        return expression->getType() == NT_INT;
     }
 };
 
@@ -49,8 +49,8 @@ private:
 public:
     StrLiteral(std::string value) : Expression(NT_STR), value(value) {};
     std::string getValue() { return this->value; };
-    static bool classof(const Expression *expr) {
-        return expr->getType() == NT_STR;
+    static bool classof(const Expression *expression) {
+        return expression->getType() == NT_STR;
     }
 };
 
@@ -85,9 +85,7 @@ public:
     Expression* getLHand() { return lHand; };
     Expression* getRHand() { return rHand; };
     OpType getOpType() { return opType; };
-    static bool classof(const Expression *expr) {
-        return expr->getType() == NT_BIN;
-    }
+    static bool classof(const Expression *expression);
     void codeGen(llvm::IRBuilder<> *builder);
 };
 
@@ -100,7 +98,7 @@ protected:
 public:
     ReturnStatement(Expression* expression) : Expression(NT_RET), expression(expression) {};
     Expression* getExpression();
-    bool classof(const Expression *expr);
+    static bool classof(const Expression *expression);
     void codeGen(llvm::IRBuilder<> *builder);
 };
 
