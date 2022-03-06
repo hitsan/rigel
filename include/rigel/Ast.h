@@ -88,6 +88,7 @@ public:
     static bool classof(const Expression *expr) {
         return expr->getType() == NT_BIN;
     }
+    void codeGen(llvm::IRBuilder<> *builder);
 };
 
 class ReturnStatement : public Expression

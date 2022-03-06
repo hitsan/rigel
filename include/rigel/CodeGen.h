@@ -10,7 +10,7 @@ class CodeGenerator
 {
 public:
     CodeGenerator();
-    void codeGen(ReturnStatement* retState);
+    void codeGen(Expression* retState);
 };
 
 };

@@ -8,6 +8,19 @@ Expression* ReturnStatement::getExpression()
     return this->expression;
 }
 
+void BinaryExpression::codeGen(llvm::IRBuilder<> *builder)
+{
+    IntLiteral* lIntLiteral = (IntLiteral*)lHand;
+    IntLiteral* rIntLiteral = (IntLiteral*)rHand;
+    int lIntValue = lIntLiteral->getValue();
+    int rIntValue = rIntLiteral->getValue();
+    llvm::Value* lValue = builder->getInt32(lIntValue);
+    llvm::Value* rValue = builder->getInt32(rIntValue);
+
+    builder->CreateAdd(lValue, rValue, "addtmp");
+    
+}
+
 bool ReturnStatement::classof(const Expression *expr)
 {
     return expr->getType() == NT_RET;

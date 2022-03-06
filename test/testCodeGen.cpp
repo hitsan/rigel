@@ -26,6 +26,9 @@ TEST(returnInt, input_custom_value)
     ReturnStatement* retState = new ReturnStatement(expr);
 
     CodeGenerator* generator = new CodeGenerator();
+
+    // TODO
+    // It is wrong to pass the expression to the generator.
     generator->codeGen(retState);
 
     struct stat buffer;
@@ -36,4 +39,19 @@ TEST(returnInt, input_custom_value)
     int result = std::system("lli test_bin/test.bc");
     result /= 256;
     ASSERT_EQ(2, result);
+}
+
+TEST(binaryExpression, plus_int_value)
+{
+    // ast
+    Expression* one = new IntLiteral(1);
+    Expression* two = new IntLiteral(2);
+    BinaryExpression* binExpr = new BinaryExpression(OP_PLUS, one, two);
+
+    CodeGenerator* generator = new CodeGenerator();
+    generator->codeGen(binExpr);
+
+    struct stat buffer;
+    int exist = stat("./test_bin/test.bc", &buffer);
+    ASSERT_EQ(0, exist);
 }
