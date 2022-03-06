@@ -8,6 +8,10 @@ Expression* ReturnStatement::getExpression()
     return this->expression;
 }
 
+bool BinaryExpression::classof(const Expression *expression) {
+    return expression->getType() == NT_BIN;
+}
+
 void BinaryExpression::codeGen(llvm::IRBuilder<> *builder)
 {
     IntLiteral* lIntLiteral = (IntLiteral*)lHand;
@@ -18,12 +22,11 @@ void BinaryExpression::codeGen(llvm::IRBuilder<> *builder)
     llvm::Value* rValue = builder->getInt32(rIntValue);
 
     builder->CreateAdd(lValue, rValue, "addtmp");
-    
 }
 
-bool ReturnStatement::classof(const Expression *expr)
+bool ReturnStatement::classof(const Expression *expression)
 {
-    return expr->getType() == NT_RET;
+    return expression->getType() == NT_RET;
 }
 
 void ReturnStatement::codeGen(llvm::IRBuilder<> *builder)
