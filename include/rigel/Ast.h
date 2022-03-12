@@ -4,8 +4,12 @@
 #include "Token/Token.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/ADT/StringRef.h"
+#include "Ast.h"
+#include "CodeGen.h"
 #define EXPR_PTR std::unique_ptr<Expression>
 namespace rigel {
+
+class CodeGenerator;
 
 enum NodeType
 {
@@ -28,7 +32,8 @@ protected:
 public:
     Expression(NodeType type) : type(type) {};
     NodeType getType() const;
-    void walk(llvm::IRBuilder<> *builder);
+    void walk(CodeGenerator* generator);
+    // void walk(llvm::IRBuilder<> *builder);
 };
 
 class IntLiteral : public Expression
@@ -87,7 +92,7 @@ public:
     Expression* getRHand() { return rHand; };
     OpType getOpType() { return opType; };
     static bool classof(const Expression *expression);
-    void walk(llvm::IRBuilder<> *builder);
+    void walk(CodeGenerator* generator);
 };
 
 class ReturnStatement : public Expression
@@ -100,7 +105,7 @@ public:
     ReturnStatement(Expression* expression) : Expression(NT_RET), expression(expression) {};
     Expression* getExpression();
     static bool classof(const Expression *expression);
-    void walk(llvm::IRBuilder<> *builder);
+    void walk(CodeGenerator* generator);
 };
 
 };

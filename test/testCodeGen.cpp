@@ -19,16 +19,39 @@ using namespace rigel;
 //     // int result = system("lli test_bin/test.bc");
 // }
 
+// TEST(returnInt, input_custom_value)
+// {
+//     // ast
+//     Expression* twoLiteral = new IntLiteral(2);
+//     ReturnStatement* returnState = new ReturnStatement(twoLiteral);
+//     CodeGenerator* generator = new CodeGenerator();
+
+//     // TODO
+//     // It is wrong to pass the expression to the generator.
+//     generator->codeGen(returnState);
+
+//     struct stat buffer;
+//     int exist = stat("./test_bin/test.bc", &buffer);
+//     ASSERT_EQ(0, exist);
+
+//     // 
+//     int result = std::system("lli test_bin/test.bc");
+//     result /= 256;
+//     ASSERT_EQ(2, result);
+// }
+
 TEST(returnInt, input_custom_value)
 {
     // ast
     Expression* twoLiteral = new IntLiteral(2);
-    ReturnStatement* returnState = new ReturnStatement(twoLiteral);
+    Expression* returnState = new ReturnStatement(twoLiteral);
     CodeGenerator* generator = new CodeGenerator();
 
     // TODO
     // It is wrong to pass the expression to the generator.
     generator->codeGen(returnState);
+
+    returnState->walk(generator);
 
     struct stat buffer;
     int exist = stat("./test_bin/test.bc", &buffer);
