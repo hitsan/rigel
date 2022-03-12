@@ -8,28 +8,38 @@ using namespace rigel;
 
 CodeGenerator::CodeGenerator()
 {
-
-}
-
-void CodeGenerator::codeGen(Expression* expression)
-{
     llvm::LLVMContext context;
-    llvm::IRBuilder<> builder(context);
-    llvm::Module llvmModule("Module", context);
+    this->builder = new llvm::IRBuilder<>(context);
+    this->llvmModule = new llvm::Module("Module", context);
 
     std::string name = "main";
-    llvm::FunctionType* retType = llvm::FunctionType::get(builder.getInt32Ty(), false);
+    llvm::FunctionType* retType = llvm::FunctionType::get(builder->getInt32Ty(), false);
     llvm::Function* function = llvm::Function::Create(
                                                     retType, 
                                                     llvm::Function::ExternalLinkage,
                                                     name,
                                                     llvmModule);
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", function);
-    builder.SetInsertPoint(block);
+    builder->SetInsertPoint(block);
+}
 
-    expression->walk(&builder);
+llvm::IRBuilder<>* CodeGenerator::getBuilder()
+{
+    return builder;
+}
+
+void CodeGenerator::codeGen(Expression* expression)
+{
+    expression->walk(this);
 
     std::error_code errorInfo;
     llvm::raw_fd_ostream os("./test_bin/test.bc", errorInfo);
-    llvm::WriteBitcodeToFile(llvmModule, os);
+    llvm::WriteBitcodeToFile(*llvmModule, os);
+}
+
+llvm::Value* CodeGenerator::codeGen(IntLiteral* intLiteral)
+{
+    int intValue = intLiteral->getValue();
+    llvm::Value* value = builder->getInt32(intValue);
+    return value;
 }
