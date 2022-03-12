@@ -27,7 +27,8 @@ protected:
     const NodeType type;
 public:
     Expression(NodeType type) : type(type) {};
-    NodeType getType() const { return type; };
+    NodeType getType() const;
+    void walk(llvm::IRBuilder<> *builder);
 };
 
 class IntLiteral : public Expression
@@ -86,7 +87,7 @@ public:
     Expression* getRHand() { return rHand; };
     OpType getOpType() { return opType; };
     static bool classof(const Expression *expression);
-    void codeGen(llvm::IRBuilder<> *builder);
+    void walk(llvm::IRBuilder<> *builder);
 };
 
 class ReturnStatement : public Expression
@@ -99,7 +100,7 @@ public:
     ReturnStatement(Expression* expression) : Expression(NT_RET), expression(expression) {};
     Expression* getExpression();
     static bool classof(const Expression *expression);
-    void codeGen(llvm::IRBuilder<> *builder);
+    void walk(llvm::IRBuilder<> *builder);
 };
 
 };

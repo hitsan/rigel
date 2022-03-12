@@ -8,11 +8,37 @@ Expression* ReturnStatement::getExpression()
     return this->expression;
 }
 
+NodeType Expression::getType() const
+{
+    return type;
+}
+
+void Expression::walk(llvm::IRBuilder<> *builder)
+{
+    auto type = this->getType();
+    switch (type) {
+        case NT_BIN:
+            {
+                BinaryExpression* binariyExpression = llvm::dyn_cast<BinaryExpression>(this);
+                binariyExpression->walk(builder);
+            }
+            break;
+        case NT_RET:
+            {
+                ReturnStatement* returnExpression = llvm::dyn_cast<ReturnStatement>(this);
+                returnExpression->walk(builder);
+            }
+            break;
+        default:
+            break;
+    }
+}
+
 bool BinaryExpression::classof(const Expression *expression) {
     return expression->getType() == NT_BIN;
 }
 
-void BinaryExpression::codeGen(llvm::IRBuilder<> *builder)
+void BinaryExpression::walk(llvm::IRBuilder<> *builder)
 {
     IntLiteral* lIntLiteral = (IntLiteral*)lHand;
     IntLiteral* rIntLiteral = (IntLiteral*)rHand;
@@ -29,7 +55,7 @@ bool ReturnStatement::classof(const Expression *expression)
     return expression->getType() == NT_RET;
 }
 
-void ReturnStatement::codeGen(llvm::IRBuilder<> *builder)
+void ReturnStatement::walk(llvm::IRBuilder<> *builder)
 {
     IntLiteral* retrunInt = (IntLiteral*)expression;
     int val = retrunInt->getValue();

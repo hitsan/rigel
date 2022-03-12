@@ -27,23 +27,7 @@ void CodeGenerator::codeGen(Expression* expression)
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", function);
     builder.SetInsertPoint(block);
 
-    auto type = expression->getType();
-    switch (type) {
-        case NT_BIN:
-            {
-                BinaryExpression* binariyExpression = llvm::dyn_cast<BinaryExpression>(expression);
-                binariyExpression->codeGen(&builder);
-            }
-            break;
-        case NT_RET:
-            {
-                ReturnStatement* returnExpression = llvm::dyn_cast<ReturnStatement>(expression);
-                returnExpression->codeGen(&builder);
-            }
-            break;
-        default:
-            break;
-    }
+    expression->walk(&builder);
 
     std::error_code errorInfo;
     llvm::raw_fd_ostream os("./test_bin/test.bc", errorInfo);
