@@ -6,26 +6,22 @@
 #include "../include/rigel/CodeGen.h"
 using namespace rigel;
 
-CodeGenerator::CodeGenerator()
+CodeGenerator::CodeGenerator(llvm::Module *llvmModule) : llvmModule(llvmModule), builder(llvmModule->getContext())
 {
-    llvm::LLVMContext context;
-    this->builder = new llvm::IRBuilder<>(context);
-    this->llvmModule = new llvm::Module("Module", context);
-
-    std::string name = "main";
-    llvm::FunctionType* retType = llvm::FunctionType::get(builder->getInt32Ty(), false);
+    const std::string name = "main";
+    llvm::FunctionType* retType = llvm::FunctionType::get(builder.getInt32Ty(), false);
     llvm::Function* function = llvm::Function::Create(
                                                     retType, 
                                                     llvm::Function::ExternalLinkage,
                                                     name,
                                                     llvmModule);
-    llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", function);
-    builder->SetInsertPoint(block);
+    llvm::BasicBlock* block = llvm::BasicBlock::Create(llvmModule->getContext(), "entry", function);
+    builder.SetInsertPoint(block);
 }
 
 llvm::IRBuilder<>* CodeGenerator::getBuilder()
 {
-    return builder;
+    return &builder;
 }
 
 void CodeGenerator::codeGen(Expression* expression)
@@ -39,7 +35,24 @@ void CodeGenerator::codeGen(Expression* expression)
 
 llvm::Value* CodeGenerator::codeGen(IntLiteral* intLiteral)
 {
+    llvm::BasicBlock *parent = builder.GetInsertBlock();
+    builder.SetInsertPoint(parent);
     int intValue = intLiteral->getValue();
-    llvm::Value* value = builder->getInt32(intValue);
+    llvm::Value* value = builder.getInt32(intValue);
     return value;
+}
+
+void CodeGenerator::createAdd(IntLiteral* lIntLiteral, IntLiteral* rIntLiteral)
+{
+    int lIntValue = lIntLiteral->getValue();
+    int rIntValue = rIntLiteral->getValue();
+    llvm::Value* lValue = builder.getInt32(lIntValue);
+    llvm::Value* rValue = builder.getInt32(rIntValue);
+
+    builder.CreateAdd(lValue, rValue, "addtmp");
+}
+
+void CodeGenerator::createReturn(llvm::Value* value)
+{
+    builder.CreateRet(value);
 }

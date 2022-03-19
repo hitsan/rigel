@@ -15,14 +15,15 @@ class IntLiteral;
 class CodeGenerator
 {
 private:
-    llvm::IRBuilder<> *builder;
+    llvm::IRBuilder<> builder;
     llvm::Module *llvmModule;
 public:
-    CodeGenerator();
+    CodeGenerator(llvm::Module *llvmModule);
     void codeGen(Expression* expression);
     llvm::Value* codeGen(IntLiteral* intLiteral);
     llvm::IRBuilder<>* getBuilder();
-    llvm::Module* getModule();
+    void createAdd(IntLiteral* lIntLiteral, IntLiteral* rIntLiteral);
+    void createReturn(llvm::Value* value);
 };
 
 };

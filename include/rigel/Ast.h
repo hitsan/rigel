@@ -42,10 +42,11 @@ private:
     int value;
 public:
     IntLiteral(int value) : Expression(NT_INT), value(value) {};
-    int getValue() { return this->value; };
+    int getValue();
     static bool classof(const Expression *expression) {
         return expression->getType() == NT_INT;
     }
+    void walk(CodeGenerator* generator);
 };
 
 class StrLiteral : public Expression
@@ -88,9 +89,9 @@ protected:
     Expression* rHand;
 public:
     BinaryExpression(OpType opType, Expression* lHand, Expression* rHand) : Expression(NT_BIN), opType(opType), lHand(lHand), rHand(rHand) {};
-    Expression* getLHand() { return lHand; };
-    Expression* getRHand() { return rHand; };
-    OpType getOpType() { return opType; };
+    Expression* getLHand();
+    Expression* getRHand();
+    OpType getOpType();
     static bool classof(const Expression *expression);
     void walk(CodeGenerator* generator);
 };

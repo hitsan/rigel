@@ -1,3 +1,4 @@
+#include <iostream>
 #include "../include/rigel/Ast.h"
 #include "llvm/IR/IRBuilder.h"
 
@@ -34,22 +35,34 @@ void Expression::walk(CodeGenerator* generator)
     }
 }
 
+Expression* BinaryExpression::getLHand() { return lHand; };
+Expression* BinaryExpression::getRHand() { return rHand; };
+OpType BinaryExpression::getOpType() { return opType; };
+
+int IntLiteral::getValue() { return this->value; };
+void IntLiteral::walk(CodeGenerator* generator)
+{
+    // llvm::IRBuilder<>* builder = generator->getBuilder();
+}
+
 bool BinaryExpression::classof(const Expression *expression) {
     return expression->getType() == NT_BIN;
 }
 
 void BinaryExpression::walk(CodeGenerator* generator)
 {
-    llvm::IRBuilder<>* builder =  generator->getBuilder();
+    // llvm::IRBuilder<>* builder =  generator->getBuilder();
 
     IntLiteral* lIntLiteral = (IntLiteral*)lHand;
     IntLiteral* rIntLiteral = (IntLiteral*)rHand;
-    int lIntValue = lIntLiteral->getValue();
-    int rIntValue = rIntLiteral->getValue();
-    llvm::Value* lValue = builder->getInt32(lIntValue);
-    llvm::Value* rValue = builder->getInt32(rIntValue);
+    generator->createAdd(lIntLiteral, rIntLiteral);
 
-    builder->CreateAdd(lValue, rValue, "addtmp");
+    // int lIntValue = lIntLiteral->getValue();
+    // int rIntValue = rIntLiteral->getValue();
+    // llvm::Value* lValue = builder->getInt32(lIntValue);
+    // llvm::Value* rValue = builder->getInt32(rIntValue);
+
+    // builder->CreateAdd(lValue, rValue, "addtmp");
 }
 
 bool ReturnStatement::classof(const Expression *expression)
@@ -59,11 +72,8 @@ bool ReturnStatement::classof(const Expression *expression)
 
 void ReturnStatement::walk(CodeGenerator* generator)
 {
-    llvm::IRBuilder<>* builder =  generator->getBuilder();
-
-    IntLiteral* retrunInt = (IntLiteral*)expression;
-    int val = retrunInt->getValue();
-    llvm::Value* retrunValue = builder->getInt32(val);
-
-    builder->CreateRet(retrunValue);
+    Expression* expression = this->getExpression();
+    IntLiteral* intLiteral = llvm::dyn_cast<IntLiteral>(expression);
+    llvm::Value* value = generator->codeGen(intLiteral);
+    generator->createReturn(value);
 }
