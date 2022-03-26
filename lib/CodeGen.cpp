@@ -35,8 +35,6 @@ void CodeGenerator::codeGen(Expression* expression)
 
 llvm::Value* CodeGenerator::codeGen(IntLiteral* intLiteral)
 {
-    llvm::BasicBlock *parent = builder.GetInsertBlock();
-    builder.SetInsertPoint(parent);
     int intValue = intLiteral->getValue();
     llvm::Value* value = builder.getInt32(intValue);
     return value;

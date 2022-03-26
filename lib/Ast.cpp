@@ -51,18 +51,9 @@ bool BinaryExpression::classof(const Expression *expression) {
 
 void BinaryExpression::walk(CodeGenerator* generator)
 {
-    // llvm::IRBuilder<>* builder =  generator->getBuilder();
-
     IntLiteral* lIntLiteral = (IntLiteral*)lHand;
     IntLiteral* rIntLiteral = (IntLiteral*)rHand;
     generator->createAdd(lIntLiteral, rIntLiteral);
-
-    // int lIntValue = lIntLiteral->getValue();
-    // int rIntValue = rIntLiteral->getValue();
-    // llvm::Value* lValue = builder->getInt32(lIntValue);
-    // llvm::Value* rValue = builder->getInt32(rIntValue);
-
-    // builder->CreateAdd(lValue, rValue, "addtmp");
 }
 
 bool ReturnStatement::classof(const Expression *expression)
