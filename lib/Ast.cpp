@@ -16,23 +16,7 @@ NodeType Expression::getType() const
 
 void Expression::walk(CodeGenerator* generator)
 {
-    auto type = this->getType();
-    switch (type) {
-        case NT_BIN:
-            {
-                BinaryExpression* binariyExpression = llvm::dyn_cast<BinaryExpression>(this);
-                binariyExpression->walk(generator);
-            }
-            break;
-        case NT_RET:
-            {
-                ReturnStatement* returnExpression = llvm::dyn_cast<ReturnStatement>(this);
-                returnExpression->walk(generator);
-            }
-            break;
-        default:
-            break;
-    }
+    this->walk(generator);
 }
 
 Expression* BinaryExpression::getLHand() { return lHand; };

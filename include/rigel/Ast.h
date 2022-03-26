@@ -32,8 +32,7 @@ protected:
 public:
     Expression(NodeType type) : type(type) {};
     NodeType getType() const;
-    void walk(CodeGenerator* generator);
-    // void walk(llvm::IRBuilder<> *builder);
+    virtual void walk(CodeGenerator* generator);
 };
 
 class IntLiteral : public Expression
