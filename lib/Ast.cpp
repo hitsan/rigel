@@ -28,8 +28,8 @@ bool BinaryExpression::classof(const Expression *expression) {
 
 llvm::Value* BinaryExpression::walk(CodeGenerator* generator)
 {
-    IntLiteral* lIntLiteral = (IntLiteral*)lHand;
-    IntLiteral* rIntLiteral = (IntLiteral*)rHand;
+    llvm::Value * lIntLiteral = lHand->walk(generator);
+    llvm::Value * rIntLiteral = rHand->walk(generator);
     llvm::Value* expressionValue;
     const OpType type = getOpType();
     switch (type)

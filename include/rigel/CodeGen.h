@@ -25,8 +25,8 @@ public:
     llvm::Value* codeGen(IntLiteral* intLiteral);
     llvm::IRBuilder<>* getBuilder();
     llvm::Value* createInteger(IntLiteral* IntLiteral);
-    llvm::Value* createAdd(IntLiteral* lIntLiteral, IntLiteral* rIntLiteral);
-    llvm::Value* createMul(IntLiteral* lIntLiteral, IntLiteral* rIntLiteral);
+    llvm::Value* createAdd(llvm::Value* lIntLiteral, llvm::Value* rIntLiteral);
+    llvm::Value* createMul(llvm::Value* lIntLiteral, llvm::Value* rIntLiteral);
     void createReturn(llvm::Value* value);
 };
 

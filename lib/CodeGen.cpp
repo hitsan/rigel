@@ -38,24 +38,14 @@ llvm::Value* CodeGenerator::createInteger(IntLiteral* IntLiteral)
     return intValue;
 }
 
-llvm::Value* CodeGenerator::createAdd(IntLiteral* lIntLiteral, IntLiteral* rIntLiteral)
+llvm::Value* CodeGenerator::createAdd(llvm::Value* lIntLiteral, llvm::Value* rIntLiteral)
 {
-    int lIntValue = lIntLiteral->getValue();
-    int rIntValue = rIntLiteral->getValue();
-    llvm::Value* lValue = builder.getInt32(lIntValue);
-    llvm::Value* rValue = builder.getInt32(rIntValue);
-
-    return builder.CreateAdd(lValue, rValue, "addtmp");
+    return builder.CreateAdd(lIntLiteral, rIntLiteral, "addtmp");
 }
 
-llvm::Value* CodeGenerator::createMul(IntLiteral* lIntLiteral, IntLiteral* rIntLiteral)
+llvm::Value* CodeGenerator::createMul(llvm::Value* lIntLiteral, llvm::Value* rIntLiteral)
 {
-    int lIntValue = lIntLiteral->getValue();
-    int rIntValue = rIntLiteral->getValue();
-    llvm::Value* lValue = builder.getInt32(lIntValue);
-    llvm::Value* rValue = builder.getInt32(rIntValue);
-
-    return builder.CreateMul(lValue, rValue, "addtmp");
+    return builder.CreateMul(lIntLiteral, rIntLiteral, "addtmp");
 }
 
 void CodeGenerator::createReturn(llvm::Value* value)
