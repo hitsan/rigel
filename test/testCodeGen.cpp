@@ -1,27 +1,82 @@
 #include <stdlib.h>
 #include <gtest/gtest.h>
+#include <sys/stat.h>
 #include "../include/rigel/CodeGen.h"
 #include "../include/rigel/Ast.h"
 #include "../include/rigel/Lexer.h"
 #include "../include/rigel/Parser.h"
 using namespace rigel;
 
-// TEST(TestCodeGen, IntGen)
-// {
-//     // test return 1
-//     Identifier ident("a");
-//     Expression* integer = new IntLiteral(1);
-//     auto let = new LetStatement(ident, integer);
- 
-//     auto ret = codegen(let);
-//     auto inst = ret.getInstructions();
-
-//     std::string expection = R"(ret i32 1)";
-// }
-
-TEST(TestCodeGen, NomalExitStatus)
+class TestExpression : public ::testing::Test
 {
-    const char bin[] = "/rigel/test/bin/a.out";
-    int status = system(bin);
-    ASSERT_EQ(status, 0);
+protected:
+    Expression* inum[10];
+
+    llvm::LLVMContext context;
+    llvm::Module *llvmModule = new llvm::Module("Module", context);
+    CodeGenerator* generator = new CodeGenerator(llvmModule);
+
+    struct stat buffer;
+    int exist;
+
+    virtual void SetUp()
+    {
+        for(int i = 0; i < 10; i++)
+        {
+            inum[i] = new IntLiteral(i);
+        }
+        exist = stat("./test_bin/test.bc", &buffer);
+        if(!exist) unlink("./test_bin/test.bc");
+    }
+
+    void removeBC()
+    {
+        exist = stat("./test_bin/test.bc", &buffer);
+        if(!exist) unlink("./test_bin/test.bc");
+    }
+
+};
+
+TEST_F(TestExpression, return_int_value)
+{
+    Statement* returnState = new ReturnStatement(inum[8]);
+    generator->codeGen(returnState);
+
+    int result = std::system("lli test_bin/test.bc");
+    result /= 256;
+    ASSERT_EQ(8, result);
+}
+
+TEST_F(TestExpression, return_plus_expression)
+{
+    Expression* binaryExpression = new BinaryExpression(OP_PLUS, inum[1], inum[2]);
+    Statement* returnState = new ReturnStatement(binaryExpression);
+    generator->codeGen(returnState);
+
+    int result = std::system("lli test_bin/test.bc");
+    result /= 256;
+    ASSERT_EQ(3, result);
+}
+
+TEST_F(TestExpression, return_mul_expression)
+{
+    Expression* binaryExpression = new BinaryExpression(OP_MUL, inum[3], inum[5]);
+    Statement* returnState = new ReturnStatement(binaryExpression);
+    generator->codeGen(returnState);
+
+    int result = std::system("lli test_bin/test.bc");
+    result /= 256;
+    ASSERT_EQ(15, result);
+}
+
+TEST_F(TestExpression, return_polynomial)
+{
+    Expression* mulExpression = new BinaryExpression(OP_MUL, inum[3], inum[5]);
+    Expression* addExpression = new BinaryExpression(OP_PLUS, mulExpression, inum[2]);
+    Statement* returnState = new ReturnStatement(addExpression);
+    generator->codeGen(returnState);
+
+    int result = std::system("lli test_bin/test.bc");
+    result /= 256;
+    ASSERT_EQ(17, result);
 }

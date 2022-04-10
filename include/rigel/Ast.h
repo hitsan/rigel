@@ -2,9 +2,14 @@
 #define AST_H
 #include <string>
 #include "Token/Token.h"
+#include "llvm/IR/IRBuilder.h"
 #include "llvm/ADT/StringRef.h"
+#include "Ast.h"
+#include "CodeGen.h"
 #define EXPR_PTR std::unique_ptr<Expression>
 namespace rigel {
+
+class CodeGenerator;
 
 enum NodeType
 {
@@ -12,6 +17,11 @@ enum NodeType
     NT_INT,
     NT_STR,
     NT_RET,
+};
+
+enum StatementType
+{
+    RET,
 };
 
 enum OpType
@@ -26,7 +36,8 @@ protected:
     const NodeType type;
 public:
     Expression(NodeType type) : type(type) {};
-    NodeType getType() const { return type; };
+    NodeType getType() const;
+    virtual llvm::Value* walk(CodeGenerator* generator);
 };
 
 class IntLiteral : public Expression
@@ -35,10 +46,11 @@ private:
     int value;
 public:
     IntLiteral(int value) : Expression(NT_INT), value(value) {};
-    int getValue() { return this->value; };
-    static bool classof(const Expression *expr) {
-        return expr->getType() == NT_INT;
+    int getValue();
+    static bool classof(const Expression *expression) {
+        return expression->getType() == NT_INT;
     }
+    llvm::Value* walk(CodeGenerator* generator);
 };
 
 class StrLiteral : public Expression
@@ -48,8 +60,8 @@ private:
 public:
     StrLiteral(std::string value) : Expression(NT_STR), value(value) {};
     std::string getValue() { return this->value; };
-    static bool classof(const Expression *expr) {
-        return expr->getType() == NT_STR;
+    static bool classof(const Expression *expression) {
+        return expression->getType() == NT_STR;
     }
 };
 
@@ -81,24 +93,32 @@ protected:
     Expression* rHand;
 public:
     BinaryExpression(OpType opType, Expression* lHand, Expression* rHand) : Expression(NT_BIN), opType(opType), lHand(lHand), rHand(rHand) {};
-    Expression* getLHand() { return lHand; };
-    Expression* getRHand() { return rHand; };
-    OpType getOpType() { return opType; };
-    static bool classof(const Expression *expr) {
-        return expr->getType() == NT_BIN;
-    }
+    Expression* getLHand();
+    Expression* getRHand();
+    OpType getOpType();
+    static bool classof(const Expression *expression);
+    llvm::Value* walk(CodeGenerator* generator);
 };
 
-class ReturnStatement : public Expression
+class Statement
+{
+protected:
+    const StatementType type;
+public:
+    Statement(StatementType type) : type(type) {};
+    // StatementType getType() const;
+    virtual Expression* getExpression() = 0;
+    // virtual void walk(CodeGenerator* generator);
+};
+
+class ReturnStatement : public Statement
 {
 protected:
     Expression* expression;
 public:
-    ReturnStatement(Expression* expression) : Expression(NT_RET), expression(expression) {};
-    Expression* getExpression() { return expression; };
-    static bool classof(const Expression *expr) {
-        return expr->getType() == NT_RET;
-    }
+    ReturnStatement(Expression* expression) : Statement(RET), expression(expression) {};
+    Expression* getExpression();
+    // void walk(CodeGenerator* generator);
 };
 
 };
