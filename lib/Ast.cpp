@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/rigel/Ast.h"
+#include "include/rigel/Ast.h"
 #include "llvm/IR/IRBuilder.h"
 
 using namespace rigel;

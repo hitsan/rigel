@@ -1,9 +1,9 @@
 #include <typeinfo>
 #include <gtest/gtest.h>
 #include "llvm/Support/Casting.h"
-#include "../include/rigel/Lexer.h"
-#include "../include/rigel/Parser.h"
-#include "../include/rigel/Ast.h"
+#include "include/rigel/Lexer.h"
+#include "include/rigel/Parser.h"
+#include "include/rigel/Ast.h"
 #define LENGTH(array) (sizeof(array) / sizeof(array[0]))
 #define LEN_NUM_ARR 11
 #define LEN_STR_ARR 11

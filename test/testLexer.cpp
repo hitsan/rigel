@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <memory>
-#include "../include/rigel/Lexer.h"
+#include "include/rigel/Lexer.h"
 using namespace rigel;
 
 TEST(TestIntLexer, lex)

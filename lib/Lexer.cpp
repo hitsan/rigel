@@ -1,7 +1,7 @@
 #include <memory>
 #include "llvm/Support/raw_ostream.h"
-#include "../include/rigel/Lexer.h"
-#include "../include/rigel/Token/Declarator.h"
+#include "include/rigel/Lexer.h"
+#include "include/rigel/Token/Declarator.h"
 using namespace rigel;
 
 Lexer::Lexer(const llvm::StringRef &code)
