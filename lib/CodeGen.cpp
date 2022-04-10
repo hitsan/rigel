@@ -48,6 +48,16 @@ llvm::Value* CodeGenerator::createAdd(IntLiteral* lIntLiteral, IntLiteral* rIntL
     return builder.CreateAdd(lValue, rValue, "addtmp");
 }
 
+llvm::Value* CodeGenerator::createMul(IntLiteral* lIntLiteral, IntLiteral* rIntLiteral)
+{
+    int lIntValue = lIntLiteral->getValue();
+    int rIntValue = rIntLiteral->getValue();
+    llvm::Value* lValue = builder.getInt32(lIntValue);
+    llvm::Value* rValue = builder.getInt32(rIntValue);
+
+    return builder.CreateMul(lValue, rValue, "addtmp");
+}
+
 void CodeGenerator::createReturn(llvm::Value* value)
 {
     builder.CreateRet(value);

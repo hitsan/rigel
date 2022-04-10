@@ -26,6 +26,7 @@ public:
     llvm::IRBuilder<>* getBuilder();
     llvm::Value* createInteger(IntLiteral* IntLiteral);
     llvm::Value* createAdd(IntLiteral* lIntLiteral, IntLiteral* rIntLiteral);
+    llvm::Value* createMul(IntLiteral* lIntLiteral, IntLiteral* rIntLiteral);
     void createReturn(llvm::Value* value);
 };
 

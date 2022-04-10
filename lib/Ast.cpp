@@ -30,7 +30,21 @@ llvm::Value* BinaryExpression::walk(CodeGenerator* generator)
 {
     IntLiteral* lIntLiteral = (IntLiteral*)lHand;
     IntLiteral* rIntLiteral = (IntLiteral*)rHand;
-    return generator->createAdd(lIntLiteral, rIntLiteral);
+    llvm::Value* expressionValue;
+    const OpType type = getOpType();
+    switch (type)
+    {
+    case OP_PLUS:
+        expressionValue = generator->createAdd(lIntLiteral, rIntLiteral);
+        break;
+    case OP_MUL:
+        expressionValue = generator->createMul(lIntLiteral, rIntLiteral);
+        break;
+    default:
+        expressionValue = NULL;
+        break;
+    }
+    return expressionValue;
 }
 
 Expression* ReturnStatement::getExpression()

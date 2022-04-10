@@ -55,22 +55,27 @@ TEST(binaryExpression, return_plus_expression)
     ASSERT_EQ(3, result);
 }
 
-// TEST(binaryExpression, mul_int_value)
-// {
-//     Expression* two = new IntLiteral(2);
-//     Expression* three = new IntLiteral(3);
-//     BinaryExpression* binaryExpression = new BinaryExpression(OP_MUL, two, three);
+TEST(binaryExpression, return_mul_expression)
+{
+    Expression* three = new IntLiteral(3);
+    Expression* five = new IntLiteral(5);
+    Expression* binaryExpression = new BinaryExpression(OP_MUL, three, five);
+    Statement* returnState = new ReturnStatement(binaryExpression);
 
-//     llvm::LLVMContext context;
-//     llvm::Module *llvmModule = new llvm::Module("Module", context);
-//     CodeGenerator* generator = new CodeGenerator(llvmModule);
+    llvm::LLVMContext context;
+    llvm::Module *llvmModule = new llvm::Module("Module", context);
+    CodeGenerator* generator = new CodeGenerator(llvmModule);
 
-//     struct stat buffer;
-//     int exist = stat("./test_bin/test.bc", &buffer);
-//     if(!exist) unlink("./test_bin/test.bc");
+    struct stat buffer;
+    int exist = stat("./test_bin/test.bc", &buffer);
+    if(!exist) unlink("./test_bin/test.bc");
 
-//     generator->codeGen(binaryExpression);
+    generator->codeGen(returnState);
 
-//     exist = stat("./test_bin/test.bc", &buffer);
-//     ASSERT_EQ(0, exist);
-// }
+    exist = stat("./test_bin/test.bc", &buffer);
+    ASSERT_EQ(0, exist);
+
+    int result = std::system("lli test_bin/test.bc");
+    result /= 256;
+    ASSERT_EQ(15, result);
+}
