@@ -19,6 +19,11 @@ enum NodeType
     NT_RET,
 };
 
+enum StatementType
+{
+    RET,
+};
+
 enum OpType
 {
     OP_PLUS,
@@ -32,7 +37,7 @@ protected:
 public:
     Expression(NodeType type) : type(type) {};
     NodeType getType() const;
-    virtual void walk(CodeGenerator* generator);
+    virtual llvm::Value* walk(CodeGenerator* generator);
 };
 
 class IntLiteral : public Expression
@@ -45,7 +50,7 @@ public:
     static bool classof(const Expression *expression) {
         return expression->getType() == NT_INT;
     }
-    void walk(CodeGenerator* generator);
+    llvm::Value* walk(CodeGenerator* generator);
 };
 
 class StrLiteral : public Expression
@@ -92,20 +97,28 @@ public:
     Expression* getRHand();
     OpType getOpType();
     static bool classof(const Expression *expression);
-    void walk(CodeGenerator* generator);
+    llvm::Value* walk(CodeGenerator* generator);
 };
 
-class ReturnStatement : public Expression
+class Statement
 {
-private:
-    llvm::IRBuilder<>* builder;
+protected:
+    const StatementType type;
+public:
+    Statement(StatementType type) : type(type) {};
+    // StatementType getType() const;
+    virtual Expression* getExpression() = 0;
+    // virtual void walk(CodeGenerator* generator);
+};
+
+class ReturnStatement : public Statement
+{
 protected:
     Expression* expression;
 public:
-    ReturnStatement(Expression* expression) : Expression(NT_RET), expression(expression) {};
+    ReturnStatement(Expression* expression) : Statement(RET), expression(expression) {};
     Expression* getExpression();
-    static bool classof(const Expression *expression);
-    void walk(CodeGenerator* generator);
+    // void walk(CodeGenerator* generator);
 };
 
 };

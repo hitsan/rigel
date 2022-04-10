@@ -10,6 +10,7 @@
 namespace rigel {
 
 class Expression;
+class Statement;
 class IntLiteral;
 
 class CodeGenerator
@@ -19,10 +20,12 @@ private:
     llvm::Module *llvmModule;
 public:
     CodeGenerator(llvm::Module *llvmModule);
-    void codeGen(Expression* expression);
+    void codeGen(Statement* statement);
+    // llvm::Value* codeGen(Expression* expression);
     llvm::Value* codeGen(IntLiteral* intLiteral);
     llvm::IRBuilder<>* getBuilder();
-    void createAdd(IntLiteral* lIntLiteral, IntLiteral* rIntLiteral);
+    llvm::Value* createInteger(IntLiteral* IntLiteral);
+    llvm::Value* createAdd(IntLiteral* lIntLiteral, IntLiteral* rIntLiteral);
     void createReturn(llvm::Value* value);
 };
 
