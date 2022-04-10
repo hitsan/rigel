@@ -7,75 +7,76 @@
 #include "../include/rigel/Parser.h"
 using namespace rigel;
 
-TEST(returnInt, input_custom_value)
+class TestExpression : public ::testing::Test
 {
-    Expression* literal = new IntLiteral(8);
-    Statement* returnState = new ReturnStatement(literal);
+protected:
+    Expression* inum[10];
 
     llvm::LLVMContext context;
     llvm::Module *llvmModule = new llvm::Module("Module", context);
     CodeGenerator* generator = new CodeGenerator(llvmModule);
 
     struct stat buffer;
-    int exist = stat("./test_bin/test.bc", &buffer);
-    if(!exist) unlink("./test_bin/test.bc");
+    int exist;
 
+    virtual void SetUp()
+    {
+        for(int i = 0; i < 10; i++)
+        {
+            inum[i] = new IntLiteral(i);
+        }
+        exist = stat("./test_bin/test.bc", &buffer);
+        if(!exist) unlink("./test_bin/test.bc");
+    }
+
+    void removeBC()
+    {
+        exist = stat("./test_bin/test.bc", &buffer);
+        if(!exist) unlink("./test_bin/test.bc");
+    }
+
+};
+
+TEST_F(TestExpression, return_int_value)
+{
+    Statement* returnState = new ReturnStatement(inum[8]);
     generator->codeGen(returnState);
-
-    exist = stat("./test_bin/test.bc", &buffer);
-    ASSERT_EQ(0, exist);
 
     int result = std::system("lli test_bin/test.bc");
     result /= 256;
     ASSERT_EQ(8, result);
 }
 
-TEST(binaryExpression, return_plus_expression)
+TEST_F(TestExpression, return_plus_expression)
 {
-    Expression* one = new IntLiteral(1);
-    Expression* two = new IntLiteral(2);
-    Expression* binaryExpression = new BinaryExpression(OP_PLUS, one, two);
+    Expression* binaryExpression = new BinaryExpression(OP_PLUS, inum[1], inum[2]);
     Statement* returnState = new ReturnStatement(binaryExpression);
-
-    llvm::LLVMContext context;
-    llvm::Module *llvmModule = new llvm::Module("Module", context);
-    CodeGenerator* generator = new CodeGenerator(llvmModule);
-
-    struct stat buffer;
-    int exist = stat("./test_bin/test.bc", &buffer);
-    if(!exist) unlink("./test_bin/test.bc");
-
     generator->codeGen(returnState);
-
-    exist = stat("./test_bin/test.bc", &buffer);
-    ASSERT_EQ(0, exist);
 
     int result = std::system("lli test_bin/test.bc");
     result /= 256;
     ASSERT_EQ(3, result);
 }
 
-TEST(binaryExpression, return_mul_expression)
+TEST_F(TestExpression, return_mul_expression)
 {
-    Expression* three = new IntLiteral(3);
-    Expression* five = new IntLiteral(5);
-    Expression* binaryExpression = new BinaryExpression(OP_MUL, three, five);
+    Expression* binaryExpression = new BinaryExpression(OP_MUL, inum[3], inum[5]);
     Statement* returnState = new ReturnStatement(binaryExpression);
-
-    llvm::LLVMContext context;
-    llvm::Module *llvmModule = new llvm::Module("Module", context);
-    CodeGenerator* generator = new CodeGenerator(llvmModule);
-
-    struct stat buffer;
-    int exist = stat("./test_bin/test.bc", &buffer);
-    if(!exist) unlink("./test_bin/test.bc");
-
     generator->codeGen(returnState);
-
-    exist = stat("./test_bin/test.bc", &buffer);
-    ASSERT_EQ(0, exist);
 
     int result = std::system("lli test_bin/test.bc");
     result /= 256;
     ASSERT_EQ(15, result);
+}
+
+TEST_F(TestExpression, return_polynomial)
+{
+    Expression* mulExpression = new BinaryExpression(OP_MUL, inum[3], inum[5]);
+    Expression* addExpression = new BinaryExpression(OP_PLUS, mulExpression, inum[2]);
+    Statement* returnState = new ReturnStatement(addExpression);
+    generator->codeGen(returnState);
+
+    int result = std::system("lli test_bin/test.bc");
+    result /= 256;
+    ASSERT_EQ(17, result);
 }
