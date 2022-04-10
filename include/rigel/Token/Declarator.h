@@ -2,7 +2,7 @@
 #define DECLARATOR_H
 #include <map> 
 #include "llvm/ADT/StringRef.h"
-#include "./Token.h"
+#include "Token.h"
 
 namespace rigel {
 

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../include/rigel/Token/Token.h"
-#include "../include/rigel/Ast.h"
+#include "include/rigel/Token/Token.h"
+#include "include/rigel/Ast.h"
 #define LENGTH(array) (sizeof(array) / sizeof(array[0]))
 using namespace rigel;
 

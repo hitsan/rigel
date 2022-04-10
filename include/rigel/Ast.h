@@ -4,7 +4,6 @@
 #include "Token/Token.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/ADT/StringRef.h"
-#include "Ast.h"
 #include "CodeGen.h"
 #define EXPR_PTR std::unique_ptr<Expression>
 namespace rigel {

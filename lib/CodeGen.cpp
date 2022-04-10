@@ -3,7 +3,7 @@
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/Bitcode/BitcodeWriter.h"
 #include "llvm/Support/Casting.h"
-#include "../include/rigel/CodeGen.h"
+#include "include/rigel/CodeGen.h"
 using namespace rigel;
 
 CodeGenerator::CodeGenerator(llvm::Module *llvmModule) : llvmModule(llvmModule), builder(llvmModule->getContext())
