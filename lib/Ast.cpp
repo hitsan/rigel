@@ -9,7 +9,7 @@ NodeType Expression::getType() const
     return type;
 }
 
-llvm::Value* Expression::walk(CodeGenerator* generator) {}
+// llvm::Value* Expression::walk(CodeGenerator* generator) {}
 
 Expression* BinaryExpression::getLHand() { return lHand; };
 Expression* BinaryExpression::getRHand() { return rHand; };
@@ -25,6 +25,8 @@ llvm::Value* IntLiteral::walk(CodeGenerator* generator)
 bool BinaryExpression::classof(const Expression *expression) {
     return expression->getType() == NT_BIN;
 }
+
+llvm::Value* StrLiteral::walk(CodeGenerator* generator) {};
 
 llvm::Value* BinaryExpression::walk(CodeGenerator* generator)
 {

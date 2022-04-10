@@ -36,7 +36,7 @@ protected:
 public:
     Expression(NodeType type) : type(type) {};
     NodeType getType() const;
-    virtual llvm::Value* walk(CodeGenerator* generator);
+    virtual llvm::Value* walk(CodeGenerator* generator) = 0;
 };
 
 class IntLiteral : public Expression
@@ -62,6 +62,7 @@ public:
     static bool classof(const Expression *expression) {
         return expression->getType() == NT_STR;
     }
+    llvm::Value* walk(CodeGenerator* generator);
 };
 
 class Identifier

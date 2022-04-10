@@ -77,13 +77,52 @@ TEST_F(TestCodegenExpression, return_mul_expression)
 
 TEST_F(TestCodegenExpression, return_polynomial)
 {
-    Expression* mulExpression = new BinaryExpression(OP_MUL, inum[3], inum[5]);
-    Expression* addExpression = new BinaryExpression(OP_PLUS, mulExpression, inum[2]);
-    Statement* returnState = new ReturnStatement(addExpression);
+    Expression* expression[4];
+    Statement* returnState;
+    int result = 0; 
+
+    // // 3 * 5 + 2
+    // expression[0] = new BinaryExpression(OP_MUL, inum[3], inum[5]);
+    // expression[1] = new BinaryExpression(OP_PLUS, expression[0], inum[2]);
+    // returnState = new ReturnStatement(expression[1]);
+    // generator->codeGen(returnState);
+
+    // result = std::system(lli);
+    // result /= 256;
+    // ASSERT_EQ(17, result);
+    // removeBC();
+
+    // // 3 + 5 + 2
+    // expression[0] = new BinaryExpression(OP_PLUS, inum[3], inum[5]);
+    // expression[1] = new BinaryExpression(OP_PLUS, expression[0], inum[2]);
+    // returnState = new ReturnStatement(expression[1]);
+    // generator->codeGen(returnState);
+
+    // result = std::system(lli);
+    // result /= 256;
+    // ASSERT_EQ(10, result);
+    // removeBC();
+
+    // // (3 + 5) * 2
+    // expression[0] = new BinaryExpression(OP_PLUS, inum[3], inum[5]);
+    // expression[1] = new BinaryExpression(OP_MUL, expression[0], inum[2]);
+    // returnState = new ReturnStatement(expression[1]);
+    // generator->codeGen(returnState);
+
+    // result = std::system(lli);
+    // result /= 256;
+    // ASSERT_EQ(30, result);
+    // removeBC();
+
+    // (3 + 5) * (2 + 8) 
+    expression[0] = new BinaryExpression(OP_PLUS, inum[3], inum[5]);
+    expression[1] = new BinaryExpression(OP_PLUS, inum[2], inum[8]);
+    expression[2] = new BinaryExpression(OP_MUL, expression[0], expression[1]);
+    returnState = new ReturnStatement(expression[2]);
     generator->codeGen(returnState);
 
-    int result = std::system(lli);
+    result = std::system(lli);
     result /= 256;
-    ASSERT_EQ(17, result);
+    ASSERT_EQ(80, result);
     removeBC();
 }
