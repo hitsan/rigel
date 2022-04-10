@@ -25,7 +25,7 @@ RUN git clone https://github.com/llvm/llvm-project.git -b llvmorg-13.0.0 --depth
 RUN mkdir /llvm-project/build
 WORKDIR /llvm-project
 RUN cmake -S llvm -B build -G Ninja \
-    -DLLVM_TARGETS_TO_BUILD="AArch64;ARM;WebAssembly;X86" \
+    -DLLVM_TARGETS_TO_BUILD="AArch64;RISCV;WebAssembly;X86" \
     -DCMAKE_C_COMPILER="gcc" \
     -DCMAKE_BUILD_TYPE="Release" \
     -DLLVM_PARALLEL_LINK_JOBS="1" \
