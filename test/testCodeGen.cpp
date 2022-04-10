@@ -48,6 +48,7 @@ TEST_F(TestCodegenExpression, return_int_value)
     int result = std::system(lli);
     result /= 256;
     ASSERT_EQ(8, result);
+    removeBC();
 }
 
 TEST_F(TestCodegenExpression, return_plus_expression)
@@ -59,6 +60,7 @@ TEST_F(TestCodegenExpression, return_plus_expression)
     int result = std::system(lli);
     result /= 256;
     ASSERT_EQ(3, result);
+    removeBC();
 }
 
 TEST_F(TestCodegenExpression, return_mul_expression)
@@ -70,6 +72,7 @@ TEST_F(TestCodegenExpression, return_mul_expression)
     int result = std::system(lli);
     result /= 256;
     ASSERT_EQ(15, result);
+    removeBC();
 }
 
 TEST_F(TestCodegenExpression, return_polynomial)
@@ -82,4 +85,5 @@ TEST_F(TestCodegenExpression, return_polynomial)
     int result = std::system(lli);
     result /= 256;
     ASSERT_EQ(17, result);
+    removeBC();
 }
