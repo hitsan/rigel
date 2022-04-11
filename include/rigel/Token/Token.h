@@ -70,6 +70,15 @@ public:
     OpType getTokenType() { return type; }
 };
 
+class Identifier : public Token
+{
+private:
+    std::string literal;
+public:
+    Identifier(llvm::StringRef literal) : Token(TokenType::INT, "0"), literal(literal) {};
+    std::string getLiteral() { return literal; }
+};
+
 };
 
 #endif

@@ -65,14 +65,14 @@ public:
     llvm::Value* walk(CodeGenerator* generator);
 };
 
-class Identifier
-{
-private:
-    std::string name;
-public:
-    Identifier(std::string name) : name(name) {};
-    std::string getName() { return this->name; };
-};
+// class Identifier
+// {
+// private:
+//     std::string name;
+// public:
+//     Identifier(std::string name) : name(name) {};
+//     std::string getName() { return this->name; };
+// };
 
 class LetStatement
 {
@@ -81,7 +81,7 @@ private:
     Expression* expression;
 public:
     LetStatement(Identifier ident, Expression* expression) : ident(ident), expression(expression) {};
-    std::string getName() { return ident.getName(); };
+    std::string getName() { return ident.getLiteral(); };
     Expression* getExpression() { return expression; };
 };
 

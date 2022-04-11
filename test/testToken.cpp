@@ -42,7 +42,7 @@ TEST(make_token, check_input_output){
     ASSERT_EQ("value", data[11].getLiteral());
 }
 
-TEST(Number, Integer){
+TEST(number, Integer){
     std::vector<Number> data;
     data.push_back(Number(NumType::NUM_INT, 0));
     data.push_back(Number(NumType::NUM_INT, 1));
@@ -56,7 +56,7 @@ TEST(Number, Integer){
     ASSERT_EQ(11, data[2].getLiteral());
 }
 
-TEST(Operator, expression){
+TEST(operator, expression){
     std::vector<Operator> data;
     data.push_back(Operator(OpType::OP_PLUS));
     data.push_back(Operator(OpType::OP_MINUS));
@@ -69,4 +69,15 @@ TEST(Operator, expression){
     ASSERT_EQ(OpType::OP_MUL, data[2].getTokenType());
     ASSERT_EQ(OpType::OP_SLASH, data[3].getTokenType());
     ASSERT_EQ(OpType::OP_BANG, data[4].getTokenType());
+}
+
+TEST(identifier, Ident){
+    std::vector<Identifier> data;
+    data.push_back(Identifier("x"));
+    data.push_back(Identifier("i"));
+    data.push_back(Identifier("value"));
+
+    ASSERT_EQ("x", data[0].getLiteral());
+    ASSERT_EQ("i", data[1].getLiteral());
+    ASSERT_EQ("value", data[2].getLiteral());
 }

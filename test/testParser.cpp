@@ -146,7 +146,7 @@ TEST(TestParseToken, identifier)
     Parser ps = Parser(lx);
 
     auto exp = ps.identParse();
-    ASSERT_EQ("foo", exp.getName());
+    ASSERT_EQ("foo", exp.getLiteral());
 }
 
 TEST(TestParseToken, parse_letState)
