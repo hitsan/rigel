@@ -23,11 +23,11 @@ enum StatementType
     RET,
 };
 
-enum OpType
-{
-    OP_PLUS,
-    OP_MUL,
-};
+// enum OpType
+// {
+//     OP_PLUS,
+//     OP_MUL,
+// };
 
 class Expression
 {

@@ -4,7 +4,6 @@ using namespace rigel;
 
 TEST(make_token, check_input_output){
     std::vector<Token> data;
-    // make Token
     data.push_back(Token(TokenType::INT, "0"));
     data.push_back(Token(TokenType::STR, "\"string\""));
     data.push_back(Token(TokenType::PLUS, "+"));
@@ -18,7 +17,6 @@ TEST(make_token, check_input_output){
     data.push_back(Token(TokenType::IDENT, "x"));
     data.push_back(Token(TokenType::IDENT, "value"));
 
-    // Test
     ASSERT_EQ(TokenType::INT, data[0].getTokenType());
     ASSERT_EQ("0", data[0].getLiteral());
     ASSERT_EQ(TokenType::STR, data[1].getTokenType());
@@ -42,4 +40,33 @@ TEST(make_token, check_input_output){
     ASSERT_EQ("x", data[10].getLiteral());
     ASSERT_EQ(TokenType::IDENT, data[11].getTokenType());
     ASSERT_EQ("value", data[11].getLiteral());
+}
+
+TEST(Number, Integer){
+    std::vector<Number> data;
+    data.push_back(Number(NumType::NUM_INT, 0));
+    data.push_back(Number(NumType::NUM_INT, 1));
+    data.push_back(Number(NumType::NUM_INT, 11));
+
+    ASSERT_EQ(NumType::NUM_INT, data[0].getTokenType());
+    ASSERT_EQ(0, data[0].getLiteral());
+    ASSERT_EQ(NumType::NUM_INT, data[1].getTokenType());
+    ASSERT_EQ(1, data[1].getLiteral());
+    ASSERT_EQ(NumType::NUM_INT, data[2].getTokenType());
+    ASSERT_EQ(11, data[2].getLiteral());
+}
+
+TEST(Operator, expression){
+    std::vector<Operator> data;
+    data.push_back(Operator(OpType::OP_PLUS));
+    data.push_back(Operator(OpType::OP_MINUS));
+    data.push_back(Operator(OpType::OP_MUL));
+    data.push_back(Operator(OpType::OP_SLASH));
+    data.push_back(Operator(OpType::OP_BANG));
+
+    ASSERT_EQ(OpType::OP_PLUS, data[0].getTokenType());
+    ASSERT_EQ(OpType::OP_MINUS, data[1].getTokenType());
+    ASSERT_EQ(OpType::OP_MUL, data[2].getTokenType());
+    ASSERT_EQ(OpType::OP_SLASH, data[3].getTokenType());
+    ASSERT_EQ(OpType::OP_BANG, data[4].getTokenType());
 }

@@ -25,6 +25,20 @@ enum TokenType
     RETURN
 };
 
+enum NumType
+{
+    NUM_INT
+};
+
+enum OpType
+{
+    OP_PLUS,
+    OP_MINUS,
+    OP_MUL,
+    OP_SLASH,
+    OP_BANG
+};
+
 class Token
 {
 private:
@@ -34,6 +48,26 @@ public:
     Token(TokenType type, llvm::StringRef literal) : type(type), literal(literal) {};
     TokenType getTokenType() { return type; }
     std::string getLiteral() { return literal.str(); }
+};
+
+class Number : public Token
+{
+private:
+    NumType type;
+    int num;
+public:
+    Number(NumType type, int num) : Token(TokenType::INT, "0"), type(type), num(num) {};
+    NumType getTokenType() { return type; }
+    int getLiteral() { return num; }
+};
+
+class Operator : public Token
+{
+private:
+    OpType type;
+public:
+    Operator(OpType type) : Token(TokenType::INT, "0"), type(type) {};
+    OpType getTokenType() { return type; }
 };
 
 };
