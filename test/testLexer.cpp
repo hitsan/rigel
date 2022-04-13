@@ -25,8 +25,9 @@ TEST(TestIntLexer, lex)
         Token(TokenType::EOI, ""),
     };
 
+    lx.init();
     for(Token& test : tests) {
-        TOKEN_PTR tok = lx.lex();
+        std::unique_ptr<Token> tok = lx.getNextToken();
         ASSERT_EQ(test.getLiteral(), tok->getLiteral());
         ASSERT_EQ(test.getTokenType(), tok->getTokenType());
     }
@@ -49,8 +50,9 @@ TEST(TestStringLexer, lex)
         Token(TokenType::STR, "Virus"),
     };
 
+    lx.init();
     for(Token& test : tests) {
-        TOKEN_PTR tok = lx.lex();
+        std::unique_ptr<Token> tok = lx.getNextToken();
         ASSERT_EQ(test.getLiteral(), tok->getLiteral());
         ASSERT_EQ(test.getTokenType(), tok->getTokenType());
     }
@@ -76,25 +78,6 @@ TEST(Illigal_String,lex)
         Token(TokenType::ILLEGAL,""),
     };
 
-    for(Token& test : tests) {
-        TOKEN_PTR tok = lx.lex();
-        ASSERT_EQ(test.getLiteral(), tok->getLiteral());
-        ASSERT_EQ(test.getTokenType(), tok->getTokenType());
-    }
-}
-
-TEST(TestGetNextToken, lex)
-{
-    llvm::StringRef expr = R"(let test = "1  +  "Virus")";
-    Lexer lx = Lexer(expr);
-    Token tests[] = {
-        Token(TokenType::LET, "let"),
-        Token(TokenType::IDENT, "test"),
-        Token(TokenType::ASSIGN, "="),
-        Token(TokenType::STR, "1  +  "),
-        Token(TokenType::IDENT, "Virus"),
-        Token(TokenType::ILLEGAL,""),
-    };
     lx.init();
     for(Token& test : tests) {
         std::unique_ptr<Token> tok = lx.getNextToken();
