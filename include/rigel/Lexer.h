@@ -19,11 +19,11 @@ public:
     char peekChar();
     std::unique_ptr<Token> getNextToken();
     void init();
-    TOKEN_PTR makeIntToken();
-    TOKEN_PTR makeStrToken();
-    TOKEN_PTR makeKeyToken();
-    TOKEN_PTR makeToken(TokenType type, const llvm::StringRef &literal);
-    TOKEN_PTR lex();
+    std::unique_ptr<Token> makeIntToken();
+    std::unique_ptr<Token> makeStrToken();
+    std::unique_ptr<Token> makeKeyToken();
+    std::unique_ptr<Token> makeToken(TokenType type, const llvm::StringRef &literal);
+    std::unique_ptr<Token> lex();
     void showBuffer() { llvm::outs() << Lexer::bufferStart << "\n"; }
 };
 };
