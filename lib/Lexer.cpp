@@ -1,4 +1,5 @@
 #include <memory>
+#include <iostream>
 #include "llvm/Support/raw_ostream.h"
 #include "include/rigel/Lexer.h"
 #include "include/rigel/Token/Declarator.h"
@@ -129,4 +130,9 @@ std::unique_ptr<Token> Lexer::getNextToken()
     curToken = std::move(peekToken);
     peekToken = lex();
     return nextToken;
+}
+
+bool Lexer::isPeekTokenType(TokenType type)
+{
+    return (type == peekToken->getTokenType()) ? true : false;
 }

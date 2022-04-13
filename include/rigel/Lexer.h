@@ -18,6 +18,7 @@ public:
     void skipSpace();
     char peekChar();
     std::unique_ptr<Token> getNextToken();
+    bool isPeekTokenType(TokenType type);
     void init();
     std::unique_ptr<Token> makeIntToken();
     std::unique_ptr<Token> makeStrToken();
