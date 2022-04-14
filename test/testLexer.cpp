@@ -25,7 +25,6 @@ TEST(TestIntLexer, lex)
         Token(TokenType::EOI, ""),
     };
 
-    lx.init();
     for(Token& test : tests) {
         std::unique_ptr<Token> tok = lx.getNextToken();
         ASSERT_EQ(test.getLiteral(), tok->getLiteral());
@@ -50,7 +49,6 @@ TEST(TestStringLexer, lex)
         Token(TokenType::STR, "Virus"),
     };
 
-    lx.init();
     for(Token& test : tests) {
         std::unique_ptr<Token> tok = lx.getNextToken();
         ASSERT_EQ(test.getLiteral(), tok->getLiteral());
@@ -78,7 +76,6 @@ TEST(Illigal_String,lex)
         Token(TokenType::ILLEGAL,""),
     };
 
-    lx.init();
     for(Token& test : tests) {
         std::unique_ptr<Token> tok = lx.getNextToken();
         ASSERT_EQ(test.getLiteral(), tok->getLiteral());
@@ -97,7 +94,6 @@ TEST(PeekToken,lex)
         TokenType::ILLEGAL
     };
 
-    lx.init();
     for(TokenType &test : tests) {
         std::unique_ptr<Token> tok = lx.getNextToken();
         ASSERT_TRUE(lx.isPeekTokenType(test));

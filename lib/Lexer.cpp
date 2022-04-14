@@ -9,8 +9,8 @@ Lexer::Lexer(const llvm::StringRef &code)
 {
     bufferStart = code.begin();
     bufferPtr = bufferStart;
-    // curToken = lex();
-    // peekToken = lex();
+    curToken = lex();
+    peekToken = lex();
 }
 
 void Lexer::skipSpace()
@@ -118,18 +118,17 @@ std::unique_ptr<Token> Lexer::lex()
     return token;
 }
 
-void Lexer::init()
-{
-    curToken = lex();
-    peekToken = lex();
-}
-
 std::unique_ptr<Token> Lexer::getNextToken()
 {
     std::unique_ptr<Token> nextToken = std::move(curToken);
     curToken = std::move(peekToken);
     peekToken = lex();
     return nextToken;
+}
+
+bool Lexer::isCurTokenType(TokenType type)
+{
+    return (type == curToken->getTokenType()) ? true : false;
 }
 
 bool Lexer::isPeekTokenType(TokenType type)

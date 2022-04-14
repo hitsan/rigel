@@ -4,100 +4,7 @@
 #include "include/rigel/Lexer.h"
 #include "include/rigel/Parser.h"
 #include "include/rigel/Ast.h"
-#define LENGTH(array) (sizeof(array) / sizeof(array[0]))
-#define LEN_NUM_ARR 11
-#define LEN_STR_ARR 11
 using namespace rigel;
-
-class TestGetToken : public ::testing::Test
-{
-protected:
-    llvm::StringRef st = "let test = 1 + 2 * 3 / 4";
-    Lexer lexer = Lexer(st);
-    Parser parser = Parser(lexer);
-    Token test[LEN_NUM_ARR] = {
-        Token(TokenType::LET, "let"),
-        Token(TokenType::IDENT, "test"),
-        Token(TokenType::ASSIGN, "="),
-        Token(TokenType::INT, "1"),
-        Token(TokenType::PLUS, "+"),
-        Token(TokenType::INT, "2"),
-        Token(TokenType::ASTERISK, "*"),
-        Token(TokenType::INT, "3"),
-        Token(TokenType::SLASH, "/"),
-        Token(TokenType::INT, "4"),
-        Token(TokenType::EOI, ""),
-    };
-};
-
-// TEST_F(TestGetToken, getCurToken)
-// {
-//     TOKEN_PTR tok;
-//     for(int i = 0; i < LEN_NUM_ARR-1; i++)
-//     {
-//         tok = parser.getCurToken();
-//         ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
-//         ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
-//         parser.nextToken();
-//     }
-// }
-
-// TEST_F(TestGetToken, getPeekToken)
-// {
-//     TOKEN_PTR tok;
-//     for(int i = 1; i < LEN_NUM_ARR; i++)
-//     {
-//         tok = parser.getPeekToken();
-//         ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
-//         ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
-//         parser.nextToken();
-//     }
-// }
-
-class TestGetStrToken : public ::testing::Test
-{
-protected:
-    llvm::StringRef st = R"(let test = "1 " + "" + "Pop"  +  "Virus")";
-    Lexer lexer = Lexer(st);
-    Parser parser = Parser(lexer);
-    Token test[LEN_STR_ARR] = {
-        Token(TokenType::LET, "let"),
-        Token(TokenType::IDENT, "test"),
-        Token(TokenType::ASSIGN, "="),
-        Token(TokenType::STR, "1 "),
-        Token(TokenType::PLUS, "+"),
-        Token(TokenType::STR, ""),
-        Token(TokenType::PLUS, "+"),
-        Token(TokenType::STR, "Pop"),
-        Token(TokenType::PLUS, "+"),
-        Token(TokenType::STR, "Virus"),
-        Token(TokenType::EOI, ""),
-    };
-};
-
-// TEST_F(TestGetStrToken, getCurToken)
-// {
-//     TOKEN_PTR tok;
-//     for(int i = 0; i < LEN_STR_ARR-1; i++)
-//     {
-//         tok = parser.getCurToken();
-//         ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
-//         ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
-//         parser.nextToken();
-//     }
-// }
-
-// TEST_F(TestGetStrToken, getPeekToken)
-// {
-//     TOKEN_PTR tok;
-//     for(int i = 1; i < LEN_STR_ARR; i++)
-//     {
-//         tok = parser.getPeekToken();
-//         ASSERT_EQ(test[i].getLiteral(), tok->getLiteral());
-//         ASSERT_EQ(test[i].getTokenType(), tok->getTokenType());
-//         parser.nextToken();
-//     }
-// }
 
 TEST(TestParseToken, singleIntNum)
 {
@@ -105,7 +12,7 @@ TEST(TestParseToken, singleIntNum)
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
 
-    auto exp = parser.parse();
+    auto exp = parser.parseInt();
     ASSERT_EQ(1, exp->getValue());
 }
 
@@ -115,7 +22,7 @@ TEST(TestParseToken, singleString)
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
 
-    auto exp = parser.strParse();
+    auto exp = parser.parseStr();
     ASSERT_EQ("str", exp.getValue());
 }
 
@@ -125,7 +32,7 @@ TEST(TestParseToken, identifier)
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
 
-    auto exp = parser.identParse();
+    auto exp = parser.parseIdentifier();
     ASSERT_EQ("foo", exp.getName());
 }
 
@@ -139,7 +46,7 @@ TEST(TestParseToken, parse_letState)
     Expression* expression = new IntLiteral(1);
     LetStatement* test = new LetStatement(ident, expression);
 
-    LetStatement* letState = parser.letParse();
+    LetStatement* letState = parser.parseLet();
 
     ASSERT_EQ(typeid(test), typeid(letState));
     ASSERT_EQ("foo", letState->getName());
@@ -149,26 +56,13 @@ TEST(TestParseToken, parse_letState)
     ASSERT_EQ(1, literal->getValue());
 }
 
-// TEST(TestParseToken, peek_type)
-// {
-//     llvm::StringRef st = "let foo = 1";
-//     Lexer lexer = Lexer(st);
-//     Parser ps = Parser(lexer);
-
-//     EXPECT_EQ(TokenType::IDENT, ps.getPeekType());
-//     ps.nextToken();
-//     EXPECT_EQ(TokenType::ASSIGN, ps.getPeekType());
-//     ps.nextToken();
-//     EXPECT_EQ(TokenType::INT, ps.getPeekType());
-// }
-
 TEST(TestParseToken, no_equal_letState)
 {
     llvm::StringRef st = "let = 1";
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
 
-    auto exp = parser.letParse();
+    auto exp = parser.parseLet();
     EXPECT_EQ("", exp->getName());
 }
 
@@ -179,17 +73,17 @@ TEST(TestParseToken, no_assign_letState)
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
 
-    auto exp = parser.letParse();
+    auto exp = parser.parseLet();
     EXPECT_EQ("", exp->getName());
 }
 
-TEST(TestBinary_expression, PLUS_expression)
+TEST(TestBinary_expression, plus_expression)
 {
     llvm::StringRef st = "1 + 2";
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
 
-    Expression* expr = parser.expressionParse();
+    Expression* expr = parser.parseExpression();
     BinaryExpression* exp = llvm::dyn_cast<BinaryExpression>(expr);
     EXPECT_EQ(OpType::OP_PLUS, exp->getOpType());
 
@@ -202,13 +96,13 @@ TEST(TestBinary_expression, PLUS_expression)
     EXPECT_EQ(2, rHand->getValue());
 }
 
-TEST(TestBinary_expression, PRODUCT_expression)
+TEST(TestBinary_expression, mul_expression)
 {
     llvm::StringRef st = "1 * 2";
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
 
-    Expression* expr = parser.expressionParse();
+    Expression* expr = parser.parseExpression();
     BinaryExpression* exp = llvm::dyn_cast<BinaryExpression>(expr);
     EXPECT_EQ(OpType::OP_MUL, exp->getOpType());
 
@@ -221,13 +115,13 @@ TEST(TestBinary_expression, PRODUCT_expression)
     EXPECT_EQ(2, rHand->getValue());
 }
 
-TEST(TestBinary_expression, Polynomial)
+TEST(TestBinary_expression, polynomial)
 {
     llvm::StringRef st = "11 + 22 * 33";
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
 
-    Expression* expr = parser.expressionParse();
+    Expression* expr = parser.parseExpression();
     BinaryExpression* exp = llvm::dyn_cast<BinaryExpression>(expr);
     EXPECT_EQ(OpType::OP_PLUS, exp->getOpType());
 
@@ -254,7 +148,7 @@ TEST(TestParseToken, parse_returnState)
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
 
-    ReturnStatement* returnState = parser.returnParse();
+    ReturnStatement* returnState = parser.parseReturn();
 
     Expression* expr = returnState->getExpression();
     IntLiteral* exp = llvm::dyn_cast<IntLiteral>(expr);
