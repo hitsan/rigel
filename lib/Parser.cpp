@@ -2,85 +2,73 @@
 #include "include/rigel/Lexer.h"
 using namespace rigel;
 
-// #include "llvm/Support/raw_ostream.h"
-Parser::Parser(Lexer &lex) : lexer(lex)
-{
-    this->curToken = lexer.lex();
-    this->peekToken = lexer.lex();
-}
+Parser::Parser(Lexer &lex) : lexer(lex) {}
 
-void Parser::nextToken()
+IntLiteral* Parser::parseInt()
 {
-    curToken = std::move(peekToken);
-    peekToken = lexer.lex();
-}
-
-IntLiteral* Parser::parse()
-{
-    TOKEN_PTR tok = getCurToken();
-    std::string strNum = tok->getLiteral();
+    std::unique_ptr<Token> token = lexer.getNextToken();
+    std::string strNum = token->getLiteral();
     int num = stoi(strNum);
     return new IntLiteral(num);
 }
 
-StrLiteral Parser::strParse()
+StrLiteral Parser::parseStr()
 {
-    TOKEN_PTR tok = getCurToken();
-    std::string str = tok->getLiteral();
+    std::unique_ptr<Token> token = lexer.getNextToken();
+    std::string str = token->getLiteral();
     return StrLiteral(str);
 }
 
-LetStatement* Parser::letParse()
+LetStatement* Parser::parseLet()
 {
-    if(getPeekType() != TokenType::IDENT) {
+    if(!lexer.isPeekTokenType(TokenType::IDENT)) {
         Identifier ident("");
         Expression* exp = new StrLiteral("");
         return new LetStatement(ident, exp);
     }
-    nextToken();
-    if(getPeekType() != TokenType::ASSIGN) {
+    lexer.getNextToken();
+    if(!lexer.isPeekTokenType(TokenType::ASSIGN)) {
         Identifier ident("");
         Expression* exp = new StrLiteral("");
         return new LetStatement(ident, exp);
     }
-    Identifier ident = identParse();
-    nextToken();
-    nextToken();
-    Expression* expression = expressionParse();
+    Identifier ident = parseIdentifier();
+    lexer.getNextToken();
+    Expression* expression = parseExpression();
     return new LetStatement(ident, expression);
 }
 
-Identifier Parser::identParse()
+Identifier Parser::parseIdentifier()
 {
-    TOKEN_PTR tok = getCurToken();
-    std::string str = tok->getLiteral();
+    std::unique_ptr<Token> token = lexer.getNextToken();
+    std::string str = token->getLiteral();
     return Identifier(str);
 }
 
-Expression* Parser::expressionParse()
+Expression* Parser::parseExpression()
 {
-    if(getPeekType() == TokenType::EOI){
-        TOKEN_PTR token = getCurToken();
+    if(lexer.isPeekTokenType(TokenType::EOI)) {
+        std::unique_ptr<Token> token = lexer.getNextToken();
         std::string stringNum = token->getLiteral();
         return new IntLiteral(stoi(stringNum));
     }
-    TOKEN_PTR tok = getCurToken();
-    std::string strNum = tok->getLiteral();
-    Expression* lHand = new IntLiteral(stoi(strNum));
-    Expression* rHand;
+    Expression* lHand;
+    if(lexer.isCurTokenType(TokenType::INT)) {
+        std::unique_ptr<Token> token = lexer.getNextToken();
+        std::string strNum = token->getLiteral();
+        lHand = new IntLiteral(stoi(strNum));
+    }
 
-    while(getPeekType() != TokenType::EOI) {
-        if(getPeekType() == TokenType::PLUS) {
-            nextToken();
-            nextToken();
-            rHand = expressionParse();
+    while(!lexer.isCurTokenType(TokenType::EOI)) {
+        if(lexer.isCurTokenType(TokenType::PLUS)) {
+            lexer.getNextToken();
+            Expression* rHand = parseExpression();
             lHand = new BinaryExpression(OpType::OP_PLUS, lHand, rHand);
-        } else if(getPeekType() == TokenType::ASTERISK) {
-            nextToken();
-            nextToken();
-            TOKEN_PTR token = getCurToken();
+        } else if(lexer.isCurTokenType(TokenType::ASTERISK)) {
+            lexer.getNextToken();
+            std::unique_ptr<Token> token = lexer.getNextToken();
             std::string stringNum = token->getLiteral();
-            rHand = new IntLiteral(stoi(stringNum));
+            Expression* rHand = new IntLiteral(stoi(stringNum));
             lHand = new BinaryExpression(OpType::OP_MUL, lHand, rHand);
         }
     }
@@ -88,9 +76,9 @@ Expression* Parser::expressionParse()
     return lHand;
 }
 
-ReturnStatement* Parser::returnParse()
+ReturnStatement* Parser::parseReturn()
 {
-    nextToken();
-    Expression* expression = expressionParse();
+    lexer.getNextToken();
+    Expression* expression = parseExpression();
     return new ReturnStatement(expression);
 }

@@ -13,16 +13,12 @@ private:
     Lexer& lexer;
 public:
     Parser(Lexer &lex);
-    void nextToken();
-    TOKEN_PTR getCurToken() { return std::move(curToken); }
-    TOKEN_PTR getPeekToken() { return std::move(peekToken); }
-    TokenType getPeekType() { return peekToken->getTokenType(); };
-    IntLiteral* parse();
-    StrLiteral strParse();
-    LetStatement* letParse();
-    ReturnStatement* returnParse();
-    Identifier identParse();
-    Expression* expressionParse();
+    IntLiteral* parseInt();
+    StrLiteral parseStr();
+    LetStatement* parseLet();
+    ReturnStatement* parseReturn();
+    Identifier parseIdentifier();
+    Expression* parseExpression();
 };
 };
 #endif
