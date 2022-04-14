@@ -25,8 +25,9 @@ TEST(TestIntLexer, lex)
         Token(TokenType::EOI, ""),
     };
 
+    lx.init();
     for(Token& test : tests) {
-        TOKEN_PTR tok = lx.lex();
+        std::unique_ptr<Token> tok = lx.getNextToken();
         ASSERT_EQ(test.getLiteral(), tok->getLiteral());
         ASSERT_EQ(test.getTokenType(), tok->getTokenType());
     }
@@ -49,8 +50,9 @@ TEST(TestStringLexer, lex)
         Token(TokenType::STR, "Virus"),
     };
 
+    lx.init();
     for(Token& test : tests) {
-        TOKEN_PTR tok = lx.lex();
+        std::unique_ptr<Token> tok = lx.getNextToken();
         ASSERT_EQ(test.getLiteral(), tok->getLiteral());
         ASSERT_EQ(test.getTokenType(), tok->getTokenType());
     }
@@ -76,9 +78,28 @@ TEST(Illigal_String,lex)
         Token(TokenType::ILLEGAL,""),
     };
 
+    lx.init();
     for(Token& test : tests) {
-        TOKEN_PTR tok = lx.lex();
+        std::unique_ptr<Token> tok = lx.getNextToken();
         ASSERT_EQ(test.getLiteral(), tok->getLiteral());
         ASSERT_EQ(test.getTokenType(), tok->getTokenType());
+    }
+}
+
+TEST(PeekToken,lex)
+{
+    llvm::StringRef expr = R"(let test = "1  +  "Virus")";
+    Lexer lx = Lexer(expr);
+    TokenType tests[] = {
+        TokenType::ASSIGN,
+        TokenType::STR,
+        TokenType::IDENT,
+        TokenType::ILLEGAL
+    };
+
+    lx.init();
+    for(TokenType &test : tests) {
+        std::unique_ptr<Token> tok = lx.getNextToken();
+        ASSERT_TRUE(lx.isPeekTokenType(test));
     }
 }

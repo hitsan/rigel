@@ -11,17 +11,20 @@ class Lexer
 private:
     const char *bufferStart;
     const char *bufferPtr;
-    TOKEN_PTR cur;
-    TOKEN_PTR peekCur;
+    std::unique_ptr<Token> curToken;
+    std::unique_ptr<Token> peekToken;    
 public:
     Lexer(const llvm::StringRef &code);
     void skipSpace();
     char peekChar();
-    TOKEN_PTR makeIntToken();
-    TOKEN_PTR makeStrToken();
-    TOKEN_PTR makeKeyToken();
-    TOKEN_PTR makeToken(TokenType type, const llvm::StringRef &literal);
-    TOKEN_PTR lex();
+    std::unique_ptr<Token> getNextToken();
+    bool isPeekTokenType(TokenType type);
+    void init();
+    std::unique_ptr<Token> makeIntToken();
+    std::unique_ptr<Token> makeStrToken();
+    std::unique_ptr<Token> makeKeyToken();
+    std::unique_ptr<Token> makeToken(TokenType type, const llvm::StringRef &literal);
+    std::unique_ptr<Token> lex();
     void showBuffer() { llvm::outs() << Lexer::bufferStart << "\n"; }
 };
 };
