@@ -31,9 +31,9 @@ private:
     TokenType type;
     llvm::StringRef literal;
 public:
-    Token(TokenType type, llvm::StringRef literal) : type(type), literal(literal) {};
-    TokenType getTokenType() { return type; }
-    std::string getLiteral() { return literal.str(); }
+    Token(TokenType type, llvm::StringRef literal);
+    TokenType getTokenType();
+    std::string getLiteral();
 };
 
 };

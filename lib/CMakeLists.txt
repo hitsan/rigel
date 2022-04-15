@@ -3,4 +3,5 @@ add_library(Lib STATIC
     CodeGen.cpp
     Lexer.cpp
     Parser.cpp
+    Token/Token.cpp
     )
