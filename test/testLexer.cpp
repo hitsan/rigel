@@ -89,6 +89,6 @@ TEST(PeekToken,lex)
 
     for(TokenType &test : tests) {
         std::unique_ptr<Token> tok = lx.getNextToken();
-        ASSERT_TRUE(lx.isPeekTokenType(test));
+        ASSERT_TRUE(lx.hasPeekTokenType(test));
     }
 }
