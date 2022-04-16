@@ -3,12 +3,11 @@
 #include "include/rigel/Lexer.h"
 using namespace rigel;
 
-class CanLexInt : public ::testing::Test
+TEST(CanLexInt, getNextToken)
 {
-protected:
     llvm::StringRef expr = "let test = 1 + 2 * 3 / 4 \n return 0";
     Lexer lexer = Lexer(expr);
-    TokenType tests[14] = {
+    TokenType tests[] = {
         TokenType::LET,
         TokenType::IDENT,
         TokenType::ASSIGN,
@@ -24,10 +23,7 @@ protected:
         TokenType::INT,
         TokenType::EOI
     };
-};
 
-TEST_F(CanLexInt, getNextToken)
-{
     for(TokenType& test : tests) {
         bool ret = lexer.makeToken()->isTokenType(test);
         ASSERT_TRUE(ret);
