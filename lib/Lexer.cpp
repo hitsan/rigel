@@ -9,8 +9,6 @@ Lexer::Lexer(const llvm::StringRef &code)
 {
     bufferStart = code.begin();
     bufferPtr = bufferStart;
-    curToken = lex();
-    peekToken = lex();
 }
 
 void Lexer::skipSpace()
@@ -62,17 +60,17 @@ std::unique_ptr<Token> Lexer::makeKeyToken()
     return std::unique_ptr<Token>(new Token(type, literal));
 }
 
-std::unique_ptr<Token> Lexer::makeToken(TokenType type, const llvm::StringRef &literal)
+std::unique_ptr<Token> Lexer::makeOpeToken(TokenType type, const llvm::StringRef &literal)
 {
     bufferPtr++;
     return std::unique_ptr<Token>(new Token(type, literal));
 }
 
-std::unique_ptr<Token> Lexer::lex()
+std::unique_ptr<Token> Lexer::makeToken()
 {
     if(!(*bufferPtr))
     {
-        return makeToken(TokenType::EOI, "");
+        return makeOpeToken(TokenType::EOI, "");
     }
 
     std::unique_ptr<Token> token;
@@ -81,28 +79,28 @@ std::unique_ptr<Token> Lexer::lex()
     switch (*bufferPtr)
     {
     case '+':
-        token = makeToken(TokenType::PLUS, "+");
+        token = makeOpeToken(TokenType::PLUS, "+");
         break;
     case '-':
-        token = makeToken(TokenType::MINUS, "-");
+        token = makeOpeToken(TokenType::MINUS, "-");
         break;
     case '*':
-        token = makeToken(TokenType::ASTERISK, "*");
+        token = makeOpeToken(TokenType::ASTERISK, "*");
         break;
     case '/':
-        token = makeToken(TokenType::SLASH, "/");
+        token = makeOpeToken(TokenType::SLASH, "/");
         break;
     case '!':
-        token = makeToken(TokenType::BANG, "!");
+        token = makeOpeToken(TokenType::BANG, "!");
         break;
     case '=':
-        token = makeToken(TokenType::ASSIGN, "=");
+        token = makeOpeToken(TokenType::ASSIGN, "=");
         break;
     case '\"':
         token = makeStrToken();
         break;
     case '\n':
-        token = makeToken(TokenType::NEWLINE, "");
+        token = makeOpeToken(TokenType::NEWLINE, "");
         break;
     default:
         if(isdigit(*bufferPtr))
@@ -116,22 +114,4 @@ std::unique_ptr<Token> Lexer::lex()
         break;
     }
     return token;
-}
-
-std::unique_ptr<Token> Lexer::getNextToken()
-{
-    std::unique_ptr<Token> nextToken = std::move(curToken);
-    curToken = std::move(peekToken);
-    peekToken = lex();
-    return nextToken;
-}
-
-bool Lexer::isCurTokenType(TokenType type)
-{
-    return (type == curToken->getTokenType()) ? true : false;
-}
-
-bool Lexer::isPeekTokenType(TokenType type)
-{
-    return (type == peekToken->getTokenType()) ? true : false;
 }
