@@ -32,7 +32,7 @@ private:
     llvm::StringRef literal;
 public:
     Token(TokenType type, llvm::StringRef literal);
-    bool isType(TokenType type);
+    bool isTokenType(TokenType type);
     std::string getLiteral();
 };
 

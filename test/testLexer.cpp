@@ -3,84 +3,101 @@
 #include "include/rigel/Lexer.h"
 using namespace rigel;
 
-TEST(TestIntLexer, lex)
+class CanLexInt : public ::testing::Test
 {
-    // preparation data
+protected:
     llvm::StringRef expr = "let test = 1 + 2 * 3 / 4 \n return 0";
-    Lexer lx = Lexer(expr);
-    Token tests[] = {
-        Token(TokenType::LET, "let"),
-        Token(TokenType::IDENT, "test"),
-        Token(TokenType::ASSIGN, "="),
-        Token(TokenType::INT, "1"),
-        Token(TokenType::PLUS, "+"),
-        Token(TokenType::INT, "2"),
-        Token(TokenType::ASTERISK, "*"),
-        Token(TokenType::INT, "3"),
-        Token(TokenType::SLASH, "/"),
-        Token(TokenType::INT, "4"),
-        Token(TokenType::NEWLINE, ""),
-        Token(TokenType::RETURN, "return"),
-        Token(TokenType::INT, "0"),
-        Token(TokenType::EOI, ""),
+    Lexer lexer = Lexer(expr);
+    TokenType tests[14] = {
+        TokenType::LET,
+        TokenType::IDENT,
+        TokenType::ASSIGN,
+        TokenType::INT,
+        TokenType::PLUS,
+        TokenType::INT,
+        TokenType::ASTERISK,
+        TokenType::INT,
+        TokenType::SLASH,
+        TokenType::INT,
+        TokenType::NEWLINE,
+        TokenType::RETURN,
+        TokenType::INT,
+        TokenType::EOI
     };
+};
 
-    for(Token& test : tests) {
-        std::unique_ptr<Token> tok = lx.getNextToken();
-        ASSERT_EQ(test.getLiteral(), tok->getLiteral());
-        // ASSERT_EQ(test.getTokenType(), tok->getTokenType());
+TEST_F(CanLexInt, getNextToken)
+{
+    for(TokenType& test : tests) {
+        bool ret = lexer.getNextToken()->isTokenType(test);
+        ASSERT_TRUE(ret);
     }
 }
 
-TEST(TestStringLexer, lex)
+TEST_F(CanLexInt, curTokenType)
+{
+    for(TokenType& test : tests) {
+        ASSERT_TRUE(lexer.hasCurTokenType(test));
+        lexer.getNextToken();
+    }
+}
+
+TEST_F(CanLexInt, peekTokenType)
+{
+    for(int i=1; i < 14; i++) {
+        ASSERT_TRUE(lexer.hasPeekTokenType(tests[i]));
+        lexer.getNextToken();
+    }
+}
+
+TEST(CanLexString, curTokenType)
 {
     llvm::StringRef expr = R"(let test = "1 " + "" + "Pop"  +  "Virus")";
-    Lexer lx = Lexer(expr);
-    Token tests[] = {
-        Token(TokenType::LET, "let"),
-        Token(TokenType::IDENT, "test"),
-        Token(TokenType::ASSIGN, "="),
-        Token(TokenType::STR, "1 "),
-        Token(TokenType::PLUS, "+"),
-        Token(TokenType::STR, ""),
-        Token(TokenType::PLUS, "+"),
-        Token(TokenType::STR, "Pop"),
-        Token(TokenType::PLUS, "+"),
-        Token(TokenType::STR, "Virus"),
+    Lexer lexer = Lexer(expr);
+    TokenType tests[] = {
+        TokenType::LET,
+        TokenType::IDENT,
+        TokenType::ASSIGN,
+        TokenType::STR,
+        TokenType::PLUS,
+        TokenType::STR,
+        TokenType::PLUS,
+        TokenType::STR,
+        TokenType::PLUS,
+        TokenType::STR
     };
 
-    for(Token& test : tests) {
-        std::unique_ptr<Token> tok = lx.getNextToken();
-        ASSERT_EQ(test.getLiteral(), tok->getLiteral());
-        // ASSERT_EQ(test.getTokenType(), tok->getTokenType());
+    for(TokenType& test : tests) {
+        ASSERT_TRUE(lexer.hasCurTokenType(test));
+        lexer.getNextToken();
     }
 }
 
-TEST(Illigal_String,lex)
+TEST(CanDetectIlligal,curTokenType)
 {
     llvm::StringRef expr = R"(let test = "1  +  "Virus")";
-    Lexer lx = Lexer(expr);
-    Token tests[] = {
-        Token(TokenType::LET, "let"),
-        Token(TokenType::IDENT, "test"),
-        Token(TokenType::ASSIGN, "="),
-        Token(TokenType::STR, "1  +  "),
-        Token(TokenType::IDENT, "Virus"),
-        Token(TokenType::ILLEGAL,""),
+    Lexer lexer = Lexer(expr);
+    TokenType tests[] = {
+        TokenType::LET,
+        TokenType::IDENT,
+        TokenType::ASSIGN,
+        TokenType::STR,
+        TokenType::IDENT,
+        TokenType::ILLEGAL
     };
 
-    for(Token& test : tests) {
-        std::unique_ptr<Token> tok = lx.getNextToken();
-        ASSERT_EQ(test.getLiteral(), tok->getLiteral());
-        // ASSERT_EQ(test.getTokenType(), tok->getTokenType());
+    for(TokenType& test : tests) {
+        ASSERT_TRUE(lexer.hasCurTokenType(test));
+        lexer.getNextToken();
     }
 }
 
 TEST(PeekToken,lex)
 {
     llvm::StringRef expr = R"(let test = "1  +  "Virus")";
-    Lexer lx = Lexer(expr);
+    Lexer lexer = Lexer(expr);
     TokenType tests[] = {
+        TokenType::IDENT,
         TokenType::ASSIGN,
         TokenType::STR,
         TokenType::IDENT,
@@ -88,7 +105,7 @@ TEST(PeekToken,lex)
     };
 
     for(TokenType &test : tests) {
-        std::unique_ptr<Token> tok = lx.getNextToken();
-        ASSERT_TRUE(lx.hasPeekTokenType(test));
+        ASSERT_TRUE(lexer.hasPeekTokenType(test));
+        lexer.getNextToken();
     }
 }

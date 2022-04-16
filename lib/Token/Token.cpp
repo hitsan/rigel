@@ -2,7 +2,7 @@
 using namespace rigel;
 
 Token::Token(TokenType type, llvm::StringRef literal) : type(type), literal(literal) {};
-bool Token::isType(TokenType type)
+bool Token::isTokenType(TokenType type)
 {
     return (type == this->type) ? true : false;
 }

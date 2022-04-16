@@ -21,13 +21,13 @@ StrLiteral Parser::parseStr()
 
 LetStatement* Parser::parseLet()
 {
-    if(!lexer.isPeekTokenType(TokenType::IDENT)) {
+    if(!lexer.hasPeekTokenType(TokenType::IDENT)) {
         Identifier ident("");
         Expression* exp = new StrLiteral("");
         return new LetStatement(ident, exp);
     }
     lexer.getNextToken();
-    if(!lexer.isPeekTokenType(TokenType::ASSIGN)) {
+    if(!lexer.hasPeekTokenType(TokenType::ASSIGN)) {
         Identifier ident("");
         Expression* exp = new StrLiteral("");
         return new LetStatement(ident, exp);
@@ -47,24 +47,24 @@ Identifier Parser::parseIdentifier()
 
 Expression* Parser::parseExpression()
 {
-    if(lexer.isPeekTokenType(TokenType::EOI)) {
+    if(lexer.hasPeekTokenType(TokenType::EOI)) {
         std::unique_ptr<Token> token = lexer.getNextToken();
         std::string stringNum = token->getLiteral();
         return new IntLiteral(stoi(stringNum));
     }
     Expression* lHand;
-    if(lexer.isCurTokenType(TokenType::INT)) {
+    if(lexer.hasCurTokenType(TokenType::INT)) {
         std::unique_ptr<Token> token = lexer.getNextToken();
         std::string strNum = token->getLiteral();
         lHand = new IntLiteral(stoi(strNum));
     }
 
-    while(!lexer.isCurTokenType(TokenType::EOI)) {
-        if(lexer.isCurTokenType(TokenType::PLUS)) {
+    while(!lexer.hasCurTokenType(TokenType::EOI)) {
+        if(lexer.hasCurTokenType(TokenType::PLUS)) {
             lexer.getNextToken();
             Expression* rHand = parseExpression();
             lHand = new BinaryExpression(OpType::OP_PLUS, lHand, rHand);
-        } else if(lexer.isCurTokenType(TokenType::ASTERISK)) {
+        } else if(lexer.hasCurTokenType(TokenType::ASTERISK)) {
             lexer.getNextToken();
             std::unique_ptr<Token> token = lexer.getNextToken();
             std::string stringNum = token->getLiteral();

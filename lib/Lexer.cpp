@@ -128,10 +128,10 @@ std::unique_ptr<Token> Lexer::getNextToken()
 
 bool Lexer::hasCurTokenType(TokenType type)
 {
-    return curToken->isType(type) ? true : false;
+    return curToken->isTokenType(type) ? true : false;
 }
 
 bool Lexer::hasPeekTokenType(TokenType type)
 {
-    return peekToken->isType(type) ? true : false;
+    return peekToken->isTokenType(type) ? true : false;
 }
