@@ -2,5 +2,8 @@
 using namespace rigel;
 
 Token::Token(TokenType type, llvm::StringRef literal) : type(type), literal(literal) {};
-TokenType Token::getTokenType() { return type; }
+bool Token::isType(TokenType type)
+{
+    return (type == this->type) ? true : false;
+}
 std::string Token::getLiteral() { return literal.str(); }
