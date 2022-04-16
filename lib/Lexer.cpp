@@ -9,8 +9,8 @@ Lexer::Lexer(const llvm::StringRef &code)
 {
     bufferStart = code.begin();
     bufferPtr = bufferStart;
-    curToken = makeToken();
-    peekToken = makeToken();
+    // curToken = makeToken();
+    // peekToken = makeToken();
 }
 
 void Lexer::skipSpace()

@@ -29,24 +29,8 @@ protected:
 TEST_F(CanLexInt, getNextToken)
 {
     for(TokenType& test : tests) {
-        bool ret = lexer.getNextToken()->isTokenType(test);
+        bool ret = lexer.makeToken()->isTokenType(test);
         ASSERT_TRUE(ret);
-    }
-}
-
-TEST_F(CanLexInt, curTokenType)
-{
-    for(TokenType& test : tests) {
-        ASSERT_TRUE(lexer.hasCurTokenType(test));
-        lexer.getNextToken();
-    }
-}
-
-TEST_F(CanLexInt, peekTokenType)
-{
-    for(int i=1; i < 14; i++) {
-        ASSERT_TRUE(lexer.hasPeekTokenType(tests[i]));
-        lexer.getNextToken();
     }
 }
 
@@ -68,8 +52,8 @@ TEST(CanLexString, curTokenType)
     };
 
     for(TokenType& test : tests) {
-        ASSERT_TRUE(lexer.hasCurTokenType(test));
-        lexer.getNextToken();
+        bool ret = lexer.makeToken()->isTokenType(test);
+        ASSERT_TRUE(ret);
     }
 }
 
@@ -87,25 +71,7 @@ TEST(CanDetectIlligal,curTokenType)
     };
 
     for(TokenType& test : tests) {
-        ASSERT_TRUE(lexer.hasCurTokenType(test));
-        lexer.getNextToken();
-    }
-}
-
-TEST(PeekToken,lex)
-{
-    llvm::StringRef expr = R"(let test = "1  +  "Virus")";
-    Lexer lexer = Lexer(expr);
-    TokenType tests[] = {
-        TokenType::IDENT,
-        TokenType::ASSIGN,
-        TokenType::STR,
-        TokenType::IDENT,
-        TokenType::ILLEGAL
-    };
-
-    for(TokenType &test : tests) {
-        ASSERT_TRUE(lexer.hasPeekTokenType(test));
-        lexer.getNextToken();
+        bool ret = lexer.makeToken()->isTokenType(test);
+        ASSERT_TRUE(ret);
     }
 }
