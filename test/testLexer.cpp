@@ -56,13 +56,6 @@ TEST(TestStringLexer, lex)
     }
 }
 
-TEST(testLexer, peekChar)
-{
-    Lexer mi("PopVirus");
-    auto c = mi.peekChar();
-    ASSERT_EQ('o', c);
-}
-
 TEST(Illigal_String,lex)
 {
     llvm::StringRef expr = R"(let test = "1  +  "Virus")";
