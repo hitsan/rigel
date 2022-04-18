@@ -41,7 +41,6 @@ RUN apt-get -y update \
     lsb-release \
     make \
     software-properties-common \
-    ssh \
     wget \
     zlib1g-dev \
  && apt-get clean \

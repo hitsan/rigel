@@ -31,4 +31,3 @@
 *.out
 *.app
 build/
-sbin/git_config.sh
