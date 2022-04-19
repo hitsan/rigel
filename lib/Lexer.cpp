@@ -1,6 +1,3 @@
-#include <memory>
-#include <iostream>
-#include "llvm/Support/raw_ostream.h"
 #include "include/rigel/Lexer.h"
 #include "include/rigel/Token/Declarator.h"
 using namespace rigel;
@@ -23,23 +20,9 @@ char Lexer::peekChar()
     return *(bufferPtr+1);
 }
 
-CharType Lexer::getCharType()
+std::unique_ptr<Token> Lexer::makeToken(TokenType type, llvm::StringRef literal)
 {
-    const char charactor = *bufferPtr;
-    if(isdigit(charactor))
-    {
-        return CharType::Integer;
-    }
-    else if(charactor == '\"')
-    {
-        return CharType::String;
-    }
-    else if(isalpha(charactor))
-    {
-        return CharType::Keyword;
-    }
-
-
+    return std::unique_ptr<Token>(new Token(type, literal));
 }
 
 std::unique_ptr<Token> Lexer::makeIntToken()
@@ -48,7 +31,7 @@ std::unique_ptr<Token> Lexer::makeIntToken()
     while(isdigit(*end)) { end++; }
     auto literal = llvm::StringRef(bufferPtr, end - bufferPtr);
     bufferPtr = end;
-    return std::unique_ptr<Token>(new Token(TokenType::INT, literal));
+    return makeToken(TokenType::INT, literal);
 }
 
 std::unique_ptr<Token> Lexer::makeStrToken()
@@ -56,13 +39,13 @@ std::unique_ptr<Token> Lexer::makeStrToken()
     const char *end = bufferPtr + 1;
     while((*end) != '"') {
         if(peekChar() == '\0') {
-            return std::unique_ptr<Token>(new Token(TokenType::ILLEGAL, ""));
+            return makeToken(TokenType::ILLEGAL, "");
         }
         end++;
     }
     auto literal = llvm::StringRef(bufferPtr + 1, end - bufferPtr - 1);
     bufferPtr = end + 1;
-    return std::unique_ptr<Token>(new Token(TokenType::STR, literal));
+    return makeToken(TokenType::STR, literal);
 }
 
 std::unique_ptr<Token> Lexer::makeKeyToken()
@@ -75,7 +58,7 @@ std::unique_ptr<Token> Lexer::makeKeyToken()
     auto literal = llvm::StringRef(bufferPtr, end - bufferPtr);
     auto type = findTokenType(literal);
     bufferPtr = end;
-    return std::unique_ptr<Token>(new Token(type, literal));
+    return makeToken(type, literal);
 }
 
 std::unique_ptr<Token> Lexer::makeOpeToken()
@@ -83,14 +66,14 @@ std::unique_ptr<Token> Lexer::makeOpeToken()
     llvm::StringRef ope = llvm::StringRef(bufferPtr, 1);
     TokenType optype =  findOperatorType(ope);
     bufferPtr++;
-    return std::unique_ptr<Token>(new Token(optype, ope));
+    return makeToken(optype, ope);
 }
 
 std::unique_ptr<Token> Lexer::fetchToken()
 {
     if(!(*bufferPtr))
     {
-        return std::unique_ptr<Token>(new Token(TokenType::EOI, ""));
+        return makeToken(TokenType::EOI, "");
     }
 
     std::unique_ptr<Token> token;
@@ -99,28 +82,16 @@ std::unique_ptr<Token> Lexer::fetchToken()
     switch (*bufferPtr)
     {
     case '+':
-        token = makeOpeToken();
-        break;
     case '-':
-        token = makeOpeToken();
-        break;
     case '*':
-        token = makeOpeToken();
-        break;
     case '/':
-        token = makeOpeToken();
-        break;
     case '!':
-        token = makeOpeToken();
-        break;
     case '=':
+    case '\n':
         token = makeOpeToken();
         break;
     case '\"':
         token = makeStrToken();
-        break;
-    case '\n':
-        token = makeOpeToken();
         break;
     default:
         if(isdigit(*bufferPtr))

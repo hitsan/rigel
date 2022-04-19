@@ -12,7 +12,7 @@ enum class CharType
     String,
     Integer,
     Keyword
-}
+};
 
 class Lexer
 {
@@ -23,7 +23,7 @@ private:
     std::unique_ptr<Token> peekToken;
     void skipSpace();
     char peekChar();
-    CharType getCharType();
+    std::unique_ptr<Token> makeToken(TokenType type, llvm::StringRef literal);
     std::unique_ptr<Token> makeIntToken();
     std::unique_ptr<Token> makeStrToken();
     std::unique_ptr<Token> makeKeyToken();

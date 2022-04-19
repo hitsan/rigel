@@ -8,7 +8,7 @@
 using namespace rigel;
 
 const char bcPath[] = "test_bin/test.bc";
-const char lli[] = "lli-13 test_bin/test.bc";
+const char lli[] = "lli test_bin/test.bc";
 
 class TestCodegenExpression : public ::testing::Test
 {
