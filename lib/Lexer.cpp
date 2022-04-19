@@ -60,17 +60,19 @@ std::unique_ptr<Token> Lexer::makeKeyToken()
     return std::unique_ptr<Token>(new Token(type, literal));
 }
 
-std::unique_ptr<Token> Lexer::makeOpeToken(TokenType type, const llvm::StringRef &literal)
+std::unique_ptr<Token> Lexer::makeOpeToken()
 {
+    llvm::StringRef ope = llvm::StringRef(bufferPtr, 1);
+    TokenType optype =  findOperatorType(ope);
     bufferPtr++;
-    return std::unique_ptr<Token>(new Token(type, literal));
+    return std::unique_ptr<Token>(new Token(optype, ope));
 }
 
 std::unique_ptr<Token> Lexer::fetchToken()
 {
     if(!(*bufferPtr))
     {
-        return makeOpeToken(TokenType::EOI, "");
+        return std::unique_ptr<Token>(new Token(TokenType::EOI, ""));
     }
 
     std::unique_ptr<Token> token;
@@ -79,28 +81,28 @@ std::unique_ptr<Token> Lexer::fetchToken()
     switch (*bufferPtr)
     {
     case '+':
-        token = makeOpeToken(TokenType::PLUS, "+");
+        token = makeOpeToken();
         break;
     case '-':
-        token = makeOpeToken(TokenType::MINUS, "-");
+        token = makeOpeToken();
         break;
     case '*':
-        token = makeOpeToken(TokenType::ASTERISK, "*");
+        token = makeOpeToken();
         break;
     case '/':
-        token = makeOpeToken(TokenType::SLASH, "/");
+        token = makeOpeToken();
         break;
     case '!':
-        token = makeOpeToken(TokenType::BANG, "!");
+        token = makeOpeToken();
         break;
     case '=':
-        token = makeOpeToken(TokenType::ASSIGN, "=");
+        token = makeOpeToken();
         break;
     case '\"':
         token = makeStrToken();
         break;
     case '\n':
-        token = makeOpeToken(TokenType::NEWLINE, "");
+        token = makeOpeToken();
         break;
     default:
         if(isdigit(*bufferPtr))
