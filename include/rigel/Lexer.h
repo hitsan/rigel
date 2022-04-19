@@ -6,14 +6,6 @@
 
 namespace rigel {
 
-enum class CharType
-{
-    Operator,
-    String,
-    Integer,
-    Keyword
-};
-
 class Lexer
 {
 private:
