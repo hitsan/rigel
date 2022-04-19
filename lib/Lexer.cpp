@@ -23,6 +23,24 @@ char Lexer::peekChar()
     return *(bufferPtr+1);
 }
 
+CharType Lexer::getCharType()
+{
+    const char charactor = *bufferPtr;
+    if(isdigit(charactor))
+    {
+        return CharType::Integer;
+    }
+    else if(charactor == '\"')
+    {
+        return CharType::String;
+    }
+    else if(isalpha(charactor))
+    {
+        return CharType::Keyword;
+    }
+
+
+}
 
 std::unique_ptr<Token> Lexer::makeIntToken()
 {

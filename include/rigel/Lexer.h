@@ -6,6 +6,14 @@
 
 namespace rigel {
 
+enum class CharType
+{
+    Operator,
+    String,
+    Integer,
+    Keyword
+}
+
 class Lexer
 {
 private:
@@ -15,6 +23,7 @@ private:
     std::unique_ptr<Token> peekToken;
     void skipSpace();
     char peekChar();
+    CharType getCharType();
     std::unique_ptr<Token> makeIntToken();
     std::unique_ptr<Token> makeStrToken();
     std::unique_ptr<Token> makeKeyToken();
