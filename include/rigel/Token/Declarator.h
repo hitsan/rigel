@@ -20,6 +20,25 @@ static TokenType findTokenType(llvm::StringRef key)
     return declaratorMap[key];
 }
 
+static std::map<llvm::StringRef, TokenType> operatorMap
+{
+    { "+", TokenType::PLUS },
+    { "-", TokenType::MINUS },
+    { "*", TokenType::ASTERISK },
+    { "/", TokenType::SLASH },
+    { "!", TokenType::BANG },
+    { "=", TokenType::ASSIGN },
+    { "\n", TokenType::NEWLINE }
+};
+
+static TokenType findOperatorType(llvm::StringRef key)
+{
+    if(operatorMap.find(key) == operatorMap.end()) {
+        return TokenType::ILLEGAL;
+    }
+    return operatorMap[key];
+}
+
 };
 
 #endif

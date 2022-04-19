@@ -6,7 +6,7 @@
 
 namespace rigel {
 
-enum TokenType
+enum class TokenType
 {
     EOI,
     ILLEGAL,
