@@ -33,13 +33,13 @@ StrLiteral Parser::parseStr()
 
 LetStatement* Parser::parseLet()
 {
-    if(!peekToken->isTokenType(TokenType::IDENT)) {
+    if(!peekToken->equalsTokenType(TokenType::IDENT)) {
         Identifier ident("");
         Expression* exp = new StrLiteral("");
         return new LetStatement(ident, exp);
     }
     getNextToken();
-    if(!peekToken->isTokenType(TokenType::ASSIGN)) {
+    if(!peekToken->equalsTokenType(TokenType::ASSIGN)) {
         Identifier ident("");
         Expression* exp = new StrLiteral("");
         return new LetStatement(ident, exp);
@@ -59,24 +59,24 @@ Identifier Parser::parseIdentifier()
 
 Expression* Parser::parseExpression()
 {
-    if(peekToken->isTokenType(TokenType::EOI)) {
+    if(peekToken->equalsTokenType(TokenType::EOI)) {
         std::unique_ptr<Token> token = getNextToken();
         std::string stringNum = token->getLiteral();
         return new IntLiteral(stoi(stringNum));
     }
     Expression* lHand;
-    if(curToken->isTokenType(TokenType::INT)) {
+    if(curToken->equalsTokenType(TokenType::INT)) {
         std::unique_ptr<Token> token = getNextToken();
         std::string strNum = token->getLiteral();
         lHand = new IntLiteral(stoi(strNum));
     }
 
-    while(!curToken->isTokenType(TokenType::EOI)) {
-        if(curToken->isTokenType(TokenType::PLUS)) {
+    while(!curToken->equalsTokenType(TokenType::EOI)) {
+        if(curToken->equalsTokenType(TokenType::PLUS)) {
             getNextToken();
             Expression* rHand = parseExpression();
             lHand = new BinaryExpression(OpType::OP_PLUS, lHand, rHand);
-        } else if(curToken->isTokenType(TokenType::ASTERISK)) {
+        } else if(curToken->equalsTokenType(TokenType::ASTERISK)) {
             getNextToken();
             std::unique_ptr<Token> token = getNextToken();
             std::string stringNum = token->getLiteral();
