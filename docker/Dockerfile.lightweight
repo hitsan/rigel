@@ -1,0 +1,49 @@
+FROM ubuntu:20.04 AS llvm_builder
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=Asia/Tokyo \
+    GIT_SSL_NO_VERIFY=1
+# Install Build library
+RUN apt-get -y update \
+ && apt-get -y  --no-install-recommends install \
+    cmake \
+    g++ \
+    gcc \
+    git \
+    make \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+# Build GoogleTest
+WORKDIR /
+RUN git clone https://github.com/google/googletest.git -b release-1.11.0 --depth 1
+RUN mkdir /googletest/build 
+WORKDIR /googletest/build
+RUN cmake .. \
+    -DCMAKE_C_COMPILER="gcc" \
+    -DCMAKE_CXX_COMPILER="g++" 
+RUN make -j 8 && make install
+
+# Build enviroment
+FROM ubuntu:20.04
+ARG LLVM_VERSION="13"
+COPY --from=llvm_builder /usr/local/include/ /usr/local/include/
+COPY --from=llvm_builder /usr/local/lib/ /usr/local/lib/
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=Asia/Tokyo \
+    PATH=$PATH:/rigel/sbin
+RUN apt-get -y update \
+ && apt-get -y  --no-install-recommends install \
+    ca-certificates \
+    cmake \
+    gcc \
+    gpg-agent \
+    git \
+    g++ \
+    lsb-release \
+    make \
+    software-properties-common \
+    wget \
+    zlib1g-dev \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+RUN wget https://apt.llvm.org/llvm.sh
+RUN chmod +x llvm.sh && ./llvm.sh ${LLVM_VERSION}
