@@ -66,7 +66,7 @@ std::unique_ptr<Token> Lexer::makeOpeToken(TokenType type, const llvm::StringRef
     return std::unique_ptr<Token>(new Token(type, literal));
 }
 
-std::unique_ptr<Token> Lexer::makeToken()
+std::unique_ptr<Token> Lexer::fetchToken()
 {
     if(!(*bufferPtr))
     {

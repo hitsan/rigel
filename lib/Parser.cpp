@@ -4,15 +4,15 @@ using namespace rigel;
 
 Parser::Parser(Lexer &lexer) : lexer(lexer)
 {
-    curToken = lexer.makeToken();
-    peekToken = lexer.makeToken();
+    curToken = lexer.fetchToken();
+    peekToken = lexer.fetchToken();
 }
 
 std::unique_ptr<Token> Parser::getNextToken()
 {
     std::unique_ptr<Token> nextToken = std::move(curToken);
     curToken = std::move(peekToken);
-    peekToken = lexer.makeToken();
+    peekToken = lexer.fetchToken();
     return nextToken;
 }
 

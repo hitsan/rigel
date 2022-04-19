@@ -25,7 +25,7 @@ TEST(CanLexInt, getNextToken)
     };
 
     for(TokenType& test : tests) {
-        bool ret = lexer.makeToken()->equalsTokenType(test);
+        bool ret = lexer.fetchToken()->equalsTokenType(test);
         ASSERT_TRUE(ret);
     }
 }
@@ -48,7 +48,7 @@ TEST(CanLexString, curTokenType)
     };
 
     for(TokenType& test : tests) {
-        bool ret = lexer.makeToken()->equalsTokenType(test);
+        bool ret = lexer.fetchToken()->equalsTokenType(test);
         ASSERT_TRUE(ret);
     }
 }
@@ -67,7 +67,7 @@ TEST(CanDetectIlligal,curTokenType)
     };
 
     for(TokenType& test : tests) {
-        bool ret = lexer.makeToken()->equalsTokenType(test);
+        bool ret = lexer.fetchToken()->equalsTokenType(test);
         ASSERT_TRUE(ret);
     }
 }

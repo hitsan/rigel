@@ -21,7 +21,7 @@ private:
     std::unique_ptr<Token> makeOpeToken(TokenType type, const llvm::StringRef &literal);
 public:
     Lexer(const llvm::StringRef &code);
-    std::unique_ptr<Token> makeToken();
+    std::unique_ptr<Token> fetchToken();
 };
 };
 
