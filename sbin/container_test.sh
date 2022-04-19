@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ../build
+cd /rigel/build
 if [ ! -d ./test_bin/ ]; then
     mkdir ./test_bin
 fi
