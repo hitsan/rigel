@@ -8,9 +8,9 @@ namespace rigel {
 class Parser
 {
 private:
-    TOKEN_PTR curToken;
-    TOKEN_PTR peekToken;
     Lexer& lexer;
+    std::unique_ptr<Token> curToken;
+    std::unique_ptr<Token> peekToken;
 public:
     Parser(Lexer &lex);
     IntLiteral* parseInt();
@@ -19,6 +19,7 @@ public:
     ReturnStatement* parseReturn();
     Identifier parseIdentifier();
     Expression* parseExpression();
+    std::unique_ptr<Token> getNextToken();
 };
 };
 #endif
