@@ -18,7 +18,7 @@ enum NodeType
     NT_RET,
 };
 
-enum StatementType
+enum class StatementType
 {
     RET,
 };
@@ -116,8 +116,9 @@ class ReturnStatement : public Statement
 protected:
     Expression* expression;
 public:
-    ReturnStatement(Expression* expression) : Statement(RET), expression(expression) {};
+    ReturnStatement(Expression* expression) : Statement(StatementType::RET), expression(expression) {};
     Expression* getExpression();
+    bool equals(Statement* state);
     // void walk(CodeGenerator* generator);
 };
 

@@ -94,3 +94,9 @@ ReturnStatement* Parser::parseReturn()
     Expression* expression = parseExpression();
     return new ReturnStatement(expression);
 }
+
+Statement* Parser::parse()
+{
+    Expression* num = new IntLiteral(0);
+    return new ReturnStatement(num);
+}

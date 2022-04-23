@@ -155,3 +155,28 @@ TEST(TestParseToken, parse_returnState)
 
     ASSERT_EQ(1, exp->getValue());
 }
+
+TEST(ParseReturnState, single_integet)
+{
+    // Test data
+    // return 1
+    Expression* one = new IntLiteral(1);
+    Statement* ret = new ReturnStatement(one);
+
+    llvm::StringRef code = "return 1";
+    Lexer lexer = Lexer(code);
+    Parser parser = Parser(lexer);
+
+    Statement* state = parser.parse();
+    ASSERT_EQ(typeid(state), typeid(ret));
+
+    Expression* expression = state->getExpression();
+    ASSERT_EQ(expression, );
+
+
+
+    // Expression* expr = returnState->getExpression();
+    // IntLiteral* exp = llvm::dyn_cast<IntLiteral>(expr);
+
+    // ASSERT_EQ(1, exp->getValue());
+}

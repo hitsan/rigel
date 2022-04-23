@@ -13,6 +13,7 @@ private:
     std::unique_ptr<Token> peekToken;
 public:
     Parser(Lexer &lex);
+    Statement* parse();
     IntLiteral* parseInt();
     StrLiteral parseStr();
     LetStatement* parseLet();
