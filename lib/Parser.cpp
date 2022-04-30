@@ -97,6 +97,12 @@ ReturnStatement* Parser::parseReturn()
 
 Statement* Parser::parse()
 {
-    Expression* num = new IntLiteral(0);
+    std::unique_ptr<Token> token = getNextToken();
+    // if(token->equalsTokenType(TokenType::RETURN))
+    // {
+    //     return parseReturn();
+    // }
+    // return nullptr;
+    IntLiteral* num = parseInt();
     return new ReturnStatement(num);
 }
