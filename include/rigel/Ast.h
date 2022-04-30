@@ -118,7 +118,7 @@ protected:
 public:
     ReturnStatement(Expression* expression) : Statement(StatementType::RET), expression(expression) {};
     Expression* getExpression();
-    bool equals(Statement* state);
+    // bool equals(Statement* state);
     // void walk(CodeGenerator* generator);
 };
 

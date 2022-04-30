@@ -156,7 +156,7 @@ TEST(TestParseToken, parse_returnState)
     ASSERT_EQ(1, exp->getValue());
 }
 
-TEST(ParseReturnState, single_integet)
+TEST(ParseReturnState, single_integer)
 {
     // Test data
     // return 1
@@ -171,12 +171,8 @@ TEST(ParseReturnState, single_integet)
     ASSERT_EQ(typeid(state), typeid(ret));
 
     Expression* expression = state->getExpression();
-    ASSERT_EQ(expression, );
+    ASSERT_EQ(expression->getType(), one->getType());
 
-
-
-    // Expression* expr = returnState->getExpression();
-    // IntLiteral* exp = llvm::dyn_cast<IntLiteral>(expr);
-
-    // ASSERT_EQ(1, exp->getValue());
+    IntLiteral* exp = llvm::dyn_cast<IntLiteral>(expression);
+    ASSERT_EQ(exp->getValue(), 1);
 }

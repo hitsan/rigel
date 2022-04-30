@@ -54,4 +54,4 @@ Expression* ReturnStatement::getExpression()
     return expression;
 }
 
-bool ReturnStatement::equals(Statement* state);
+// bool ReturnStatement::equals(Statement* state);
