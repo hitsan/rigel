@@ -49,6 +49,11 @@ llvm::Value* BinaryExpression::walk(CodeGenerator* generator)
     return expressionValue;
 }
 
+StatementType Statement::getType() const
+{
+    return this->type;
+}
+
 Expression* ReturnStatement::getExpression()
 {
     return expression;
