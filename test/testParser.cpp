@@ -102,6 +102,46 @@ TEST(TestBinary_expression, plus_mul_expression)
     ASSERT_EQ(5, mulRInt->getValue());
 }
 
+TEST(TestBinary_expression, mul_plus_expression)
+{
+    llvm::StringRef st = "return 9 * 2 + 6";
+    Lexer lexer = Lexer(st);
+    Parser parser = Parser(lexer);
+    Statement* state = parser.parse();
+
+    Expression* plusExpression = state->getExpression();
+    ASSERT_EQ(NodeType::PLUS, plusExpression->getType());
+
+    BinaryExpression* plusBinExpression = llvm::dyn_cast<BinaryExpression>(plusExpression);
+    Expression* plusBinRExpression = plusBinExpression->getRHand();
+    ASSERT_EQ(NodeType::INT, plusBinRExpression->getType());
+    IntLiteral* plusRInt = llvm::dyn_cast<IntLiteral>(plusBinRExpression);
+    ASSERT_EQ(6, plusRInt->getValue());
+
+    Expression* plusBinLExpression = plusBinExpression->getLHand();
+    BinaryExpression* mulBinExpression = llvm::dyn_cast<BinaryExpression>(plusBinLExpression);
+    ASSERT_EQ(NodeType::MUL, mulBinExpression->getType());
+
+    Expression* mulLHand = mulBinExpression->getLHand();
+    ASSERT_EQ(NodeType::INT, mulLHand->getType());
+    IntLiteral* mulLInt = llvm::dyn_cast<IntLiteral>(mulLHand);
+    ASSERT_EQ(9, mulLInt->getValue());
+
+    Expression* mulRHand = mulBinExpression->getRHand();
+    ASSERT_EQ(NodeType::INT, mulRHand->getType());
+    IntLiteral* mulRInt = llvm::dyn_cast<IntLiteral>(mulRHand);
+    ASSERT_EQ(2, mulRInt->getValue());
+}
+
+// TEST(ParseIlligalReturnState, only_operator)
+// {
+//     llvm::StringRef code = "return +";
+//     Lexer lexer = Lexer(code);
+//     Parser parser = Parser(lexer);
+//     Statement* state = parser.parse();
+//     ASSERT_EQ(StatementType::ILLEGAL, state->getType());
+// }
+
 // TEST(TestParseToken, parse_letState)
 // {
 //     llvm::StringRef st = "let foo = 1";

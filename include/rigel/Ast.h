@@ -22,6 +22,7 @@ enum class NodeType
 enum class StatementType
 {
     RET,
+    ILLEGAL,
 };
 
 class Expression

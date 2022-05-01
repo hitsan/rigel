@@ -66,13 +66,14 @@ Identifier Parser::parseIdentifier()
 
 Expression* Parser::parseExpression()
 {
-    if(peekToken->equalsTokenType(TokenType::EOI)) {
-        std::unique_ptr<Token> token = getNextToken();
-        std::string stringNum = token->getLiteral();
-        return new IntLiteral(stoi(stringNum));
+    if(peekToken->equalsTokenType(TokenType::EOI)){
+        return parseInt();
     }
 
     Expression* lHand = nullptr;
+    if(curToken->equalsTokenType(TokenType::INT)) {
+        lHand = parseInt();
+    }
     while(!curToken->equalsTokenType(TokenType::EOI)) {
         if(curToken->equalsTokenType(TokenType::PLUS)) {
             consumeToken();
@@ -80,14 +81,10 @@ Expression* Parser::parseExpression()
             lHand = new BinaryExpression(NodeType::PLUS, lHand, rHand);
         } else if(curToken->equalsTokenType(TokenType::ASTERISK)) {
             consumeToken();
-            std::unique_ptr<Token> token = getNextToken();
-            std::string stringNum = token->getLiteral();
-            Expression* rHand = new IntLiteral(stoi(stringNum));
+            Expression* rHand = parseInt();
             lHand = new BinaryExpression(NodeType::MUL, lHand, rHand);
-        } else if(curToken->equalsTokenType(TokenType::INT)) {
-            std::unique_ptr<Token> token = getNextToken();
-            std::string strNum = token->getLiteral();
-            lHand = new IntLiteral(stoi(strNum));
+        } else {
+            // error
         }
     }
 
@@ -102,7 +99,6 @@ ReturnStatement* Parser::parseReturn()
 
 Statement* Parser::parse()
 {
-    // std::unique_ptr<Token> token = getNextToken();
     TokenType type = curToken->getTokenType();
     switch (type) {
         case TokenType::RETURN:
