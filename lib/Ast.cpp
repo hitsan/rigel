@@ -22,8 +22,8 @@ llvm::Value* IntLiteral::walk(CodeGenerator* generator)
 }
 
 bool BinaryExpression::classof(const Expression *expression) {
-    return (expression->getType() == OP_PLUS ||
-            expression->getType() == OP_MUL);
+    return (expression->getType() == NodeType::PLUS ||
+            expression->getType() == NodeType::MUL);
 }
 
 llvm::Value* StrLiteral::walk(CodeGenerator* generator) {};
@@ -36,10 +36,10 @@ llvm::Value* BinaryExpression::walk(CodeGenerator* generator)
     const NodeType type = getType();
     switch (type)
     {
-    case OP_PLUS:
+    case NodeType::PLUS:
         expressionValue = generator->createAdd(lIntLiteral, rIntLiteral);
         break;
-    case OP_MUL:
+    case NodeType::MUL:
         expressionValue = generator->createMul(lIntLiteral, rIntLiteral);
         break;
     default:

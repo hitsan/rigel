@@ -71,13 +71,13 @@ Expression* Parser::parseExpression()
         if(curToken->equalsTokenType(TokenType::PLUS)) {
             getNextToken();
             Expression* rHand = parseExpression();
-            lHand = new BinaryExpression(NodeType::OP_PLUS, lHand, rHand);
+            lHand = new BinaryExpression(NodeType::PLUS, lHand, rHand);
         } else if(curToken->equalsTokenType(TokenType::ASTERISK)) {
             getNextToken();
             std::unique_ptr<Token> token = getNextToken();
             std::string stringNum = token->getLiteral();
             Expression* rHand = new IntLiteral(stoi(stringNum));
-            lHand = new BinaryExpression(NodeType::OP_MUL, lHand, rHand);
+            lHand = new BinaryExpression(NodeType::MUL, lHand, rHand);
         } else if(curToken->equalsTokenType(TokenType::INT)) {
             std::unique_ptr<Token> token = getNextToken();
             std::string strNum = token->getLiteral();
@@ -102,6 +102,4 @@ Statement* Parser::parse()
         return parseReturn();
     }
     return nullptr;
-    // IntLiteral* num = parseInt();
-    // return new ReturnStatement(num);
 }

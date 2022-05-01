@@ -53,7 +53,7 @@ TEST_F(TestCodegenExpression, return_int_value)
 
 TEST_F(TestCodegenExpression, return_plus_expression)
 {
-    Expression* binaryExpression = new BinaryExpression(OP_PLUS, inum[1], inum[2]);
+    Expression* binaryExpression = new BinaryExpression(NodeType::PLUS, inum[1], inum[2]);
     Statement* returnState = new ReturnStatement(binaryExpression);
     generator->codeGen(returnState);
 
@@ -65,7 +65,7 @@ TEST_F(TestCodegenExpression, return_plus_expression)
 
 TEST_F(TestCodegenExpression, return_mul_expression)
 {
-    Expression* binaryExpression = new BinaryExpression(OP_MUL, inum[3], inum[5]);
+    Expression* binaryExpression = new BinaryExpression(NodeType::MUL, inum[3], inum[5]);
     Statement* returnState = new ReturnStatement(binaryExpression);
     generator->codeGen(returnState);
 
@@ -82,8 +82,8 @@ TEST_F(TestCodegenExpression, return_polynomial)
     int result = 0; 
 
     // // 3 * 5 + 2
-    // expression[0] = new BinaryExpression(OP_MUL, inum[3], inum[5]);
-    // expression[1] = new BinaryExpression(OP_PLUS, expression[0], inum[2]);
+    // expression[0] = new BinaryExpression(NodeType::MUL, inum[3], inum[5]);
+    // expression[1] = new BinaryExpression(NodeType::PLUS, expression[0], inum[2]);
     // returnState = new ReturnStatement(expression[1]);
     // generator->codeGen(returnState);
 
@@ -93,8 +93,8 @@ TEST_F(TestCodegenExpression, return_polynomial)
     // removeBC();
 
     // // 3 + 5 + 2
-    // expression[0] = new BinaryExpression(OP_PLUS, inum[3], inum[5]);
-    // expression[1] = new BinaryExpression(OP_PLUS, expression[0], inum[2]);
+    // expression[0] = new BinaryExpression(NodeType::PLUS, inum[3], inum[5]);
+    // expression[1] = new BinaryExpression(NodeType::PLUS, expression[0], inum[2]);
     // returnState = new ReturnStatement(expression[1]);
     // generator->codeGen(returnState);
 
@@ -104,8 +104,8 @@ TEST_F(TestCodegenExpression, return_polynomial)
     // removeBC();
 
     // // (3 + 5) * 2
-    // expression[0] = new BinaryExpression(OP_PLUS, inum[3], inum[5]);
-    // expression[1] = new BinaryExpression(OP_MUL, expression[0], inum[2]);
+    // expression[0] = new BinaryExpression(NodeType::PLUS, inum[3], inum[5]);
+    // expression[1] = new BinaryExpression(NodeType::MUL, expression[0], inum[2]);
     // returnState = new ReturnStatement(expression[1]);
     // generator->codeGen(returnState);
 
@@ -115,9 +115,9 @@ TEST_F(TestCodegenExpression, return_polynomial)
     // removeBC();
 
     // (3 + 5) * (2 + 8) 
-    expression[0] = new BinaryExpression(OP_PLUS, inum[3], inum[5]);
-    expression[1] = new BinaryExpression(OP_PLUS, inum[2], inum[8]);
-    expression[2] = new BinaryExpression(OP_MUL, expression[0], expression[1]);
+    expression[0] = new BinaryExpression(NodeType::PLUS, inum[3], inum[5]);
+    expression[1] = new BinaryExpression(NodeType::PLUS, inum[2], inum[8]);
+    expression[2] = new BinaryExpression(NodeType::MUL, expression[0], expression[1]);
     returnState = new ReturnStatement(expression[2]);
     generator->codeGen(returnState);
 

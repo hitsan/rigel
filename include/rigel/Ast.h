@@ -10,13 +10,13 @@ namespace rigel {
 
 class CodeGenerator;
 
-enum NodeType
+enum class NodeType
 {
-    OP_PLUS,
-    OP_MUL,
-    NT_INT,
-    NT_STR,
-    NT_RET,
+    PLUS,
+    MUL,
+    INT,
+    STR,
+    RET,
 };
 
 enum class StatementType
@@ -39,10 +39,10 @@ class IntLiteral : public Expression
 private:
     int value;
 public:
-    IntLiteral(int value) : Expression(NT_INT), value(value) {};
+    IntLiteral(int value) : Expression(NodeType::INT), value(value) {};
     int getValue();
     static bool classof(const Expression *expression) {
-        return expression->getType() == NT_INT;
+        return expression->getType() == NodeType::INT;
     }
     llvm::Value* walk(CodeGenerator* generator);
 };
@@ -52,10 +52,10 @@ class StrLiteral : public Expression
 private:
     std::string value;
 public:
-    StrLiteral(std::string value) : Expression(NT_STR), value(value) {};
+    StrLiteral(std::string value) : Expression(NodeType::STR), value(value) {};
     std::string getValue() { return this->value; };
     static bool classof(const Expression *expression) {
-        return expression->getType() == NT_STR;
+        return expression->getType() == NodeType::STR;
     }
     llvm::Value* walk(CodeGenerator* generator);
 };
