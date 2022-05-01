@@ -13,7 +13,6 @@ NodeType Expression::getType() const
 
 Expression* BinaryExpression::getLHand() { return lHand; };
 Expression* BinaryExpression::getRHand() { return rHand; };
-OpType BinaryExpression::getOpType() { return opType; };
 
 int IntLiteral::getValue() { return this->value; };
 
@@ -23,7 +22,8 @@ llvm::Value* IntLiteral::walk(CodeGenerator* generator)
 }
 
 bool BinaryExpression::classof(const Expression *expression) {
-    return expression->getType() == NT_BIN;
+    return (expression->getType() == OP_PLUS ||
+            expression->getType() == OP_MUL);
 }
 
 llvm::Value* StrLiteral::walk(CodeGenerator* generator) {};
@@ -33,7 +33,7 @@ llvm::Value* BinaryExpression::walk(CodeGenerator* generator)
     llvm::Value * lIntLiteral = lHand->walk(generator);
     llvm::Value * rIntLiteral = rHand->walk(generator);
     llvm::Value* expressionValue;
-    const OpType type = getOpType();
+    const NodeType type = getType();
     switch (type)
     {
     case OP_PLUS:

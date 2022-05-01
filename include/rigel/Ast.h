@@ -12,7 +12,8 @@ class CodeGenerator;
 
 enum NodeType
 {
-    NT_BIN,
+    OP_PLUS,
+    OP_MUL,
     NT_INT,
     NT_STR,
     NT_RET,
@@ -21,12 +22,6 @@ enum NodeType
 enum class StatementType
 {
     RET,
-};
-
-enum OpType
-{
-    OP_PLUS,
-    OP_MUL,
 };
 
 class Expression
@@ -88,14 +83,12 @@ public:
 class BinaryExpression : public Expression
 {
 protected:
-    OpType opType;
     Expression* lHand;
     Expression* rHand;
 public:
-    BinaryExpression(OpType opType, Expression* lHand, Expression* rHand) : Expression(NT_BIN), opType(opType), lHand(lHand), rHand(rHand) {};
+    BinaryExpression(NodeType type, Expression* lHand, Expression* rHand) : Expression(type), lHand(lHand), rHand(rHand) {};
     Expression* getLHand();
     Expression* getRHand();
-    OpType getOpType();
     static bool classof(const Expression *expression);
     llvm::Value* walk(CodeGenerator* generator);
 };
@@ -106,7 +99,7 @@ protected:
     const StatementType type;
 public:
     Statement(StatementType type) : type(type) {};
-    // StatementType getType() const;
+    StatementType getType() const;
     virtual Expression* getExpression() = 0;
     // virtual void walk(CodeGenerator* generator);
 };

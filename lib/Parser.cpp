@@ -1,3 +1,4 @@
+#include <iostream>
 #include "include/rigel/Parser.h"
 #include "include/rigel/Lexer.h"
 using namespace rigel;
@@ -24,12 +25,12 @@ IntLiteral* Parser::parseInt()
     return new IntLiteral(num);
 }
 
-StrLiteral Parser::parseStr()
-{
-    std::unique_ptr<Token> token = getNextToken();
-    std::string str = token->getLiteral();
-    return StrLiteral(str);
-}
+// StrLiteral Parser::parseStr()
+// {
+//     std::unique_ptr<Token> token = getNextToken();
+//     std::string str = token->getLiteral();
+//     return StrLiteral(str);
+// }
 
 LetStatement* Parser::parseLet()
 {
@@ -64,24 +65,23 @@ Expression* Parser::parseExpression()
         std::string stringNum = token->getLiteral();
         return new IntLiteral(stoi(stringNum));
     }
-    Expression* lHand;
-    if(curToken->equalsTokenType(TokenType::INT)) {
-        std::unique_ptr<Token> token = getNextToken();
-        std::string strNum = token->getLiteral();
-        lHand = new IntLiteral(stoi(strNum));
-    }
 
+    Expression* lHand = nullptr;
     while(!curToken->equalsTokenType(TokenType::EOI)) {
         if(curToken->equalsTokenType(TokenType::PLUS)) {
             getNextToken();
             Expression* rHand = parseExpression();
-            lHand = new BinaryExpression(OpType::OP_PLUS, lHand, rHand);
+            lHand = new BinaryExpression(NodeType::OP_PLUS, lHand, rHand);
         } else if(curToken->equalsTokenType(TokenType::ASTERISK)) {
             getNextToken();
             std::unique_ptr<Token> token = getNextToken();
             std::string stringNum = token->getLiteral();
             Expression* rHand = new IntLiteral(stoi(stringNum));
-            lHand = new BinaryExpression(OpType::OP_MUL, lHand, rHand);
+            lHand = new BinaryExpression(NodeType::OP_MUL, lHand, rHand);
+        } else if(curToken->equalsTokenType(TokenType::INT)) {
+            std::unique_ptr<Token> token = getNextToken();
+            std::string strNum = token->getLiteral();
+            lHand = new IntLiteral(stoi(strNum));
         }
     }
 

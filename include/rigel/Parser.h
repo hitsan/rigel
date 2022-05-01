@@ -15,7 +15,7 @@ public:
     Parser(Lexer &lex);
     Statement* parse();
     IntLiteral* parseInt();
-    StrLiteral parseStr();
+    // StrLiteral parseStr();
     LetStatement* parseLet();
     ReturnStatement* parseReturn();
     Identifier parseIdentifier();
