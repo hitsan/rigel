@@ -90,7 +90,6 @@ Expression* Parser::parseExpression()
 
 ReturnStatement* Parser::parseReturn()
 {
-    getNextToken();
     Expression* expression = parseExpression();
     return new ReturnStatement(expression);
 }
@@ -98,11 +97,11 @@ ReturnStatement* Parser::parseReturn()
 Statement* Parser::parse()
 {
     std::unique_ptr<Token> token = getNextToken();
-    // if(token->equalsTokenType(TokenType::RETURN))
-    // {
-    //     return parseReturn();
-    // }
-    // return nullptr;
-    IntLiteral* num = parseInt();
-    return new ReturnStatement(num);
+    if(token->equalsTokenType(TokenType::RETURN))
+    {
+        return parseReturn();
+    }
+    return nullptr;
+    // IntLiteral* num = parseInt();
+    // return new ReturnStatement(num);
 }
