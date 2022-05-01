@@ -91,21 +91,23 @@ Expression* Parser::parseExpression()
     return lHand;
 }
 
-ReturnStatement* Parser::parseReturn()
+std::unique_ptr<ReturnStatement> Parser::parseReturn()
 {
     Expression* expression = parseExpression();
-    return new ReturnStatement(expression);
+    std::unique_ptr<ReturnStatement> statement(new ReturnStatement(expression));
+    return statement;
 }
 
 std::unique_ptr<Statement> Parser::parse()
 {
     TokenType type = curToken->getTokenType();
-    std::unique_ptr<Statement> statement;
+    // std::unique_ptr<Statement> statement;
     switch (type) {
         case TokenType::RETURN:
             consumeToken();
-            statement.reset(parseReturn());
-            return statement;
+            return parseReturn();
+            // statement.reset(parseReturn());
+            // return statement;
         default:
             return nullptr;
     }

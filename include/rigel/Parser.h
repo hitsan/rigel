@@ -15,7 +15,7 @@ private:
     IntLiteral* parseInt();
     // StrLiteral parseStr();
     LetStatement* parseLet();
-    ReturnStatement* parseReturn();
+    std::unique_ptr<ReturnStatement> parseReturn();
     Identifier parseIdentifier();
     Expression* parseExpression();
     std::unique_ptr<Token> getNextToken();
