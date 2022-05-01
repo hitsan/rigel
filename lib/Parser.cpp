@@ -17,6 +17,12 @@ std::unique_ptr<Token> Parser::getNextToken()
     return nextToken;
 }
 
+void Parser::consumeToken()
+{
+    curToken = std::move(peekToken);
+    peekToken = lexer.fetchToken();
+}
+
 IntLiteral* Parser::parseInt()
 {
     std::unique_ptr<Token> token = getNextToken();
@@ -39,14 +45,14 @@ LetStatement* Parser::parseLet()
         Expression* exp = new StrLiteral("");
         return new LetStatement(ident, exp);
     }
-    getNextToken();
+    consumeToken();
     if(!peekToken->equalsTokenType(TokenType::ASSIGN)) {
         Identifier ident("");
         Expression* exp = new StrLiteral("");
         return new LetStatement(ident, exp);
     }
     Identifier ident = parseIdentifier();
-    getNextToken();
+    consumeToken();
     Expression* expression = parseExpression();
     return new LetStatement(ident, expression);
 }
@@ -69,11 +75,11 @@ Expression* Parser::parseExpression()
     Expression* lHand = nullptr;
     while(!curToken->equalsTokenType(TokenType::EOI)) {
         if(curToken->equalsTokenType(TokenType::PLUS)) {
-            getNextToken();
+            consumeToken();
             Expression* rHand = parseExpression();
             lHand = new BinaryExpression(NodeType::PLUS, lHand, rHand);
         } else if(curToken->equalsTokenType(TokenType::ASTERISK)) {
-            getNextToken();
+            consumeToken();
             std::unique_ptr<Token> token = getNextToken();
             std::string stringNum = token->getLiteral();
             Expression* rHand = new IntLiteral(stoi(stringNum));
@@ -96,10 +102,13 @@ ReturnStatement* Parser::parseReturn()
 
 Statement* Parser::parse()
 {
-    std::unique_ptr<Token> token = getNextToken();
-    if(token->equalsTokenType(TokenType::RETURN))
-    {
-        return parseReturn();
+    // std::unique_ptr<Token> token = getNextToken();
+    TokenType type = curToken->getTokenType();
+    switch (type) {
+        case TokenType::RETURN:
+            consumeToken();
+            return parseReturn();
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

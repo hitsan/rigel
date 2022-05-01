@@ -19,6 +19,7 @@ private:
     Identifier parseIdentifier();
     Expression* parseExpression();
     std::unique_ptr<Token> getNextToken();
+    void consumeToken();
 public:
     Parser(Lexer &lex);
     Statement* parse();
