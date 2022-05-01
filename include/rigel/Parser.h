@@ -11,9 +11,7 @@ private:
     Lexer& lexer;
     std::unique_ptr<Token> curToken;
     std::unique_ptr<Token> peekToken;
-public:
-    Parser(Lexer &lex);
-    Statement* parse();
+
     IntLiteral* parseInt();
     // StrLiteral parseStr();
     LetStatement* parseLet();
@@ -21,6 +19,9 @@ public:
     Identifier parseIdentifier();
     Expression* parseExpression();
     std::unique_ptr<Token> getNextToken();
+public:
+    Parser(Lexer &lex);
+    Statement* parse();
 };
 };
 #endif
