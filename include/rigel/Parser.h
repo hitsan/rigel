@@ -22,7 +22,7 @@ private:
     void consumeToken();
 public:
     Parser(Lexer &lex);
-    Statement* parse();
+    std::unique_ptr<Statement> parse();
 };
 };
 #endif

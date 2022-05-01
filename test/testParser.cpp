@@ -8,16 +8,11 @@ using namespace rigel;
 
 TEST(ParseReturnState, single_integer)
 {
-    // Test data
-    // return 1
-    Expression* one = new IntLiteral(1);
-    Statement* ret = new ReturnStatement(one);
-
     llvm::StringRef code = "return 4";
     Lexer lexer = Lexer(code);
     Parser parser = Parser(lexer);
-    Statement* state = parser.parse();
-    ASSERT_EQ(typeid(state), typeid(ret));
+    std::unique_ptr<Statement> state = parser.parse();
+    ASSERT_EQ(StatementType::RET, state->getType());
 
     Expression* expression = state->getExpression();
     ASSERT_EQ(NodeType::INT, expression->getType());
@@ -30,7 +25,7 @@ TEST(TestBinary_expression, plus_expression)
     llvm::StringRef st = "return 1 + 2";
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
-    Statement* state = parser.parse();
+    std::unique_ptr<Statement> state = parser.parse();
 
     Expression* expression = state->getExpression();
     ASSERT_EQ(NodeType::PLUS, expression->getType());
@@ -53,7 +48,7 @@ TEST(TestBinary_expression, mul_expression)
     llvm::StringRef st = "return 4 * 5";
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
-    Statement* state = parser.parse();
+    std::unique_ptr<Statement> state = parser.parse();
 
     Expression* expression = state->getExpression();
     ASSERT_EQ(NodeType::MUL, expression->getType());
@@ -76,7 +71,7 @@ TEST(TestBinary_expression, plus_mul_expression)
     llvm::StringRef st = "return 7 + 4 * 5";
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
-    Statement* state = parser.parse();
+    std::unique_ptr<Statement> state = parser.parse();
 
     Expression* plusExpression = state->getExpression();
     ASSERT_EQ(NodeType::PLUS, plusExpression->getType());
@@ -107,7 +102,7 @@ TEST(TestBinary_expression, mul_plus_expression)
     llvm::StringRef st = "return 9 * 2 + 6";
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
-    Statement* state = parser.parse();
+    std::unique_ptr<Statement> state = parser.parse();
 
     Expression* plusExpression = state->getExpression();
     ASSERT_EQ(NodeType::PLUS, plusExpression->getType());

@@ -97,13 +97,15 @@ ReturnStatement* Parser::parseReturn()
     return new ReturnStatement(expression);
 }
 
-Statement* Parser::parse()
+std::unique_ptr<Statement> Parser::parse()
 {
     TokenType type = curToken->getTokenType();
+    std::unique_ptr<Statement> statement;
     switch (type) {
         case TokenType::RETURN:
             consumeToken();
-            return parseReturn();
+            statement.reset(parseReturn());
+            return statement;
         default:
             return nullptr;
     }
