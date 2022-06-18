@@ -23,12 +23,13 @@ void Parser::consumeToken()
     peekToken = lexer.fetchToken();
 }
 
-IntLiteral* Parser::parseInt()
+std::unique_ptr<IntLiteral> Parser::parseInt()
 {
     std::unique_ptr<Token> token = getNextToken();
     std::string strNum = token->getLiteral();
     int num = stoi(strNum);
-    return new IntLiteral(num);
+    return std::unique_ptr<IntLiteral>(new IntLiteral(num));
+    // return new IntLiteral(num);
 }
 
 // StrLiteral Parser::parseStr()
@@ -38,24 +39,24 @@ IntLiteral* Parser::parseInt()
 //     return StrLiteral(str);
 // }
 
-LetStatement* Parser::parseLet()
-{
-    if(!peekToken->equalsTokenType(TokenType::IDENT)) {
-        Identifier ident("");
-        Expression* exp = new StrLiteral("");
-        return new LetStatement(ident, exp);
-    }
-    consumeToken();
-    if(!peekToken->equalsTokenType(TokenType::ASSIGN)) {
-        Identifier ident("");
-        Expression* exp = new StrLiteral("");
-        return new LetStatement(ident, exp);
-    }
-    Identifier ident = parseIdentifier();
-    consumeToken();
-    Expression* expression = parseExpression();
-    return new LetStatement(ident, expression);
-}
+// LetStatement* Parser::parseLet()
+// {
+//     if(!peekToken->equalsTokenType(TokenType::IDENT)) {
+//         Identifier ident("");
+//         Expression* exp = new StrLiteral("");
+//         return new LetStatement(ident, exp);
+//     }
+//     consumeToken();
+//     if(!peekToken->equalsTokenType(TokenType::ASSIGN)) {
+//         Identifier ident("");
+//         Expression* exp = new StrLiteral("");
+//         return new LetStatement(ident, exp);
+//     }
+//     Identifier ident = parseIdentifier();
+//     consumeToken();
+//     Expression* expression = parseExpression();
+//     return new LetStatement(ident, expression);
+// }
 
 Identifier Parser::parseIdentifier()
 {
@@ -64,25 +65,25 @@ Identifier Parser::parseIdentifier()
     return Identifier(str);
 }
 
-Expression* Parser::parseExpression()
+std::unique_ptr<Expression> Parser::parseExpression()
 {
     if(peekToken->equalsTokenType(TokenType::EOI)){
         return parseInt();
     }
 
-    Expression* lHand = nullptr;
+    std::unique_ptr<Expression> lHand;
     if(curToken->equalsTokenType(TokenType::INT)) {
         lHand = parseInt();
     }
     while(!curToken->equalsTokenType(TokenType::EOI)) {
         if(curToken->equalsTokenType(TokenType::PLUS)) {
             consumeToken();
-            Expression* rHand = parseExpression();
-            lHand = new BinaryExpression(NodeType::PLUS, lHand, rHand);
+            std::unique_ptr<Expression> rHand = parseExpression();
+            lHand = std::unique_ptr<BinaryExpression>(new BinaryExpression(NodeType::PLUS, std::move(lHand), std::move(rHand)));
         } else if(curToken->equalsTokenType(TokenType::ASTERISK)) {
             consumeToken();
-            Expression* rHand = parseInt();
-            lHand = new BinaryExpression(NodeType::MUL, lHand, rHand);
+            std::unique_ptr<Expression> rHand = parseInt();
+            lHand = std::unique_ptr<BinaryExpression>(new BinaryExpression(NodeType::MUL, std::move(lHand), std::move(rHand)));
         } else {
             // error
         }
@@ -93,8 +94,8 @@ Expression* Parser::parseExpression()
 
 std::unique_ptr<ReturnStatement> Parser::parseReturn()
 {
-    Expression* expression = parseExpression();
-    std::unique_ptr<ReturnStatement> statement(new ReturnStatement(expression));
+    std::unique_ptr<Expression> expression = parseExpression();
+    std::unique_ptr<ReturnStatement> statement(new ReturnStatement(std::move(expression)));
     return statement;
 }
 

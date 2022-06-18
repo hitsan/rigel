@@ -33,6 +33,8 @@ public:
     Expression(NodeType type) : type(type) {};
     NodeType getType() const;
     virtual llvm::Value* walk(CodeGenerator* generator) = 0;
+    // for test
+    virtual bool testParse(std::vector<std::tuple<NodeType, int>> test) = 0;
 };
 
 class IntLiteral : public Expression
@@ -46,6 +48,7 @@ public:
         return expression->getType() == NodeType::INT;
     }
     llvm::Value* walk(CodeGenerator* generator);
+    bool testParse(std::vector<std::tuple<NodeType, int>> test);
 };
 
 class StrLiteral : public Expression
@@ -59,6 +62,21 @@ public:
         return expression->getType() == NodeType::STR;
     }
     llvm::Value* walk(CodeGenerator* generator);
+    bool testParse(std::vector<std::tuple<NodeType, int>> test);
+};
+
+class BinaryExpression : public Expression
+{
+protected:
+    std::unique_ptr<Expression> lHand;
+    std::unique_ptr<Expression> rHand;
+public:
+    BinaryExpression(NodeType type, std::unique_ptr<Expression> lHand, std::unique_ptr<Expression> rHand) : Expression(type), lHand(std::move(lHand)), rHand(std::move(rHand)) {};
+    std::unique_ptr<Expression> getLHand();
+    std::unique_ptr<Expression> getRHand();
+    static bool classof(const Expression *expression);
+    llvm::Value* walk(CodeGenerator* generator);
+    bool testParse(std::vector<std::tuple<NodeType, int>> test);
 };
 
 class Identifier
@@ -81,19 +99,6 @@ public:
     Expression* getExpression() { return expression; };
 };
 
-class BinaryExpression : public Expression
-{
-protected:
-    Expression* lHand;
-    Expression* rHand;
-public:
-    BinaryExpression(NodeType type, Expression* lHand, Expression* rHand) : Expression(type), lHand(lHand), rHand(rHand) {};
-    Expression* getLHand();
-    Expression* getRHand();
-    static bool classof(const Expression *expression);
-    llvm::Value* walk(CodeGenerator* generator);
-};
-
 class Statement
 {
 protected:
@@ -101,17 +106,17 @@ protected:
 public:
     Statement(StatementType type) : type(type) {};
     StatementType getType() const;
-    virtual Expression* getExpression() = 0;
+    virtual std::unique_ptr<Expression> getExpression() = 0;
     // virtual void walk(CodeGenerator* generator);
 };
 
 class ReturnStatement : public Statement
 {
 protected:
-    Expression* expression;
+    std::unique_ptr<Expression> expression;
 public:
-    ReturnStatement(Expression* expression) : Statement(StatementType::RET), expression(expression) {};
-    Expression* getExpression();
+    ReturnStatement(std::unique_ptr<Expression> expression) : Statement(StatementType::RET), expression(std::move(expression)) {};
+    std::unique_ptr<Expression> getExpression();
     // bool equals(Statement* state);
     // void walk(CodeGenerator* generator);
 };

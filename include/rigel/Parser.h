@@ -12,14 +12,15 @@ private:
     std::unique_ptr<Token> curToken;
     std::unique_ptr<Token> peekToken;
 
-    IntLiteral* parseInt();
+    std::unique_ptr<IntLiteral> parseInt();
     // StrLiteral parseStr();
-    LetStatement* parseLet();
+    // LetStatement* parseLet();
     std::unique_ptr<ReturnStatement> parseReturn();
     Identifier parseIdentifier();
-    Expression* parseExpression();
+    std::unique_ptr<Expression> parseExpression();
     std::unique_ptr<Token> getNextToken();
     void consumeToken();
+    // std::unique_ptr<BinaryExpression> makeBinaryExpression(NodeType type, )
 public:
     Parser(Lexer &lex);
     std::unique_ptr<Statement> parse();

@@ -9,16 +9,19 @@ NodeType Expression::getType() const
     return type;
 }
 
-// llvm::Value* Expression::walk(CodeGenerator* generator) {}
-
-Expression* BinaryExpression::getLHand() { return lHand; };
-Expression* BinaryExpression::getRHand() { return rHand; };
+std::unique_ptr<Expression> BinaryExpression::getLHand() { return std::move(lHand); };
+std::unique_ptr<Expression> BinaryExpression::getRHand() { return std::move(rHand); };
 
 int IntLiteral::getValue() { return this->value; };
 
 llvm::Value* IntLiteral::walk(CodeGenerator* generator)
 {
     return generator->createInteger(this);
+}
+
+bool IntLiteral::testParse(std::vector<std::tuple<NodeType, int>> test)
+{
+    std::tuple<NodeType, int> aaa = test.front();
 }
 
 bool BinaryExpression::classof(const Expression *expression) {
@@ -54,9 +57,9 @@ StatementType Statement::getType() const
     return this->type;
 }
 
-Expression* ReturnStatement::getExpression()
+std::unique_ptr<Expression> ReturnStatement::getExpression()
 {
-    return expression;
+    return std::move(this->expression);
 }
 
 // bool ReturnStatement::equals(Statement* state);
