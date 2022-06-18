@@ -33,6 +33,7 @@ private:
 public:
     Token(TokenType type, llvm::StringRef literal);
     bool equalsTokenType(TokenType type);
+    TokenType getTokenType();
     std::string getLiteral();
 };
 

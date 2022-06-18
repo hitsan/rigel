@@ -9,11 +9,8 @@ NodeType Expression::getType() const
     return type;
 }
 
-// llvm::Value* Expression::walk(CodeGenerator* generator) {}
-
-Expression* BinaryExpression::getLHand() { return lHand; };
-Expression* BinaryExpression::getRHand() { return rHand; };
-OpType BinaryExpression::getOpType() { return opType; };
+std::unique_ptr<Expression> BinaryExpression::getLHand() { return std::move(lHand); };
+std::unique_ptr<Expression> BinaryExpression::getRHand() { return std::move(rHand); };
 
 int IntLiteral::getValue() { return this->value; };
 
@@ -22,8 +19,14 @@ llvm::Value* IntLiteral::walk(CodeGenerator* generator)
     return generator->createInteger(this);
 }
 
+bool IntLiteral::testParse(std::vector<std::tuple<NodeType, int>> test)
+{
+    std::tuple<NodeType, int> aaa = test.front();
+}
+
 bool BinaryExpression::classof(const Expression *expression) {
-    return expression->getType() == NT_BIN;
+    return (expression->getType() == NodeType::PLUS ||
+            expression->getType() == NodeType::MUL);
 }
 
 llvm::Value* StrLiteral::walk(CodeGenerator* generator) {};
@@ -33,13 +36,13 @@ llvm::Value* BinaryExpression::walk(CodeGenerator* generator)
     llvm::Value * lIntLiteral = lHand->walk(generator);
     llvm::Value * rIntLiteral = rHand->walk(generator);
     llvm::Value* expressionValue;
-    const OpType type = getOpType();
+    const NodeType type = getType();
     switch (type)
     {
-    case OP_PLUS:
+    case NodeType::PLUS:
         expressionValue = generator->createAdd(lIntLiteral, rIntLiteral);
         break;
-    case OP_MUL:
+    case NodeType::MUL:
         expressionValue = generator->createMul(lIntLiteral, rIntLiteral);
         break;
     default:
@@ -49,7 +52,14 @@ llvm::Value* BinaryExpression::walk(CodeGenerator* generator)
     return expressionValue;
 }
 
-Expression* ReturnStatement::getExpression()
+StatementType Statement::getType() const
 {
-    return expression;
+    return this->type;
 }
+
+std::unique_ptr<Expression> ReturnStatement::getExpression()
+{
+    return std::move(this->expression);
+}
+
+// bool ReturnStatement::equals(Statement* state);

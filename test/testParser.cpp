@@ -6,152 +6,158 @@
 #include "include/rigel/Ast.h"
 using namespace rigel;
 
-TEST(TestParseToken, singleIntNum)
+void checkExpression(std::unique_ptr<Expression> expression, )
 {
-    llvm::StringRef st = R"(1)";
-    Lexer lexer = Lexer(st);
-    Parser parser = Parser(lexer);
 
-    auto exp = parser.parseInt();
-    ASSERT_EQ(1, exp->getValue());
 }
 
-TEST(TestParseToken, singleString)
+TEST(ParseReturnState, single_integer)
 {
-    llvm::StringRef st = R"("str")";
-    Lexer lexer = Lexer(st);
+    llvm::StringRef code = "return 4";
+    Lexer lexer = Lexer(code);
     Parser parser = Parser(lexer);
+    std::unique_ptr<Statement> state = parser.parse();
+    ASSERT_EQ(StatementType::RET, state->getType());
 
-    auto exp = parser.parseStr();
-    ASSERT_EQ("str", exp.getValue());
-}
-
-TEST(TestParseToken, identifier)
-{
-    llvm::StringRef st = "foo";
-    Lexer lexer = Lexer(st);
-    Parser parser = Parser(lexer);
-
-    auto exp = parser.parseIdentifier();
-    ASSERT_EQ("foo", exp.getName());
-}
-
-TEST(TestParseToken, parse_letState)
-{
-    llvm::StringRef st = "let foo = 1";
-    Lexer lexer = Lexer(st);
-    Parser parser = Parser(lexer);
-
-    Identifier ident = Identifier("foo");
-    Expression* expression = new IntLiteral(1);
-    LetStatement* test = new LetStatement(ident, expression);
-
-    LetStatement* letState = parser.parseLet();
-
-    ASSERT_EQ(typeid(test), typeid(letState));
-    ASSERT_EQ("foo", letState->getName());
-
-    Expression* ast = letState->getExpression();
-    IntLiteral* literal = llvm::dyn_cast<IntLiteral>(ast);
-    ASSERT_EQ(1, literal->getValue());
-}
-
-TEST(TestParseToken, no_equal_letState)
-{
-    llvm::StringRef st = "let = 1";
-    Lexer lexer = Lexer(st);
-    Parser parser = Parser(lexer);
-
-    auto exp = parser.parseLet();
-    EXPECT_EQ("", exp->getName());
-}
-
-
-TEST(TestParseToken, no_assign_letState)
-{
-    llvm::StringRef st = "let foo  1";
-    Lexer lexer = Lexer(st);
-    Parser parser = Parser(lexer);
-
-    auto exp = parser.parseLet();
-    EXPECT_EQ("", exp->getName());
+    std::unique_ptr<Expression> expression = state->getExpression();
+    ASSERT_EQ(NodeType::INT, expression->getType());
+    IntLiteral* exp = llvm::dyn_cast<IntLiteral>(expression);
+    ASSERT_EQ(4, exp->getValue());
 }
 
 TEST(TestBinary_expression, plus_expression)
 {
-    llvm::StringRef st = "1 + 2";
+    llvm::StringRef st = "return 1 + 2";
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
+    std::unique_ptr<Statement> state = parser.parse();
 
-    Expression* expr = parser.parseExpression();
-    BinaryExpression* exp = llvm::dyn_cast<BinaryExpression>(expr);
-    EXPECT_EQ(OpType::OP_PLUS, exp->getOpType());
+    std::unique_ptr<Expression> expression = state->getExpression();
+    ASSERT_EQ(NodeType::PLUS, expression->getType());
 
-    Expression* expLHand = exp->getLHand();
-    IntLiteral* lHand = llvm::dyn_cast<IntLiteral>(expLHand);
-    EXPECT_EQ(1, lHand->getValue());
+    BinaryExpression* binExpr = llvm::dyn_cast<BinaryExpression>(expression);
 
-    Expression* expRHand = exp->getRHand();
-    IntLiteral* rHand = llvm::dyn_cast<IntLiteral>(expRHand);
-    EXPECT_EQ(2, rHand->getValue());
+    std::unique_ptr<Expression> expLHand = binExpr->getLHand();
+    ASSERT_EQ(NodeType::INT, expLHand->getType());
+    IntLiteral* lInt = llvm::dyn_cast<IntLiteral>(expLHand);
+    ASSERT_EQ(1, lInt->getValue());
+
+    std::unique_ptr<Expression> expRHand = binExpr->getRHand();
+    ASSERT_EQ(NodeType::INT, expLHand->getType());
+    IntLiteral* rInt = llvm::dyn_cast<IntLiteral>(expRHand);
+    ASSERT_EQ(2, rInt->getValue());
 }
 
 TEST(TestBinary_expression, mul_expression)
 {
-    llvm::StringRef st = "1 * 2";
+    llvm::StringRef st = "return 4 * 5";
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
+    std::unique_ptr<Statement> state = parser.parse();
 
-    Expression* expr = parser.parseExpression();
-    BinaryExpression* exp = llvm::dyn_cast<BinaryExpression>(expr);
-    EXPECT_EQ(OpType::OP_MUL, exp->getOpType());
+    std::unique_ptr<Expression> expression = state->getExpression();
+    ASSERT_EQ(NodeType::MUL, expression->getType());
 
-    Expression* expLHand = exp->getLHand();
-    IntLiteral* lHand = llvm::dyn_cast<IntLiteral>(expLHand);
-    EXPECT_EQ(1, lHand->getValue());
+    BinaryExpression* binExpr = llvm::dyn_cast<BinaryExpression>(expression);
 
-    Expression* expRHand = exp->getRHand();
-    IntLiteral* rHand = llvm::dyn_cast<IntLiteral>(expRHand);
-    EXPECT_EQ(2, rHand->getValue());
+    std::unique_ptr<Expression> expLHand = binExpr->getLHand();
+    ASSERT_EQ(NodeType::INT, expLHand->getType());
+    IntLiteral* lInt = llvm::dyn_cast<IntLiteral>(expLHand);
+    ASSERT_EQ(4, lInt->getValue());
+
+    std::unique_ptr<Expression> expRHand = binExpr->getRHand();
+    ASSERT_EQ(NodeType::INT, expLHand->getType());
+    IntLiteral* rInt = llvm::dyn_cast<IntLiteral>(expRHand);
+    ASSERT_EQ(5, rInt->getValue());
 }
 
-TEST(TestBinary_expression, polynomial)
+TEST(TestBinary_expression, plus_mul_expression)
 {
-    llvm::StringRef st = "11 + 22 * 33";
+    llvm::StringRef st = "return 7 + 4 * 5";
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
+    std::unique_ptr<Statement> state = parser.parse();
 
-    Expression* expr = parser.parseExpression();
-    BinaryExpression* exp = llvm::dyn_cast<BinaryExpression>(expr);
-    EXPECT_EQ(OpType::OP_PLUS, exp->getOpType());
+    std::unique_ptr<Expression> plusExpression = state->getExpression();
+    ASSERT_EQ(NodeType::PLUS, plusExpression->getType());
 
-    Expression* expLHand = exp->getLHand();
-    IntLiteral* lHand = llvm::dyn_cast<IntLiteral>(expLHand);
-    EXPECT_EQ(11, lHand->getValue());
+    BinaryExpression* plusBinExpression = llvm::dyn_cast<BinaryExpression>(plusExpression);
+    std::unique_ptr<Expression> plusLHand = plusBinExpression->getLHand();
+    ASSERT_EQ(NodeType::INT, plusLHand->getType());
+    IntLiteral* plusLInt = llvm::dyn_cast<IntLiteral>(plusLHand);
+    ASSERT_EQ(7, plusLInt->getValue());
 
-    Expression* expR = exp->getRHand();
-    BinaryExpression* expRHand = llvm::dyn_cast<BinaryExpression>(expR);
-    EXPECT_EQ(OpType::OP_MUL, expRHand->getOpType());
+    std::unique_ptr<Expression> plusRHand = plusBinExpression->getRHand();
+    BinaryExpression* mulExpression = llvm::dyn_cast<BinaryExpression>(plusRHand);
+    ASSERT_EQ(NodeType::MUL, mulExpression->getType());
 
-    Expression* expRLHand = expRHand->getLHand();
-    IntLiteral* RLHand = llvm::dyn_cast<IntLiteral>(expRLHand);
-    EXPECT_EQ(22, RLHand->getValue());
+    std::unique_ptr<Expression> mulLHand = mulExpression->getLHand();
+    ASSERT_EQ(NodeType::INT, mulLHand->getType());
+    IntLiteral* mulLInt = llvm::dyn_cast<IntLiteral>(mulLHand);
+    ASSERT_EQ(4, mulLInt->getValue());
 
-    Expression* expRRHand = expRHand->getRHand();
-    IntLiteral* RRHand = llvm::dyn_cast<IntLiteral>(expRRHand);
-    EXPECT_EQ(33, RRHand->getValue());
+    std::unique_ptr<Expression> mulRHand = mulExpression->getRHand();
+    ASSERT_EQ(NodeType::INT, mulRHand->getType());
+    IntLiteral* mulRInt = llvm::dyn_cast<IntLiteral>(mulRHand);
+    ASSERT_EQ(5, mulRInt->getValue());
 }
 
-TEST(TestParseToken, parse_returnState)
+TEST(TestBinary_expression, mul_plus_expression)
 {
-    llvm::StringRef st = "return 1";
+    llvm::StringRef st = "return 9 * 2 + 6";
     Lexer lexer = Lexer(st);
     Parser parser = Parser(lexer);
+    std::unique_ptr<Statement> state = parser.parse();
 
-    ReturnStatement* returnState = parser.parseReturn();
+    std::unique_ptr<Expression> plusExpression = state->getExpression();
+    ASSERT_EQ(NodeType::PLUS, plusExpression->getType());
 
-    Expression* expr = returnState->getExpression();
-    IntLiteral* exp = llvm::dyn_cast<IntLiteral>(expr);
+    BinaryExpression* plusBinExpression = llvm::dyn_cast<BinaryExpression>(plusExpression);
+    std::unique_ptr<Expression> plusBinRExpression = plusBinExpression->getRHand();
+    ASSERT_EQ(NodeType::INT, plusBinRExpression->getType());
+    IntLiteral* plusRInt = llvm::dyn_cast<IntLiteral>(plusBinRExpression);
+    ASSERT_EQ(6, plusRInt->getValue());
 
-    ASSERT_EQ(1, exp->getValue());
+    std::unique_ptr<Expression> plusBinLExpression = plusBinExpression->getLHand();
+    BinaryExpression* mulBinExpression = llvm::dyn_cast<BinaryExpression>(plusBinLExpression);
+    ASSERT_EQ(NodeType::MUL, mulBinExpression->getType());
+
+    std::unique_ptr<Expression> mulLHand = mulBinExpression->getLHand();
+    ASSERT_EQ(NodeType::INT, mulLHand->getType());
+    IntLiteral* mulLInt = llvm::dyn_cast<IntLiteral>(mulLHand);
+    ASSERT_EQ(9, mulLInt->getValue());
+
+    std::unique_ptr<Expression> mulRHand = mulBinExpression->getRHand();
+    ASSERT_EQ(NodeType::INT, mulRHand->getType());
+    IntLiteral* mulRInt = llvm::dyn_cast<IntLiteral>(mulRHand);
+    ASSERT_EQ(2, mulRInt->getValue());
 }
+
+// TEST(ParseIlligalReturnState, only_operator)
+// {
+//     llvm::StringRef code = "return +";
+//     Lexer lexer = Lexer(code);
+//     Parser parser = Parser(lexer);
+//     Statement* state = parser.parse();
+//     ASSERT_EQ(StatementType::ILLEGAL, state->getType());
+// }
+
+// TEST(TestParseToken, parse_letState)
+// {
+//     llvm::StringRef st = "let foo = 1";
+//     Lexer lexer = Lexer(st);
+//     Parser parser = Parser(lexer);
+
+//     Identifier ident = Identifier("foo");
+//     Expression* expression = new IntLiteral(1);
+//     LetStatement* test = new LetStatement(ident, expression);
+
+//     LetStatement* letState = parser.parseLet();
+
+//     ASSERT_EQ(typeid(test), typeid(letState));
+//     ASSERT_EQ("foo", letState->getName());
+
+//     Expression* ast = letState->getExpression();
+//     IntLiteral* literal = llvm::dyn_cast<IntLiteral>(ast);
+//     ASSERT_EQ(1, literal->getValue());
+// }

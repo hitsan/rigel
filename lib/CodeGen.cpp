@@ -55,7 +55,7 @@ void CodeGenerator::createReturn(llvm::Value* value)
 
 void CodeGenerator::codeGen(Statement* statement)
 {
-    Expression* expression = statement->getExpression();
+    std::unique_ptr<Expression> expression = statement->getExpression();
     llvm::Value* value = expression->walk(this);
     createReturn(value);
 

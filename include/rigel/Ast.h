@@ -10,23 +10,19 @@ namespace rigel {
 
 class CodeGenerator;
 
-enum NodeType
+enum class NodeType
 {
-    NT_BIN,
-    NT_INT,
-    NT_STR,
-    NT_RET,
-};
-
-enum StatementType
-{
+    PLUS,
+    MUL,
+    INT,
+    STR,
     RET,
 };
 
-enum OpType
+enum class StatementType
 {
-    OP_PLUS,
-    OP_MUL,
+    RET,
+    ILLEGAL,
 };
 
 class Expression
@@ -37,6 +33,8 @@ public:
     Expression(NodeType type) : type(type) {};
     NodeType getType() const;
     virtual llvm::Value* walk(CodeGenerator* generator) = 0;
+    // for test
+    virtual bool testParse(std::vector<std::tuple<NodeType, int>> test) = 0;
 };
 
 class IntLiteral : public Expression
@@ -44,12 +42,13 @@ class IntLiteral : public Expression
 private:
     int value;
 public:
-    IntLiteral(int value) : Expression(NT_INT), value(value) {};
+    IntLiteral(int value) : Expression(NodeType::INT), value(value) {};
     int getValue();
     static bool classof(const Expression *expression) {
-        return expression->getType() == NT_INT;
+        return expression->getType() == NodeType::INT;
     }
     llvm::Value* walk(CodeGenerator* generator);
+    bool testParse(std::vector<std::tuple<NodeType, int>> test);
 };
 
 class StrLiteral : public Expression
@@ -57,12 +56,27 @@ class StrLiteral : public Expression
 private:
     std::string value;
 public:
-    StrLiteral(std::string value) : Expression(NT_STR), value(value) {};
+    StrLiteral(std::string value) : Expression(NodeType::STR), value(value) {};
     std::string getValue() { return this->value; };
     static bool classof(const Expression *expression) {
-        return expression->getType() == NT_STR;
+        return expression->getType() == NodeType::STR;
     }
     llvm::Value* walk(CodeGenerator* generator);
+    bool testParse(std::vector<std::tuple<NodeType, int>> test);
+};
+
+class BinaryExpression : public Expression
+{
+protected:
+    std::unique_ptr<Expression> lHand;
+    std::unique_ptr<Expression> rHand;
+public:
+    BinaryExpression(NodeType type, std::unique_ptr<Expression> lHand, std::unique_ptr<Expression> rHand) : Expression(type), lHand(std::move(lHand)), rHand(std::move(rHand)) {};
+    std::unique_ptr<Expression> getLHand();
+    std::unique_ptr<Expression> getRHand();
+    static bool classof(const Expression *expression);
+    llvm::Value* walk(CodeGenerator* generator);
+    bool testParse(std::vector<std::tuple<NodeType, int>> test);
 };
 
 class Identifier
@@ -85,39 +99,25 @@ public:
     Expression* getExpression() { return expression; };
 };
 
-class BinaryExpression : public Expression
-{
-protected:
-    OpType opType;
-    Expression* lHand;
-    Expression* rHand;
-public:
-    BinaryExpression(OpType opType, Expression* lHand, Expression* rHand) : Expression(NT_BIN), opType(opType), lHand(lHand), rHand(rHand) {};
-    Expression* getLHand();
-    Expression* getRHand();
-    OpType getOpType();
-    static bool classof(const Expression *expression);
-    llvm::Value* walk(CodeGenerator* generator);
-};
-
 class Statement
 {
 protected:
     const StatementType type;
 public:
     Statement(StatementType type) : type(type) {};
-    // StatementType getType() const;
-    virtual Expression* getExpression() = 0;
+    StatementType getType() const;
+    virtual std::unique_ptr<Expression> getExpression() = 0;
     // virtual void walk(CodeGenerator* generator);
 };
 
 class ReturnStatement : public Statement
 {
 protected:
-    Expression* expression;
+    std::unique_ptr<Expression> expression;
 public:
-    ReturnStatement(Expression* expression) : Statement(RET), expression(expression) {};
-    Expression* getExpression();
+    ReturnStatement(std::unique_ptr<Expression> expression) : Statement(StatementType::RET), expression(std::move(expression)) {};
+    std::unique_ptr<Expression> getExpression();
+    // bool equals(Statement* state);
     // void walk(CodeGenerator* generator);
 };
 
